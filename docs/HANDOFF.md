@@ -11,7 +11,10 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 - Admin panel `/admin` built (Google sign-in; enquiries, courses, batches, gallery, settings, admins), emulator-tested.
 - Firebase project `rpc-adoni-4953b`: Google sign-in on, Firestore rules LIVE, web config in `site/src/lib/firebase-config.ts` (not secret, so Vercel needs no env vars). Owner rpcraghu@gmail.com is admin; extra admins at `admins/{email}`. Authorized domains include rpc-adoni.vercel.app.
 - Cloudinary cloud `q2nhyak9`, unsigned preset `rpc_gallery` (folder rpc-gallery, public ID disallowed, jpg/jpeg/png/webp/avif/heic only, incoming `c_limit,w_2400,h_2400`). Tested 8 Nov: upload OK, .txt rejected. Two 8×8 test PNGs left in rpc-gallery (harmless, delete in Media Library any time).
-- GitHub: private `rpcraghu-collab/rpc-adoni-website` (main). Vercel: account rpcraghu, team "rpc", project `rpc-adoni` (root `site`, Vite) configured via the GitHub import page; **first deploy blocked by Vercel's "Verify your identity" email code** (Claude may not enter login codes). After it: live URL rpc-adoni.vercel.app, auto-deploys on push.
+- GitHub: private `rpcraghu-collab/rpc-adoni-website` (main). Vercel: account rpcraghu, team "rpc", project `rpc-adoni` (root `site`, Vite).
+- **LIVE: https://rpc-adoni.vercel.app** (8 Nov). Live test: all pages 200 at 390/1440, no console errors, no overflow; contact form → Firestore write OK (test enquiry deleted after). `content/site` created with json `{}` (admin's first save fills it). Lighthouse mobile home: A11y 97→fixed contrast/label, Best Practices 100, SEO 100; llms.txt added.
+- **Deploy gotcha:** Vercel Hobby + private repo deploys ONLY commits authored by rpcraghu-collab. Pushes from this PC (author govardhan9692) show "Blocked". To deploy: push, then make any small commit in the GitHub web UI in the RPC Chrome (it builds latest main). See `docs/DEPLOY-NOTES.md`.
+- Admin Google sign-in not tested live (the popup opens outside Claude's tab group); emulator-tested. Owner just opens /admin and signs in with rpcraghu@gmail.com.
 
 ## Timeline promised to the client (sent 8 Nov 10:05 am)
 | Date | Work |
@@ -35,8 +38,8 @@ We are ahead: all public pages are built on 8 Nov.
 ## Next steps
 1. (done) Illustrations. Never AI photos of RPC classrooms/students; real photos only from the client.
 2. (done) Admin panel, Firebase, Cloudinary, GitHub, Vercel project.
-3. Founder: in the RPC Chrome (Profile 191) Vercel import tab, Send Code → enter the code from rpcraghu Gmail → Deploy.
-4. After deploy: live test (contact form → /admin enquiry, admin sign-in, gallery upload, settings save), Lighthouse, quick `security-audit`.
+3. (done) Deployed + live-tested + Lighthouse.
+4. Before rpcadoni.com goes live: quick `security-audit` (rules already strict; only public writes = enquiries, validated).
 5. Later: rpcadoni.com DNS → Vercel (needs domain access) + add it to Firebase authorized domains.
 6. No client update messages (founder 8 Nov); ask the client only for must-have info.
 

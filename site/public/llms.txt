@@ -1,0 +1,25 @@
+# Real Point Computer Education (RPC), Adoni
+
+> Computer education institute in Adoni, Andhra Pradesh, teaching since 2000. Job-oriented computer courses: PGDCA, DCA, DCP, Office Automation, CCA and programming (C, C++, Java, Oracle, Python).
+
+Address: Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. Phone / WhatsApp: +91 99596 63984. Email: rpcraghu@gmail.com.
+
+## Pages
+
+- [Home](https://rpcadoni.com/): overview, courses and admissions
+- [About RPC](https://rpcadoni.com/about): history since 2000
+- [Courses](https://rpcadoni.com/courses): all courses with duration and modules
+- [Awards](https://rpcadoni.com/awards): awards and achievements
+- [Admissions and contact](https://rpcadoni.com/contact): enquiry form, address, phone
+
+## Courses
+
+- [PGDCA](https://rpcadoni.com/courses/pgdca): Post Graduate Diploma in Computer Applications
+- [PGDCA Advanced](https://rpcadoni.com/courses/pgdca-advanced)
+- [DCA](https://rpcadoni.com/courses/dca): Diploma in Computer Applications
+- [DCP](https://rpcadoni.com/courses/dcp): Diploma in Computer Programming
+- [OAM](https://rpcadoni.com/courses/oam): Office Automation Master
+- [OAM Advanced](https://rpcadoni.com/courses/oam-advanced)
+- [OAM PRO](https://rpcadoni.com/courses/oam-pro)
+- [CCA](https://rpcadoni.com/courses/cca): Certificate in Computer Applications
+- [C](https://rpcadoni.com/courses/c), [C++](https://rpcadoni.com/courses/cpp), [Java](https://rpcadoni.com/courses/java), [Oracle](https://rpcadoni.com/courses/oracle), [Python](https://rpcadoni.com/courses/python)

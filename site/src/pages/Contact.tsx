@@ -93,7 +93,7 @@ export default function Contact() {
         </form>
 
         <div className="space-y-4">
-          <a href={waLink()} target="_blank" rel="noopener" className="flex items-center gap-4 rounded-[1.4rem] bg-[#178a48] p-6 text-white transition-transform hover:-translate-y-0.5">
+          <a href={waLink()} target="_blank" rel="noopener" className="flex items-center gap-4 rounded-[1.4rem] bg-[#14803f] p-6 text-white transition-transform hover:-translate-y-0.5">
             <WhatsAppIcon className="size-8" />
             <span><b className="block font-display text-xl">Chat on WhatsApp</b><span className="text-sm text-white/85">Fastest reply for fees and batches</span></span>
           </a>

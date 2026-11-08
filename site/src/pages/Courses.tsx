@@ -49,7 +49,7 @@ export default function Courses() {
                   <p className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">{g.label}</p>
                   <p className="mt-1 text-white/80">{g.blurb}</p>
                 </div>
-                <a href={waLink(`Hello RPC, I want details about ${g.label} courses (fees and next batch).`)} target="_blank" rel="noopener" className="btn ml-auto hidden h-12 shrink-0 bg-white px-6 text-brand hover:bg-white/90 md:inline-flex"><WhatsAppIcon className="text-[#178a48]" /> Ask about {g.label}</a>
+                <a href={waLink(`Hello RPC, I want details about ${g.label} courses (fees and next batch).`)} target="_blank" rel="noopener" className="btn ml-auto hidden h-12 shrink-0 bg-white px-6 text-brand hover:bg-white/90 md:inline-flex"><WhatsAppIcon className="text-[#14803f]" /> Ask about {g.label}</a>
               </motion.div>
             )
           })()}

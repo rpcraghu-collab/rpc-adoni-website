@@ -45,7 +45,7 @@ export default function CourseDetail() {
                     <div className="card h-full p-6">
                       {m.title && <p className="font-display text-lg font-bold text-ink">{m.title}</p>}
                       <ul className="mt-3 space-y-2.5">
-                        {m.items.map((it) => <li key={it} className="flex gap-3 text-ink-soft"><Check className="mt-0.5 size-5 shrink-0 text-[#178a48]" />{it}</li>)}
+                        {m.items.map((it) => <li key={it} className="flex gap-3 text-ink-soft"><Check className="mt-0.5 size-5 shrink-0 text-[#14803f]" />{it}</li>)}
                       </ul>
                     </div>
                   </Reveal>
@@ -80,7 +80,7 @@ export default function CourseDetail() {
             <img src={GROUPS.find((g) => g.id === c.group)!.art} alt="" width={176} height={176} loading="lazy" decoding="async" className="float mx-auto mb-4 h-36 w-auto object-contain drop-shadow-[0_18px_24px_rgba(0,0,0,0.35)]" />
             <p className="font-display text-2xl font-bold leading-tight">Join {c.code}</p>
             <p className="mt-2 text-sm text-white/75">Ask for the fee and the next batch date. We reply on WhatsApp.</p>
-            <Magnetic className="mt-6 w-full"><a href={waLink(msg)} target="_blank" rel="noopener" className="btn h-14 w-full bg-white text-brand hover:bg-white/90"><WhatsAppIcon className="text-[#178a48]" /> Ask on WhatsApp</a></Magnetic>
+            <Magnetic className="mt-6 w-full"><a href={waLink(msg)} target="_blank" rel="noopener" className="btn h-14 w-full bg-white text-brand hover:bg-white/90"><WhatsAppIcon className="text-[#14803f]" /> Ask on WhatsApp</a></Magnetic>
             <Link to={`/contact?course=${c.slug}`} className="btn mt-3 h-12 w-full border border-white/30 text-white hover:bg-white/10">Enquiry form</Link>
           </div>
         </aside>

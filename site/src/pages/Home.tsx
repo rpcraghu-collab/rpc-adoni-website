@@ -417,7 +417,7 @@ function FinalCta() {
             <h2 className="mt-4 text-[clamp(2.2rem,5.5vw,4rem)] font-extrabold leading-[0.98] text-white">Your career…<br />our commitment.</h2>
             <p className="mt-5 max-w-lg text-lg text-white/80">Visit us at Babu Plaza, or send a message. We will help you pick the course, the batch and the start date.</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Magnetic><a href={waLink()} target="_blank" rel="noopener" className="btn h-14 bg-white px-7 text-base text-brand hover:bg-white/90"><WhatsAppIcon className="text-[#178a48]" /> WhatsApp us</a></Magnetic>
+              <Magnetic><a href={waLink()} target="_blank" rel="noopener" className="btn h-14 bg-white px-7 text-base text-brand hover:bg-white/90"><WhatsAppIcon className="text-[#14803f]" /> WhatsApp us</a></Magnetic>
               <Link to="/contact" className="btn h-14 border border-white/30 px-7 text-base text-white hover:bg-white/10">Fill the enquiry form</Link>
             </div>
           </div>

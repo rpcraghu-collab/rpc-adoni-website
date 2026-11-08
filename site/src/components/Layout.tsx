@@ -91,7 +91,7 @@ function Header() {
     <header className="sticky top-0 z-40 pt-[env(safe-area-inset-top)]">
       <div className={cn('transition-[background-color,box-shadow,border-color] duration-300', scrolled ? 'border-b border-line bg-glass shadow-[0_8px_30px_-20px_rgb(11_30_74/0.4)] backdrop-blur-xl backdrop-saturate-150' : 'border-b border-transparent')}>
         <nav className="container-x flex h-[4.5rem] items-center justify-between gap-4" aria-label="Main">
-          <Link to="/" className="flex items-center gap-3" aria-label="RPC home">
+          <Link to="/" className="flex items-center gap-3" aria-label="RPC since 2000, home">
             <Logo />
             <span className="hidden text-[0.8rem] font-bold leading-tight text-ink-soft sm:block">Real Point<br />Computer Education</span>
           </Link>
@@ -173,7 +173,7 @@ function BottomBar() {
     <nav aria-label="Quick contact" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-glass pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 lg:hidden">
       <div className="grid grid-cols-3 gap-2 px-3 py-2">
         <a href={telLink()} className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-sm font-bold text-ink active:bg-surface-2"><Phone className="size-[1.1rem]" /> Call</a>
-        <a href={waLink()} target="_blank" rel="noopener" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#178a48] text-sm font-bold text-white active:scale-[0.97]"><WhatsAppIcon className="size-[1.15rem]" /> WhatsApp</a>
+        <a href={waLink()} target="_blank" rel="noopener" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#14803f] text-sm font-bold text-white active:scale-[0.97]"><WhatsAppIcon className="size-[1.15rem]" /> WhatsApp</a>
         <Link to="/contact" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-accent text-sm font-bold text-white active:scale-[0.97]">Enquire</Link>
       </div>
     </nav>
@@ -182,7 +182,7 @@ function BottomBar() {
 
 function WhatsAppFab() {
   return (
-    <a href={waLink()} target="_blank" rel="noopener" aria-label="Chat with RPC on WhatsApp" className="group fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-[#178a48] p-4 text-white shadow-[0_18px_40px_-12px_rgb(23_138_72/0.7)] transition-transform hover:scale-105 lg:flex">
+    <a href={waLink()} target="_blank" rel="noopener" aria-label="Chat with RPC on WhatsApp" className="group fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-[#14803f] p-4 text-white shadow-[0_18px_40px_-12px_rgb(23_138_72/0.7)] transition-transform hover:scale-105 lg:flex">
       <WhatsAppIcon className="size-6" />
       <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-bold transition-[max-width] duration-300 group-hover:max-w-40">Chat with us</span>
     </a>
