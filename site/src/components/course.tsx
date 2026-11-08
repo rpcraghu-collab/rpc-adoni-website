@@ -20,6 +20,9 @@ export const ART_SIZE: Record<string, [number, number]> = {
 }
 
 export const groupOf = (g: CourseGroup) => GROUPS.find((x) => x.id === g)!
+const artV = (src: string, s: string) => src.replace(/\.webp$/, `-${s}.webp`)
+/** srcSet for a 3D art file (200 / 480 / 800 px copies). */
+export const artSet = (src: string) => (src.startsWith('/img/art/') ? `${artV(src, 'sm')} 200w, ${artV(src, 'md')} 480w, ${src} 800w` : undefined)
 export const artOf = (g: CourseGroup) => groupOf(g).art
 
 /** The main course card (Home finder, Courses page). */
@@ -27,7 +30,7 @@ export function CourseCard({ c }: { c: Course }) {
   return (
     <Link to={`/courses/${c.slug}`} className="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-surface p-5 ring-1 ring-line transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgb(11_30_74/0.45)] sm:p-6">
       <span className={cn('absolute -right-6 -top-6 grid size-32 place-items-center rounded-full', TINT[c.group])} aria-hidden>
-        <img src={artOf(c.group)} alt="" width={96} height={96} loading="lazy" decoding="async" className="mt-5 mr-5 size-[4.5rem] object-contain transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
+        <img src={artOf(c.group)} srcSet={artSet(artOf(c.group))} sizes="72px" alt="" width={96} height={96} loading="lazy" decoding="async" className="mt-5 mr-5 size-[4.5rem] object-contain transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
       </span>
       <p className="relative pr-24 font-display text-[1.9rem] font-extrabold leading-none text-ink">{c.code}</p>
       <p className="relative mt-2 pr-20 text-sm font-semibold leading-snug text-ink-soft">{c.code === c.name ? c.tagline : c.name}</p>
@@ -80,7 +83,7 @@ export function CtaBand({ title = <>Your career…<br />our commitment.</>, text
                 <Link to="/contact" className="btn h-14 border border-white/30 px-7 text-base text-white hover:bg-white/10">Fill the enquiry form</Link>
               </div>
             </div>
-            <img src={art} alt="" width={ART_SIZE[art]?.[0] ?? 800} height={ART_SIZE[art]?.[1] ?? 600} loading="lazy" decoding="async" className="float mx-auto w-64 drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)] sm:w-80 lg:w-full lg:max-w-[24rem]" />
+            <img src={art} srcSet={artSet(art)} sizes="(min-width:1024px) 384px, (min-width:640px) 320px, 256px" alt="" width={ART_SIZE[art]?.[0] ?? 800} height={ART_SIZE[art]?.[1] ?? 600} loading="lazy" decoding="async" className="float mx-auto w-64 drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)] sm:w-80 lg:w-full lg:max-w-[24rem]" />
           </div>
         </div>
       </Reveal>

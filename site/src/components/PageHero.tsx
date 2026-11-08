@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '../lib/cn'
-import { ART_SIZE } from './course'
+import { ART_SIZE, artSet } from './course'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -42,24 +42,24 @@ export default function PageHero({ eyebrow, title, text, children, art, artTint 
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               {eyebrow && <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />{eyebrow}</motion.p>}
-              <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.04, ease }} className="mt-4 max-w-4xl text-[clamp(2.15rem,4.6vw,3.9rem)] font-extrabold leading-[1] [text-wrap:balance]">
+              <motion.h1 initial={{ y: 14 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.04, ease }} className="mt-4 max-w-4xl text-[clamp(2.15rem,4.6vw,3.9rem)] font-extrabold leading-[1] [text-wrap:balance]">
                 {title}
               </motion.h1>
             </div>
             {art && (
               <span className={cn('mt-1 grid size-[4.5rem] shrink-0 place-items-center rounded-[1.1rem] lg:hidden', artTint)} aria-hidden>
-                <img src={art} alt="" width={72} height={72} decoding="async" className="size-[92%] object-contain drop-shadow-[0_8px_10px_rgb(11_30_74/0.18)]" />
+                <img src={art} srcSet={artSet(art)} sizes="72px" alt="" width={72} height={72} decoding="async" className="size-[92%] object-contain drop-shadow-[0_8px_10px_rgb(11_30_74/0.18)]" />
               </span>
             )}
           </div>
-          {text && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }} className="mt-5 max-w-[38rem] text-[1.06rem] leading-relaxed text-ink-soft">{text}</motion.p>}
+          {text && <motion.p initial={{ y: 10 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.12 }} className="mt-5 max-w-[38rem] text-[1.06rem] leading-relaxed text-ink-soft">{text}</motion.p>}
           {children && <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.18 }}>{children}</motion.div>}
         </div>
         {aside ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className="hidden lg:block">{aside}</motion.div>
         ) : art ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className={cn('hidden aspect-[5/4] place-items-center rounded-[2rem] lg:grid', artTint)} aria-hidden>
-            <img src={art} alt="" width={ART_SIZE[art]?.[0] ?? 320} height={ART_SIZE[art]?.[1] ?? 320} decoding="async" className="float w-[62%] object-contain drop-shadow-[0_24px_30px_rgb(11_30_74/0.22)]" />
+            <img src={art} srcSet={artSet(art)} sizes="(min-width:1024px) 320px, 1px" alt="" width={ART_SIZE[art]?.[0] ?? 320} height={ART_SIZE[art]?.[1] ?? 320} decoding="async" className="float w-[62%] object-contain drop-shadow-[0_24px_30px_rgb(11_30_74/0.22)]" />
           </motion.div>
         ) : null}
       </div>

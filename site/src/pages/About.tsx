@@ -61,15 +61,13 @@ export default function About() {
             <SectionHead eyebrow="Our journey" title={<span id="journey-h">From one institute to five national awards.</span>} />
             <ol className="mt-8">
               {STORY.map((s, i) => (
-                <Reveal key={s.year} delay={0.05 * i}>
-                  <li className="relative flex gap-5 pb-7 last:pb-0">
-                    {i < STORY.length - 1 && <span aria-hidden className="absolute left-[2.1rem] top-11 h-[calc(100%-2.75rem)] w-px bg-line" />}
-                    <span className={cn('grid h-10 w-[4.2rem] shrink-0 place-items-center rounded-xl font-display text-sm font-extrabold', i === STORY.length - 1 ? 'bg-accent text-white' : 'bg-surface-2 text-ink')}>{s.year}</span>
-                    <div className="pt-1.5">
-                      <p className="font-display text-[1.1rem] font-bold leading-tight text-ink">{s.title}</p>
-                      <p className="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">{s.text}</p>
-                    </div>
-                  </li>
+                <Reveal as="li" key={s.year} delay={0.05 * i} className="relative flex gap-5 pb-7 last:pb-0">
+                  {i < STORY.length - 1 && <span aria-hidden className="absolute left-[2.1rem] top-11 h-[calc(100%-2.75rem)] w-px bg-line" />}
+                  <span className={cn('grid h-10 w-[4.2rem] shrink-0 place-items-center rounded-xl font-display text-sm font-extrabold', i === STORY.length - 1 ? 'bg-accent text-white' : 'bg-surface-2 text-ink')}>{s.year}</span>
+                  <div className="pt-1.5">
+                    <p className="font-display text-[1.1rem] font-bold leading-tight text-ink">{s.title}</p>
+                    <p className="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">{s.text}</p>
+                  </div>
                 </Reveal>
               ))}
             </ol>
@@ -108,12 +106,10 @@ export default function About() {
           {FACILITIES.map((f, i) => {
             const Icon = FAC_ICONS[i % FAC_ICONS.length]
             return (
-              <Reveal key={f.title} delay={0.03 * i} className="h-full">
-                <li className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
-                  <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
-                  <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
-                  <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
-                </li>
+              <Reveal as="li" key={f.title} delay={0.03 * i} className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
+                <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
+                <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
+                <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
               </Reveal>
             )
           })}

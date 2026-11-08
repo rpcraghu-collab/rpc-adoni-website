@@ -19,9 +19,10 @@ export function WhatsAppIcon({ className }: { className?: string }) {
   )
 }
 
-export function Reveal({ children, delay = 0, className, y = 22 }: { children: ReactNode; delay?: number; className?: string; y?: number }) {
+export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: { children: ReactNode; delay?: number; className?: string; y?: number; as?: 'div' | 'li' }) {
+  const M = as === 'li' ? motion.li : motion.div
   return (
-    <motion.div
+    <M
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -29,7 +30,7 @@ export function Reveal({ children, delay = 0, className, y = 22 }: { children: R
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
-    </motion.div>
+    </M>
   )
 }
 

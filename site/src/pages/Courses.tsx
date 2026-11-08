@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import { FINDER, GROUPS, listed, waLink, type Course, type CourseGroup } from '../content/site'
 import { Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { CourseCard, CtaBand, MiniCourseCard, TINT } from '../components/course'
+import { CourseCard, CtaBand, MiniCourseCard, TINT, artSet } from '../components/course'
 import { cn } from '../lib/cn'
 
 type Filter = 'all' | CourseGroup
@@ -77,7 +77,7 @@ export default function Courses() {
           <section key={g.id} aria-labelledby={`g-${g.id}`}>
             <div className="flex items-center gap-4">
               <span className={cn('grid size-16 shrink-0 place-items-center rounded-2xl sm:size-20', TINT[g.id])} aria-hidden>
-                <img src={g.art} alt="" width={80} height={80} loading="lazy" decoding="async" className="size-[90%] object-contain drop-shadow-[0_8px_10px_rgb(11_30_74/0.18)]" />
+                <img src={g.art} srcSet={artSet(g.art)} sizes="80px" alt="" width={80} height={80} loading="lazy" decoding="async" className="size-[90%] object-contain drop-shadow-[0_8px_10px_rgb(11_30_74/0.18)]" />
               </span>
               <div className="min-w-0 flex-1">
                 <h2 id={`g-${g.id}`} className="text-[1.65rem] font-bold leading-tight sm:text-[2rem]">{g.label}</h2>

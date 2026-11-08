@@ -6,7 +6,7 @@ import { AWARDS, COURSES, FACILITIES, FAQS, FINDER, GROUPS, SITE, listed, telLin
 import { LIVE } from '../lib/content'
 import { JsonLd, Magnetic, Reveal, SectionHead, Seo, WhatsAppIcon } from '../components/ui'
 import { cn } from '../lib/cn'
-import { CourseCard, CtaBand, FAC_ICONS, TINT } from '../components/course'
+import { CourseCard, CtaBand, FAC_ICONS, TINT, artSet } from '../components/course'
 
 const bySlug = (s: string) => COURSES.find((c) => c.slug === s && !c.hidden)
 const ease = [0.22, 1, 0.36, 1] as const
@@ -29,10 +29,10 @@ function Hero() {
             </span>
             Admissions open · Morning & evening batches
           </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.05, ease }} className="mt-5 text-[clamp(2.35rem,4.6vw,4.1rem)] font-extrabold leading-[0.98] [text-wrap:balance]">
+          <motion.h1 initial={{ y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.05, ease }} className="mt-5 text-[clamp(2.35rem,4.6vw,4.1rem)] font-extrabold leading-[0.98] [text-wrap:balance]">
             Computer courses in Adoni that make you <span className="text-accent-text">job-ready.</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="mt-5 max-w-[34rem] text-[1.06rem] leading-relaxed text-ink-soft">
+          <motion.p initial={{ y: 12 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="mt-5 max-w-[34rem] text-[1.06rem] leading-relaxed text-ink-soft">
             PGDCA, DCA, Tally Prime with GST, Java, Python and more. 100% practical classes at Babu Plaza, taught since 2000.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -64,7 +64,7 @@ function Hero() {
                 <motion.li key={g.id} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + i * 0.08, ease }}>
                   <Link to={`/courses?group=${g.id}`} className="group flex items-center gap-4 rounded-[1.4rem] bg-surface p-2.5 pr-4 transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]">
                     <span className={cn('grid size-[5.25rem] shrink-0 place-items-center rounded-[1.05rem] sm:size-28', TINT[g.id])}>
-                      <img src={g.art} alt="" width={160} height={160} decoding="async" fetchPriority={i === 0 ? 'high' : undefined} className="size-[94%] object-contain drop-shadow-[0_10px_12px_rgb(11_30_74/0.18)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105" />
+                      <img src={g.art} srcSet={artSet(g.art)} sizes="160px" alt="" width={160} height={160} decoding="async" fetchPriority={i === 0 ? 'high' : undefined} className="size-[94%] object-contain drop-shadow-[0_10px_12px_rgb(11_30_74/0.18)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105" />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-display text-[1.2rem] font-bold leading-tight text-ink sm:text-[1.35rem]">{g.label}</span>
@@ -216,12 +216,10 @@ function Story() {
           </Reveal>
           <ol className="mt-8 space-y-0">
             {steps.map((s, i) => (
-              <Reveal key={s.year} delay={0.06 * i}>
-                <li className="relative flex gap-5 pb-6 last:pb-0">
-                  {i < steps.length - 1 && <span aria-hidden className="absolute left-[1.9rem] top-10 h-[calc(100%-2.5rem)] w-px bg-line" />}
-                  <span className={cn('grid h-10 w-[3.8rem] shrink-0 place-items-center rounded-xl font-display text-sm font-extrabold', i === steps.length - 1 ? 'bg-accent text-white' : 'bg-surface-2 text-ink')}>{s.year}</span>
-                  <p className="pt-2 text-[0.95rem] leading-relaxed text-ink-soft">{s.text}</p>
-                </li>
+              <Reveal as="li" key={s.year} delay={0.06 * i} className="relative flex gap-5 pb-6 last:pb-0">
+                {i < steps.length - 1 && <span aria-hidden className="absolute left-[1.9rem] top-10 h-[calc(100%-2.5rem)] w-px bg-line" />}
+                <span className={cn('grid h-10 w-[3.8rem] shrink-0 place-items-center rounded-xl font-display text-sm font-extrabold', i === steps.length - 1 ? 'bg-accent text-white' : 'bg-surface-2 text-ink')}>{s.year}</span>
+                <p className="pt-2 text-[0.95rem] leading-relaxed text-ink-soft">{s.text}</p>
               </Reveal>
             ))}
           </ol>
@@ -252,7 +250,7 @@ function WhyRpc() {
       <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.7fr]">
         <Reveal>
           <div className="relative flex h-full flex-col overflow-hidden rounded-[1.6rem] bg-brand p-6 text-white sm:p-8">
-            <img src="/img/art/career.webp" alt="" width={260} height={228} loading="lazy" decoding="async" className="float pointer-events-none absolute -right-6 -top-4 w-40 opacity-95 drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)] sm:w-48" />
+            <img src="/img/art/career.webp" srcSet={artSet('/img/art/career.webp')} sizes="192px" alt="" width={260} height={228} loading="lazy" decoding="async" className="float pointer-events-none absolute -right-6 -top-4 w-40 opacity-95 drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)] sm:w-48" />
             <Clock className="size-7 text-white/70" />
             <p className="relative mt-8 max-w-[12rem] font-display text-[2rem] font-extrabold leading-[1.02] sm:max-w-none">Two batches,<br />every day.</p>
             <div className="relative mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
@@ -270,12 +268,10 @@ function WhyRpc() {
           {FACILITIES.map((f, i) => {
             const Icon = FAC_ICONS[i]
             return (
-              <Reveal key={f.title} delay={0.03 * i} className="h-full">
-                <li className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
-                  <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
-                  <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
-                  <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
-                </li>
+              <Reveal as="li" key={f.title} delay={0.03 * i} className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
+                <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
+                <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
+                <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
               </Reveal>
             )
           })}

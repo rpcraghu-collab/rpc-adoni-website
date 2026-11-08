@@ -12,12 +12,9 @@ const HOW = [2, 1, 3, 4]
 
 function Fact({ icon: Icon, label, children }: { icon: LucideIcon; label: string; children: ReactNode }) {
   return (
-    <div className="flex gap-3.5 py-3.5">
-      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-[1.1rem]" /></span>
-      <div className="min-w-0">
-        <dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{label}</dt>
-        <dd className="mt-0.5 font-semibold leading-snug text-ink">{children}</dd>
-      </div>
+    <div className="relative min-w-0 py-3.5 pl-[3.125rem]">
+      <dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted"><span aria-hidden className="absolute left-0 top-3.5 grid size-9 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-[1.1rem]" /></span>{label}</dt>
+      <dd className="mt-0.5 font-semibold leading-snug text-ink">{children}</dd>
     </div>
   )
 }
@@ -122,14 +119,12 @@ export default function CourseDetail() {
               const Icon = FAC_ICONS[i]
               if (!f) return null
               return (
-                <Reveal key={f.title} delay={k * 0.04} className="h-full">
-                  <li className="flex h-full gap-4 rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
-                    <span>
-                      <span className="block font-display text-[1.05rem] font-bold text-ink">{f.title}</span>
-                      <span className="mt-0.5 block text-sm leading-relaxed text-muted">{f.text}</span>
-                    </span>
-                  </li>
+                <Reveal as="li" key={f.title} delay={k * 0.04} className="flex h-full gap-4 rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
+                  <span>
+                    <span className="block font-display text-[1.05rem] font-bold text-ink">{f.title}</span>
+                    <span className="mt-0.5 block text-sm leading-relaxed text-muted">{f.text}</span>
+                  </span>
                 </Reveal>
               )
             })}

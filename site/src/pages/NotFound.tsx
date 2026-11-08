@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Seo } from '../components/ui'
 import { listed } from '../content/site'
+import { artSet } from '../components/course'
 
 const POPULAR = ['pgdca', 'dca', 'oam', 'python']
 
@@ -29,7 +30,7 @@ export default function NotFound() {
       </div>
       <div aria-hidden className="relative hidden aspect-[5/4] place-items-center rounded-[2rem] bg-[#e4ebf8] sm:grid dark:bg-[#1b2b55]">
         <span className="absolute left-6 top-4 font-display text-[clamp(5rem,12vw,8rem)] font-extrabold leading-none text-ink/10">404</span>
-        <img src="/img/art/programming.webp" alt="" width={800} height={772} decoding="async" className="float mt-16 w-[52%] object-contain drop-shadow-[0_24px_30px_rgb(11_30_74/0.22)]" />
+        <img src="/img/art/programming.webp" srcSet={artSet('/img/art/programming.webp')} sizes="(min-width:1024px) 260px, 200px" alt="" width={800} height={772} decoding="async" className="float mt-16 w-[52%] object-contain drop-shadow-[0_24px_30px_rgb(11_30_74/0.22)]" />
       </div>
     </section>
   )
