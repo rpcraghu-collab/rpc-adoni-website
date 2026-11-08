@@ -3,19 +3,18 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, Award, BadgeCheck, Clock, Phone, Plus } from 'lucide-react'
-import { AWARDS, COURSES, FACILITIES, FAQS, FINDER, GROUPS, SITE, listed, telLink, waLink, type Course } from '../content/site'
+import { AWARDS, COURSES, FAQS, FINDER, SITE, listed, telLink, waLink, type Course } from '../content/site'
 import { LIVE } from '../lib/content'
 import { JsonLd, Magnetic, Reveal, SectionHead, Seo, WhatsAppIcon } from '../components/ui'
 import { cn } from '../lib/cn'
-import { CourseCard, CtaBand, FAC_ICONS, TINT, artSet } from '../components/course'
+import { CourseCard, CtaBand, FacilityList, artSet } from '../components/course'
 
 const bySlug = (s: string) => COURSES.find((c) => c.slug === s && !c.hidden)
 const ease = [0.22, 1, 0.36, 1] as const
 
 
 function Hero() {
-  const groups = GROUPS.map((g) => ({ ...g, codes: listed().filter((c) => c.group === g.id).map((c) => c.code) }))
-  const trust = ['ISO 9001:2015 certified', 'AP Govt DET permission', '5× Education Excellence Award']
+  const trust = ['ISO 9001:2015 certified', 'AP Govt DET permission', 'MSME registered']
   return (
     <section className="relative isolate overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -55,42 +54,49 @@ function Hero() {
           </motion.ul>
         </div>
 
-        <motion.div initial={enter({ opacity: 0, y: 24 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease }} className="relative">
-          <div className="rounded-[2rem] bg-brand p-2.5 shadow-[0_40px_80px_-36px_rgb(11_30_74/0.6)] sm:p-3.5">
-            <div className="flex items-center justify-between px-3 pb-3 pt-2.5 text-white">
-              <h2 className="font-display text-lg font-bold text-white sm:text-xl">What do you want to learn?</h2>
-              <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-bold text-white/80">{listed().length} courses</span>
-            </div>
-            <ul className="grid gap-2">
-              {groups.map((g, i) => (
-                <motion.li key={g.id} initial={enter({ opacity: 0, x: 18 })} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + i * 0.08, ease }}>
-                  <Link to={`/courses?group=${g.id}`} className="group flex items-center gap-4 rounded-[1.4rem] bg-surface p-2.5 pr-4 transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]">
-                    <span className={cn('grid size-[5.25rem] shrink-0 place-items-center rounded-[1.05rem] sm:size-28', TINT[g.id])}>
-                      <img src={g.art} srcSet={artSet(g.art)} sizes="160px" alt="" width={160} height={160} decoding="async" className="size-[94%] object-contain drop-shadow-[0_10px_12px_rgb(11_30_74/0.18)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-display text-[1.2rem] font-bold leading-tight text-ink sm:text-[1.35rem]">{g.label}</span>
-                      <span className="mt-1 hidden text-sm text-muted sm:block">{g.blurb}</span>
-                      <span className="mt-2 flex flex-wrap gap-1">
-                        {g.codes.slice(0, 4).map((code) => (
-                          <span key={code} className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[0.72rem] font-bold text-ink-soft">{code}</span>
-                        ))}
-                        {g.codes.length > 4 && <span className="px-1 py-0.5 text-[0.72rem] font-bold text-muted">+{g.codes.length - 4}</span>}
-                      </span>
-                    </span>
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-2 text-ink transition-colors group-hover:bg-accent group-hover:text-white">
-                      <ArrowRight className="size-4" />
-                    </span>
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-            <Link to="/courses" className="mt-1 flex min-h-12 items-center justify-center gap-2 rounded-[1.2rem] text-sm font-bold text-white/85 transition-colors hover:text-white">
-              See all {listed().length} courses <ArrowRight className="size-4" />
-            </Link>
+        <motion.div initial={enter({ opacity: 0, y: 24 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease }} className="relative lg:pl-6">
+          <figure className="relative overflow-hidden rounded-[2rem] bg-surface-2 shadow-[0_40px_80px_-40px_rgb(11_30_74/0.55)]">
+            <img
+              src="/img/award-2-sm.webp" srcSet="/img/award-2-sm.webp 640w, /img/award-2-md.webp 800w, /img/award-2.webp 1024w" sizes="(min-width: 1024px) 44vw, 92vw"
+              width={1024} height={680} fetchPriority="high" decoding="async"
+              alt={`RPC founder ${SITE.founder} receiving the Education Excellence Award`}
+              className="aspect-[4/3] w-full object-cover object-[22%_35%] lg:aspect-[5/6]"
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#060d22]/85 via-[#060d22]/40 to-transparent px-5 pb-5 pt-20 text-white sm:px-6 sm:pb-6">
+              <span className="block font-display text-lg font-bold leading-tight sm:text-xl">{SITE.founder}</span>
+              <span className="mt-0.5 block text-sm text-white/85">Founder · receiving the Education Excellence Award</span>
+            </figcaption>
+          </figure>
+          <div className="absolute -top-4 right-3 hidden items-center sm:flex gap-3 rounded-2xl bg-surface p-3 pr-4 shadow-[0_20px_40px_-20px_rgb(11_30_74/0.5)] ring-1 ring-line sm:right-5 lg:-left-2 lg:right-auto lg:top-10">
+            <span className="grid size-10 place-items-center rounded-xl bg-[#fbf0d9] text-gold-text dark:bg-[#382c14]"><Award className="size-5" /></span>
+            <span className="leading-tight">
+              <span className="block font-display text-xl font-extrabold text-ink">5× winner</span>
+              <span className="block text-xs font-bold text-muted">Education Excellence Award</span>
+            </span>
           </div>
         </motion.div>
       </div>
+    </section>
+  )
+}
+
+function Facts() {
+  const facts = [
+    { big: '2000', small: 'Teaching computers in Adoni since' },
+    { big: String(listed().length), small: 'Courses, from MS Office to Python' },
+    { big: '2', small: 'Batches every day, morning and evening' },
+    { big: '5×', small: 'Education Excellence Award' },
+  ]
+  return (
+    <section aria-label="RPC in numbers" className="container-x pb-6">
+      <ul className="grid grid-cols-2 overflow-hidden rounded-[1.6rem] bg-surface ring-1 ring-line lg:grid-cols-4">
+        {facts.map((f, i) => (
+          <li key={f.small} className={cn('p-5 sm:p-7', i % 2 === 1 && 'border-l border-line', i > 1 && 'border-t border-line lg:border-t-0', i === 2 && 'lg:border-l')}>
+            <p className="font-display text-[2.2rem] font-extrabold leading-none tracking-tight text-ink sm:text-5xl">{f.big}</p>
+            <p className="mt-2 text-[0.85rem] font-semibold leading-snug text-muted sm:text-[0.95rem]">{f.small}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
@@ -190,23 +196,15 @@ function Story() {
   return (
     <section className="border-y border-line bg-surface py-16 lg:py-24" aria-labelledby="story-h">
       <div className="container-x grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16">
-        <Reveal className="relative pb-8 pr-4 sm:pr-8">
+        <Reveal className="relative">
           <figure className="overflow-hidden rounded-[1.8rem] bg-surface-2">
             <img
-              src="/img/award-1-sm.webp" srcSet="/img/award-1-sm.webp 640w, /img/award-1.webp 1280w" sizes="(min-width: 1024px) 46vw, 92vw"
-              width={1280} height={854} loading="lazy" decoding="async"
-              alt={`RPC founder ${SITE.founder} receiving the Education Excellence Award from ${AWARDS[0].from}`}
-              className="aspect-[4/3] w-full object-cover object-[58%_50%]"
+              src="/img/award-5-sm.webp" srcSet="/img/award-5-sm.webp 640w, /img/award-5.webp 1280w" sizes="(min-width: 1024px) 46vw, 92vw"
+              width={1280} height={872} loading="lazy" decoding="async"
+              alt={`RPC founder ${SITE.founder} receiving the Education Excellence Award from ${AWARDS[4].from}`}
+              className="aspect-[4/3] w-full object-cover object-[70%_40%]"
             />
           </figure>
-          <div className="absolute bottom-0 left-4 flex items-center gap-3 rounded-2xl bg-surface p-3.5 pr-5 shadow-[0_24px_50px_-24px_rgb(11_30_74/0.5)] ring-1 ring-line sm:left-6">
-            <span className="grid size-12 place-items-center rounded-xl bg-[#fbf0d9] text-gold-text dark:bg-[#382c14]"><Award className="size-6" /></span>
-            <span>
-              <span className="block font-display text-2xl font-extrabold leading-none text-ink">5×</span>
-              <span className="mt-0.5 block text-xs font-bold text-muted">Education Excellence Award</span>
-            </span>
-          </div>
-          <span className="absolute right-0 top-5 rotate-[5deg] rounded-xl bg-accent px-3.5 py-2 font-display text-sm font-extrabold text-white shadow-lg sm:right-2">Since 2000</span>
         </Reveal>
         <div>
           <Reveal>
@@ -249,7 +247,7 @@ function WhyRpc() {
         <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Why RPC</p>
         <h2 id="why-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]">Built for learning by doing.</h2>
       </Reveal>
-      <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.7fr]">
+      <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.6fr]">
         <Reveal>
           <div className="relative flex h-full flex-col overflow-hidden rounded-[1.6rem] bg-brand p-6 text-white sm:p-8">
             <img src="/img/art/career.webp" srcSet={artSet('/img/art/career.webp')} sizes="192px" alt="" width={260} height={228} loading="lazy" decoding="async" className="float pointer-events-none absolute -right-6 -top-4 w-40 opacity-95 drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)] sm:w-48" />
@@ -266,18 +264,7 @@ function WhyRpc() {
             <p className="relative mt-5 text-sm text-white/80">Most courses run 1½ hours a day, or finish in half the time at 3 hours a day.</p>
           </div>
         </Reveal>
-        <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-          {FACILITIES.map((f, i) => {
-            const Icon = FAC_ICONS[i]
-            return (
-              <Reveal as="li" key={f.title} delay={0.03 * i} className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
-                <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
-                <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
-                <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
-              </Reveal>
-            )
-          })}
-        </ul>
+        <FacilityList />
       </div>
     </section>
   )
@@ -346,6 +333,7 @@ export default function Home() {
       <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, OAM, Tally Prime with GST, C, C++, Java and Python at Real Point Computer Education, Adoni. ISO 9001:2015 certified, AP Govt DET permission." />
       <JsonLd data={jsonLd} />
       <Hero />
+      <Facts />
       <Batches />
       <FindCourse />
       <Story />

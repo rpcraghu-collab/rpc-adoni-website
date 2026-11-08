@@ -50,6 +50,13 @@ for (const route of ssr.routes()) {
   const head = []
   body = body.replace(HEAD_TAG, (m) => { head.push(m); return '' })
   if (!head.some((t) => t.startsWith('<title>'))) throw new Error(`prerender: ${route} has no <title>`)
+  // A page's main photo (fetchpriority="high") starts downloading with the HTML head, not after the inline CSS.
+  const hero = body.match(/<img [^>]*fetchPriority="high"[^>]*>|<img [^>]*fetchpriority="high"[^>]*>/)
+  if (hero) {
+    const attr = (n) => hero[0].match(new RegExp(`${n}="([^"]*)"`, 'i'))?.[1]
+    const set = attr('srcSet'), sizes = attr('sizes'), src = attr('src')
+    if (src) head.push(`<link rel="preload" as="image" href="${src}"${set ? ` imagesrcset="${set}"` : ''}${sizes ? ` imagesizes="${sizes}"` : ''} fetchpriority="high">`)
+  }
 
   let html = shell
     .replace(/<title>[\s\S]*?<\/title>\s*/, '')

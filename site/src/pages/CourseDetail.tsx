@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight, Award, CalendarDays, Clock, IndianRupee, Users, type LucideIcon } from 'lucide-react'
-import { COURSES, FACILITIES, SITE, listed, waLink } from '../content/site'
+import { COURSES, SITE, listed, waLink } from '../content/site'
 import { JsonLd, Reveal, Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { FAC_ICONS, MiniCourseCard, TINT, groupOf } from '../components/course'
+import { FacilityList, MiniCourseCard, TINT, groupOf } from '../components/course'
 import NotFound from './NotFound'
 
 // Facilities that describe how a class runs (indexes into FACILITIES).
@@ -113,22 +113,7 @@ export default function CourseDetail() {
           <Reveal className="mt-14">
             <h2 className="text-[clamp(1.5rem,2.6vw,1.9rem)] font-bold leading-tight">How classes run</h2>
           </Reveal>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-            {HOW.map((i, k) => {
-              const f = FACILITIES[i]
-              const Icon = FAC_ICONS[i]
-              if (!f) return null
-              return (
-                <Reveal as="li" key={f.title} delay={k * 0.04} className="flex h-full gap-4 rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
-                  <span>
-                    <span className="block font-display text-[1.05rem] font-bold text-ink">{f.title}</span>
-                    <span className="mt-0.5 block text-sm leading-relaxed text-muted">{f.text}</span>
-                  </span>
-                </Reveal>
-              )
-            })}
-          </ul>
+          <FacilityList pick={HOW} className="mt-5" />
 
           {related.length > 0 && (
             <>

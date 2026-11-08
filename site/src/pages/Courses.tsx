@@ -1,7 +1,7 @@
 import { enter } from '../lib/boot'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ChevronDown } from 'lucide-react'
 import { FINDER, GROUPS, listed, waLink, type Course, type CourseGroup } from '../content/site'
 import { Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
@@ -11,11 +11,8 @@ import { cn } from '../lib/cn'
 type Filter = 'all' | CourseGroup
 
 /** "I am a … → start with …" guide built from FINDER (same data as the Home finder). */
-function FitGuide({ all, className }: { all: Course[]; className?: string }) {
+function FitList({ all }: { all: Course[] }) {
   return (
-    <div className={cn('rounded-[1.75rem] bg-surface p-5 ring-1 ring-line sm:p-6', className)}>
-      <p className="font-display text-xl font-bold text-ink">Where should I start?</p>
-      <p className="mt-1 text-sm text-muted">Pick the line that fits you.</p>
       <ul className="mt-3 divide-y divide-line">
         {FINDER.map((f) => {
           const cs = f.slugs.map((s) => all.find((c) => c.slug === s)).filter((c): c is Course => !!c)
@@ -35,7 +32,32 @@ function FitGuide({ all, className }: { all: Course[]; className?: string }) {
           )
         })}
       </ul>
+  )
+}
+
+function FitGuide({ all }: { all: Course[] }) {
+  return (
+    <div className="rounded-[1.75rem] bg-surface p-5 ring-1 ring-line sm:p-6">
+      <p className="font-display text-xl font-bold text-ink">Where should I start?</p>
+      <p className="mt-1 text-sm text-muted">Pick the line that fits you.</p>
+      <FitList all={all} />
     </div>
+  )
+}
+
+/** Phones: the same guide, folded, at the top of the list (the hero aside is desktop-only). */
+function FitGuideFold({ all }: { all: Course[] }) {
+  return (
+    <details className="group/fit rounded-[1.4rem] bg-surface px-5 ring-1 ring-line lg:hidden">
+      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 py-3 [&::-webkit-details-marker]:hidden">
+        <span>
+          <b className="block font-display text-lg text-ink">Not sure where to start?</b>
+          <span className="text-sm text-muted">Pick who you are, see your courses.</span>
+        </span>
+        <ChevronDown className="size-5 shrink-0 text-ink transition-transform group-open/fit:rotate-180" />
+      </summary>
+      <div className="pb-2"><FitList all={all} /></div>
+    </details>
   )
 }
 
@@ -73,7 +95,8 @@ export default function Courses() {
         </div>
       </div>
 
-      <motion.div key={f} initial={enter({ opacity: 0, y: 10 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} className="container-x space-y-14 pb-16 pt-8 lg:space-y-20 lg:pb-24 lg:pt-12">
+      <motion.div key={f} initial={enter({ opacity: 0, y: 10 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} className="container-x space-y-12 pb-16 pt-6 lg:space-y-20 lg:pb-24 lg:pt-12">
+        <FitGuideFold all={all} />
         {shown.map((g) => (
           <section key={g.id} aria-labelledby={`g-${g.id}`}>
             <div className="flex items-center gap-4">
@@ -90,11 +113,11 @@ export default function Courses() {
             </div>
             {g.id === 'programming' ? (
               <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
-                {g.list.map((c) => <li key={c.slug}><MiniCourseCard c={c} sub={c.name.replace(/ Programming$/, '') === c.code ? 'Programming' : c.name} /></li>)}
+                {g.list.map((c) => <li key={c.slug}><MiniCourseCard c={c} sub={c.tagline} /></li>)}
               </ul>
             ) : (
               <ul className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                {g.list.map((c) => <li key={c.slug}><CourseCard c={c} /></li>)}
+                {g.list.map((c) => <li key={c.slug}><CourseCard c={c} bare /></li>)}
               </ul>
             )}
           </section>
@@ -104,7 +127,6 @@ export default function Courses() {
             See all {all.length} courses <ArrowRight className="size-4" />
           </button>
         )}
-        <FitGuide all={all} className="lg:hidden" />
       </motion.div>
 
       <CtaBand title={<>Not sure which<br />course fits?</>} text="Tell us your qualification on WhatsApp or visit Babu Plaza. We will suggest the right course, batch and start date." art="/img/art/programming.webp" />

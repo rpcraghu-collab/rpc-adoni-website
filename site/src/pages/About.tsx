@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BadgeCheck, Heart } from 'lucide-react'
-import { AWARDS, CREDENTIALS, FACILITIES, SITE } from '../content/site'
+import { AWARDS, CREDENTIALS, SITE } from '../content/site'
 import { Reveal, SectionHead, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { CtaBand, FAC_ICONS, TINT } from '../components/course'
+import { CtaBand, FacilityList, TINT } from '../components/course'
 import { cn } from '../lib/cn'
 
 const STORY = [
@@ -102,18 +102,7 @@ export default function About() {
       {/* Facilities */}
       <section className="container-x py-16 lg:py-24" aria-labelledby="fac-h">
         <SectionHead eyebrow="Facilities" title={<span id="fac-h">What you get at RPC.</span>} />
-        <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {FACILITIES.map((f, i) => {
-            const Icon = FAC_ICONS[i % FAC_ICONS.length]
-            return (
-              <Reveal as="li" key={f.title} delay={0.03 * i} className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
-                <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
-                <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
-                <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
-              </Reveal>
-            )
-          })}
-        </ul>
+        <FacilityList className="mt-10" />
         <Reveal className="mt-8">
           <Link to="/courses" className="inline-flex min-h-12 items-center gap-2 font-bold text-ink hover:text-accent-text">See all courses <ArrowRight className="size-4" /></Link>
         </Reveal>
