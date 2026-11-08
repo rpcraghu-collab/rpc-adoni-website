@@ -6,14 +6,45 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import { getVersion, subscribe } from './lib/content'
 
-const AdminApp = lazy(() => import('./admin/AdminApp'))
+// After a new deploy, a page opened earlier asks for old chunk files that no longer exist.
+// Reload once to get the new build instead of silently failing to open the page.
+function load<T>(f: () => Promise<T>): () => Promise<T> {
+  return () => f().then(
+    (m) => { try { sessionStorage.removeItem('rpc-chunk-reload') } catch { /* ignore */ } return m },
+    (e) => {
+      let tried = false
+      try { tried = sessionStorage.getItem('rpc-chunk-reload') === '1'; sessionStorage.setItem('rpc-chunk-reload', '1') } catch { /* ignore */ }
+      if (!tried) { location.reload(); return new Promise<T>(() => {}) }
+      throw e
+    },
+  )
+}
 
-const About = lazy(() => import('./pages/About'))
-const Courses = lazy(() => import('./pages/Courses'))
-const CourseDetail = lazy(() => import('./pages/CourseDetail'))
-const Awards = lazy(() => import('./pages/Awards'))
-const Contact = lazy(() => import('./pages/Contact'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+const pages = {
+  About: load(() => import('./pages/About')),
+  Courses: load(() => import('./pages/Courses')),
+  CourseDetail: load(() => import('./pages/CourseDetail')),
+  Awards: load(() => import('./pages/Awards')),
+  Contact: load(() => import('./pages/Contact')),
+  NotFound: load(() => import('./pages/NotFound')),
+}
+const AdminApp = lazy(load(() => import('./admin/AdminApp')))
+const About = lazy(pages.About)
+const Courses = lazy(pages.Courses)
+const CourseDetail = lazy(pages.CourseDetail)
+const Awards = lazy(pages.Awards)
+const Contact = lazy(pages.Contact)
+const NotFound = lazy(pages.NotFound)
+
+// Fetch every public page in the background once the home page is idle, so taps open instantly on slow mobile data.
+function usePreloadPages() {
+  useEffect(() => {
+    const run = () => Object.values(pages).forEach((f) => f().catch(() => {}))
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number }
+    if (w.requestIdleCallback) w.requestIdleCallback(run)
+    else setTimeout(run, 2000)
+  }, [])
+}
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -37,6 +68,7 @@ function PageSkeleton() {
 export default function App() {
   // Re-render every page when the admin's live content arrives or changes.
   useSyncExternalStore(subscribe, getVersion)
+  usePreloadPages()
   return (
     <MotionConfig reducedMotion="user">
       <ScrollTop />

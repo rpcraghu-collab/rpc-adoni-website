@@ -148,7 +148,7 @@ function Header() {
               <ul className="mt-4">
                 {NAV.map((n, i) => (
                   <motion.li key={n.to} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.06 + i * 0.04 }}>
-                    <NavLink to={n.to} end className={({ isActive }) => cn('flex items-center justify-between border-b border-line py-4 font-display text-[1.7rem] font-bold', isActive ? 'text-accent-text' : 'text-ink')}>
+                    <NavLink to={n.to} end onClick={() => setOpen(false)} className={({ isActive }) => cn('flex items-center justify-between border-b border-line py-4 font-display text-[1.7rem] font-bold', isActive ? 'text-accent-text' : 'text-ink')}>
                       {n.label} <ArrowRight className="size-5 text-muted" />
                     </NavLink>
                   </motion.li>
@@ -157,7 +157,7 @@ function Header() {
               <p className="mt-6 text-xs font-bold uppercase tracking-[0.14em] text-muted">Popular courses</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {listed().filter((c) => c.featured).map((c) => (
-                  <Link key={c.slug} to={`/courses/${c.slug}`} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-ink">{c.code}</Link>
+                  <Link key={c.slug} to={`/courses/${c.slug}`} onClick={() => setOpen(false)} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-ink">{c.code}</Link>
                 ))}
               </div>
             </motion.div>
