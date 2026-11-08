@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowRight, Award, CalendarDays, Clock, IndianRupee, Users, type LucideIcon } from 'lucide-react'
+import { ArrowRight, Award, CalendarDays, Clock, IndianRupee, ListChecks, Users, type LucideIcon } from 'lucide-react'
 import { COURSES, SITE, listed, waLink } from '../content/site'
 import { JsonLd, Reveal, Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { FacilityList, MiniCourseCard, TINT, groupOf } from '../components/course'
+import { CtaBand, FacilityList, MiniCourseCard, TINT, groupOf } from '../components/course'
+import { cn } from '../lib/cn'
 import NotFound from './NotFound'
 
 // Facilities that describe how a class runs (indexes into FACILITIES).
@@ -101,9 +102,14 @@ export default function CourseDetail() {
           ) : (
             <Reveal className="mt-6">
               <div className="rounded-[1.5rem] bg-surface p-5 ring-1 ring-line sm:p-6">
-                <p className="text-[1.05rem] leading-relaxed text-ink-soft">{c.tagline}</p>
-                <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">The full {c.code} syllabus, duration and fee are shared when you enquire, along with the next batch date.</p>
-                <a href={waLink(`Hello RPC, please share the ${c.code} syllabus, duration and fee.`)} target="_blank" rel="noopener" className="mt-4 inline-flex min-h-11 items-center gap-2 font-bold text-ink hover:text-accent-text">
+                <p className="text-[1.05rem] font-semibold leading-relaxed text-ink">Every {c.code} topic is shown on the projector first, then practised on the computer.</p>
+                <p className="mt-2 text-[0.95rem] leading-relaxed text-muted">Send one message and we share, for the {c.code} course:</p>
+                <ul className="mt-4 grid gap-2.5 sm:grid-cols-3">
+                  {[{ icon: ListChecks, t: 'Full syllabus' }, { icon: Clock, t: 'Duration' }, { icon: CalendarDays, t: 'Fee & next batch' }].map(({ icon: I, t }) => (
+                    <li key={t} className="flex items-center gap-3 rounded-xl bg-surface-2 px-4 py-3 font-semibold text-ink"><I className="size-[1.1rem] shrink-0 text-accent-text" aria-hidden />{t}</li>
+                  ))}
+                </ul>
+                <a href={waLink(`Hello RPC, please share the ${c.code} syllabus, duration and fee.`)} target="_blank" rel="noopener" className="btn-ghost mt-5 h-12 max-sm:w-full">
                   <WhatsAppIcon className="size-4 text-[#14803f]" /> Ask for the {c.code} syllabus <ArrowRight className="size-4" />
                 </a>
               </div>
@@ -121,7 +127,7 @@ export default function CourseDetail() {
                 <h2 className="text-[clamp(1.5rem,2.6vw,1.9rem)] font-bold leading-tight">More in {group.label}</h2>
                 <Link to="/courses" className="hidden min-h-11 items-center gap-1.5 font-bold text-ink hover:text-accent-text sm:inline-flex">All courses <ArrowRight className="size-4" /></Link>
               </div>
-              <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <ul className={cn('mt-5 grid grid-cols-2 gap-3 max-sm:[&>li:last-child:nth-child(odd)]:col-span-2', related.length >= 4 ? 'sm:grid-cols-4' : 'sm:grid-cols-3')}>
                 {related.map((r) => <li key={r.slug}><MiniCourseCard c={r} /></li>)}
               </ul>
               <Link to="/courses" className="mt-4 inline-flex min-h-11 items-center gap-1.5 font-bold text-ink hover:text-accent-text sm:hidden">All {listed().length} courses <ArrowRight className="size-4" /></Link>
@@ -129,6 +135,8 @@ export default function CourseDetail() {
           )}
         </div>
       </section>
+
+      <CtaBand title={<>Ready to start<br />{c.code}?</>} text={`Ask on WhatsApp for the ${c.code} fee and the next batch date, or visit us at ${SITE.addressShort}.`} art={group.art} />
     </>
   )
 }

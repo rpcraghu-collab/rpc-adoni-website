@@ -1,8 +1,8 @@
 import { enter } from '../lib/boot'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, ChevronDown } from 'lucide-react'
-import { FINDER, GROUPS, listed, waLink, type Course, type CourseGroup } from '../content/site'
+import { ArrowRight, BadgeCheck, ChevronDown, Clock } from 'lucide-react'
+import { FINDER, GROUPS, SITE, listed, waLink, type Course, type CourseGroup } from '../content/site'
 import { Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
 import { CourseCard, CtaBand, MiniCourseCard, TINT, artSet } from '../components/course'
@@ -79,11 +79,18 @@ export default function Courses() {
         title={<>{all.length} courses. <span className="text-muted">One for every stage.</span></>}
         text="Diplomas, office and Tally skills, or a single programming language. Every course is 100% practical and ends with a certificate."
         aside={<FitGuide all={all} />}
-      />
+      >
+        <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold text-ink-soft">
+          {SITE.timings.map((t) => (
+            <li key={t.label} className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 ring-1 ring-line"><Clock className="size-4 text-muted" />{t.label.split(' ')[0]} {t.time}</li>
+          ))}
+          <li className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 ring-1 ring-line"><BadgeCheck className="size-4 text-muted" />ISO 9001:2015 certified</li>
+        </ul>
+      </PageHero>
 
       <div className="sticky top-[calc(4.5rem+env(safe-area-inset-top))] z-30 border-b border-line bg-bg/90 backdrop-blur-xl backdrop-saturate-150">
         <div className="container-x">
-          <div role="group" aria-label="Filter courses" className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 py-3 sm:mx-0 sm:px-0">
+          <div role="group" aria-label="Filter courses" className="no-scrollbar edge-fade -mx-4 flex gap-2 overflow-x-auto py-3 pl-4 pr-12 sm:mx-0 sm:px-0 sm:[mask-image:none]">
             {tabs.map((t) => (
               <button key={t.id} type="button" aria-pressed={f === t.id} onClick={() => choose(t.id)} className={cn('relative inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-4 text-[0.95rem] font-bold transition-colors sm:px-5', f === t.id ? 'text-bg' : 'bg-surface text-ink ring-1 ring-line hover:ring-ink/25')}>
                 {f === t.id && <motion.span layoutId="course-filter" className="absolute inset-0 rounded-full bg-ink" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
@@ -112,7 +119,7 @@ export default function Courses() {
               </a>
             </div>
             {g.id === 'programming' ? (
-              <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+              <ul className="mt-6 grid grid-cols-2 gap-3 max-sm:[&>li:last-child:nth-child(odd)]:col-span-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
                 {g.list.map((c) => <li key={c.slug}><MiniCourseCard c={c} sub={c.tagline} /></li>)}
               </ul>
             ) : (

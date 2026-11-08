@@ -59,7 +59,7 @@ export default function PageHero({ eyebrow, title, text, children, art, artTint 
         {aside ? (
           <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className="hidden lg:block">{aside}</motion.div>
         ) : art ? (
-          <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className={cn('hidden aspect-[5/4] place-items-center rounded-[2rem] lg:grid', artTint)} aria-hidden>
+          <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className={cn('hidden aspect-[4/3] w-full max-w-[25rem] place-items-center justify-self-end rounded-[2rem] lg:grid', artTint)} aria-hidden>
             <img src={art} srcSet={artSet(art)} sizes="(min-width:1024px) 320px, 1px" alt="" width={ART_SIZE[art]?.[0] ?? 320} height={ART_SIZE[art]?.[1] ?? 320} decoding="async" className="float w-[62%] object-contain drop-shadow-[0_24px_30px_rgb(11_30_74/0.22)]" />
           </motion.div>
         ) : null}
