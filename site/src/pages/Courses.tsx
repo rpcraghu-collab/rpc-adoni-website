@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight, Clock, Users } from 'lucide-react'
 import { GROUPS, listed, waLink, type CourseGroup } from '../content/site'
@@ -10,7 +10,9 @@ import { cn } from '../lib/cn'
 type Filter = 'all' | CourseGroup
 
 export default function Courses() {
-  const [f, setF] = useState<Filter>('all')
+  const [params] = useSearchParams()
+  const g0 = params.get('group')
+  const [f, setF] = useState<Filter>(GROUPS.some((g) => g.id === g0) ? (g0 as CourseGroup) : 'all')
   const list = listed().filter((c) => f === 'all' || c.group === f)
   const tabs: { id: Filter; label: string }[] = [{ id: 'all', label: `All (${listed().length})` }, ...GROUPS.map((g) => ({ id: g.id, label: g.label }))]
   return (

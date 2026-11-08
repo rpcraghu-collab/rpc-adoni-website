@@ -5,9 +5,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #f6f4ef;
+  --bg: #f4f6fa;
   --surface: #ffffff;
-  --surface-2: #eeebe3;
+  --surface-2: #e9edf5;
   --ink: #0b1e4a;
   --ink-soft: #3d4a68;
   --muted: #5b6680;
@@ -19,7 +19,7 @@
   --accent-text: #b81b15;
   --gold: #c9962b;
   --gold-text: #8a6413;
-  --glass: rgb(246 244 239 / 0.72);
+  --glass: rgb(244 246 250 / 0.75);
   color-scheme: light;
 }
 .dark {
