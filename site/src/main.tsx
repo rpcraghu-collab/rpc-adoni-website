@@ -6,6 +6,16 @@ import { applyOverrides } from './lib/content'
 import { setBooting } from './lib/boot'
 import './index.css'
 
+// A script file from an older build failed to load (the site was updated meanwhile): load the new build once.
+window.addEventListener('vite:preloadError', (e) => {
+  try {
+    if (sessionStorage.getItem('rpc-chunk-reload') === '1') return
+    sessionStorage.setItem('rpc-chunk-reload', '1')
+  } catch { return }
+  e.preventDefault()
+  location.reload()
+})
+
 const root = document.getElementById('root')!
 
 // Content baked into the page at build time, so the app's first draw matches the HTML exactly.

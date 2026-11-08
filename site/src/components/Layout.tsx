@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'motion/react'
-import { ArrowRight, ArrowUpRight, ChevronDown, Clock, Mail, MapPin, Menu, Moon, Phone, Sun, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronDown, Clock, Mail, MapPin, Menu, Moon, Phone, Sun } from "lucide-react"
 import { GROUPS, SITE, listed, telLink, waLink } from '../content/site'
 import { LIVE } from '../lib/content'
 import { useTheme } from '../lib/theme'
 import { cn } from '../lib/cn'
 import { Logo, WhatsAppIcon } from './ui'
+import { MobileMenu } from './MobileMenu'
 
 const NAV = [
   { to: '/', label: 'Home' },
@@ -79,7 +80,6 @@ function Header() {
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 12))
   useEffect(() => { setOpen(false); setMega(false) }, [loc.pathname])
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
     const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); setMega(false) } }
     window.addEventListener('keydown', esc)
     return () => window.removeEventListener('keydown', esc)
@@ -128,7 +128,7 @@ function Header() {
               <Phone className="size-4" /> {SITE.phone}
             </a>
             <Link to="/contact" className="btn-primary hidden min-h-11 whitespace-nowrap px-5 lg:inline-flex">Enquire now</Link>
-            <button onClick={() => setOpen(true)} aria-label="Open menu" className="grid size-11 place-items-center rounded-full text-ink hover:bg-surface-2 lg:hidden">
+            <button onClick={() => setOpen(true)} aria-label="Open menu" aria-expanded={open} aria-haspopup="dialog" className="grid size-11 place-items-center rounded-full text-ink hover:bg-surface-2 lg:hidden">
               <Menu className="size-6" />
             </button>
           </div>
@@ -136,37 +136,7 @@ function Header() {
       </div>
 
       <AnimatePresence>
-        {open && (
-          <motion.div className="fixed inset-0 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="absolute inset-0 bg-[#050b1c]/50 backdrop-blur-sm" onClick={() => setOpen(false)} />
-            <motion.div
-              role="dialog" aria-modal="true" aria-label="Menu"
-              initial={{ y: '-100%' }} animate={{ y: 0 }} exit={{ y: '-100%' }}
-              transition={{ type: 'spring', stiffness: 380, damping: 38 }}
-              className="relative max-h-[100dvh] overflow-y-auto rounded-b-[2rem] bg-bg px-5 pb-8 pt-[calc(env(safe-area-inset-top)+0.75rem)]"
-            >
-              <div className="flex h-14 items-center justify-between">
-                <Logo />
-                <button onClick={() => setOpen(false)} aria-label="Close menu" className="grid size-11 place-items-center rounded-full bg-surface-2 text-ink"><X className="size-5" /></button>
-              </div>
-              <ul className="mt-4">
-                {NAV.map((n, i) => (
-                  <motion.li key={n.to} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.06 + i * 0.04 }}>
-                    <NavLink to={n.to} end onClick={() => setOpen(false)} className={({ isActive }) => cn('flex items-center justify-between border-b border-line py-4 font-display text-[1.7rem] font-bold', isActive ? 'text-accent-text' : 'text-ink')}>
-                      {n.label} <ArrowRight className="size-5 text-muted" />
-                    </NavLink>
-                  </motion.li>
-                ))}
-              </ul>
-              <p className="mt-6 text-xs font-bold uppercase tracking-[0.14em] text-muted">Popular courses</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {listed().filter((c) => c.featured).map((c) => (
-                  <Link key={c.slug} to={`/courses/${c.slug}`} onClick={() => setOpen(false)} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-ink">{c.code}</Link>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
+        {open && <MobileMenu nav={NAV} onClose={() => setOpen(false)} themeToggle={<ThemeToggle className="text-white hover:bg-white/10" />} />}
       </AnimatePresence>
     </header>
   )
