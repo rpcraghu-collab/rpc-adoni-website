@@ -129,7 +129,7 @@ export default function CinematicHero() {
       className={cn('relative isolate -mt-[calc(4.5rem+env(safe-area-inset-top))] flex min-h-[88svh] flex-col overflow-hidden bg-[#061840] text-white md:min-h-[100svh] md:max-h-[64rem]', paused && 'is-paused')}
     >
       {/* Scenes */}
-      <motion.div aria-hidden={HERO_SLIDES.every((x) => !x.alt)} style={{ x: tx, y: ty, rotateX: rx, rotateY: ry, transformPerspective: 1400 }} className="absolute inset-x-[-2%] top-0 -z-10 h-[min(48svh,25rem)] md:inset-y-[-2%] md:h-auto">
+      <motion.div aria-hidden={HERO_SLIDES.every((x) => !x.alt)} style={{ x: tx, y: ty, rotateX: rx, rotateY: ry, transformPerspective: 1400 }} className="absolute inset-x-[-2%] top-0 -z-10 h-[min(36svh,19rem)] md:inset-y-[-2%] md:h-auto">
         {HERO_SLIDES.map((sl, i) => {
           if (!loaded.has(i)) return null
           const on = i === active
@@ -158,7 +158,7 @@ export default function CinematicHero() {
 
       {/* Grade: phones fade the scene into navy under the text; desktop darkens the left half. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 [background:linear-gradient(180deg,rgb(6_24_64/0.6)_0%,rgb(6_24_64/0)_9rem,rgb(6_24_64/0)_calc(min(48svh,25rem)_-_11rem),rgb(6_24_64/0.92)_calc(min(48svh,25rem)_-_3.5rem),#061840_min(48svh,25rem))] md:bg-[linear-gradient(90deg,rgb(5_18_50/0.92)_0%,rgb(5_18_50/0.78)_30%,rgb(5_18_50/0.25)_55%,rgb(5_18_50/0)_70%)]" />
+        <div className="absolute inset-0 [background:linear-gradient(180deg,rgb(6_24_64/0.6)_0%,rgb(6_24_64/0)_9rem,rgb(6_24_64/0)_calc(min(36svh,19rem)_-_11rem),rgb(6_24_64/0.92)_calc(min(36svh,19rem)_-_3.5rem),#061840_min(36svh,19rem))] md:bg-[linear-gradient(90deg,rgb(5_18_50/0.92)_0%,rgb(5_18_50/0.78)_30%,rgb(5_18_50/0.25)_55%,rgb(5_18_50/0)_70%)]" />
         <div className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgb(5_18_50/0.55)_0%,transparent_18%,transparent_62%,rgb(5_18_50/0.85)_100%)] md:block" />
         <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_60%_45%,transparent_55%,rgb(2_8_26/0.55)_100%)]" />
         <div className="absolute inset-0 overflow-hidden mix-blend-soft-light"><div className="film-grain" /></div>
@@ -166,7 +166,7 @@ export default function CinematicHero() {
       </div>
 
       {/* Copy */}
-      <div className="container-x relative flex flex-1 flex-col justify-end pb-6 pt-[calc(min(48svh,25rem)_-_6.5rem)] md:justify-center md:pb-10 md:pt-[calc(4.5rem+3rem)]">
+      <div className="container-x relative flex flex-1 flex-col justify-end pb-6 pt-[calc(min(36svh,19rem)_-_6.5rem)] md:justify-center md:pb-10 md:pt-[calc(4.5rem+3rem)]">
         <div className="max-w-[40rem]" onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(true)} onPointerLeave={() => setHover(false)}>
           <motion.p initial={enter({ opacity: 0, y: 10 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }} className="inline-flex items-center gap-2.5 rounded-full bg-white/[0.08] py-1.5 pl-2.5 pr-3.5 text-[0.8rem] font-bold uppercase tracking-[0.14em] text-white/90 ring-1 ring-white/15">
             <span className="size-1.5 rounded-full bg-[#ff4b42]" aria-hidden />
@@ -202,7 +202,7 @@ export default function CinematicHero() {
 
       {/* Story bar: progress, caption, counter, pause */}
       <div
-        className="container-x relative pb-[max(1.25rem,env(safe-area-inset-bottom))] md:pb-8"
+        className="container-x relative pb-[calc(max(1rem,env(safe-area-inset-bottom))+4.5rem)] lg:pb-8"
         onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(true)}
         onPointerLeave={() => setHover(false)}
         onFocus={() => setFocus(true)}
