@@ -12,3 +12,4 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
  8 Nov 6 pm inline CSS + font preload (faster first paint, no text jump).
  8 Nov 6:30 pm contact contrast fix.
   8 Nov 7 pm awards button labels.
+  8 Nov 6:30 pm UI round 2 (founder photo hero, cleaner course cards, one facilities list).
