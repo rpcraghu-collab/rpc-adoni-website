@@ -9,6 +9,7 @@ import About from './pages/About'
 import Courses from './pages/Courses'
 import CourseDetail from './pages/CourseDetail'
 import Awards from './pages/Awards'
+import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
 import { getVersion, initContent, subscribe } from './lib/content'
@@ -69,6 +70,7 @@ function Site({ pathname }: { pathname: string }) {
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:slug" element={<CourseDetail />} />
           <Route path="/awards" element={<Awards />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

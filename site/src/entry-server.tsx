@@ -9,7 +9,7 @@ import { COURSES } from './content/site'
 export { applyOverrides } from './lib/content'
 export { firebaseConfig } from './lib/firebase-config'
 
-export const routes = () => ['/', '/about', '/courses', ...COURSES.map((c) => `/courses/${c.slug}`), '/awards', '/contact', '/404']
+export const routes = () => ['/', '/about', '/courses', ...COURSES.map((c) => `/courses/${c.slug}`), '/awards', '/gallery', '/contact', '/404']
 
 export function render(url: string) {
   return renderToString(

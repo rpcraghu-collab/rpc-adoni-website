@@ -11,7 +11,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 export type Crumb = { to: string; label: string }
 
 /** Inner-page hero. Same type scale, background and motion as the Home hero. */
-export default function PageHero({ eyebrow, title, text, children, art, artTint = 'bg-surface', crumbs, aside }: {
+export default function PageHero({ eyebrow, title, text, children, art, artTint = 'bg-surface', crumbs, aside, backdrop }: {
   eyebrow?: ReactNode
   title: ReactNode
   text?: ReactNode
@@ -22,10 +22,23 @@ export default function PageHero({ eyebrow, title, text, children, art, artTint 
   crumbs?: Crumb[]
   /** Custom right column on desktop (replaces the art tile there). */
   aside?: ReactNode
+  /** A real RPC photo drawn faintly behind the hero, fading out toward the text. */
+  backdrop?: string
 }) {
   return (
     <section className="relative isolate overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(42rem_28rem_at_100%_0%,rgb(211_32_26/0.07),transparent_70%),radial-gradient(36rem_30rem_at_0%_80%,rgb(11_30_74/0.05),transparent_70%)]" />
+      {/* Cinematic backdrop: drifting colour fields, a dot grid and (optionally) a faint photo. Decorative only,
+          kept light enough that the title keeps full contrast, and still under reduced motion. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="aurora absolute -inset-[20%] bg-[radial-gradient(34%_40%_at_82%_18%,rgb(211_32_26/0.11),transparent_70%),radial-gradient(30%_38%_at_12%_78%,rgb(11_30_74/0.08),transparent_70%),radial-gradient(22%_26%_at_60%_70%,rgb(201_150_43/0.08),transparent_70%)] dark:bg-[radial-gradient(34%_40%_at_82%_18%,rgb(221_47_38/0.18),transparent_70%),radial-gradient(30%_38%_at_12%_78%,rgb(70_110_220/0.14),transparent_70%),radial-gradient(22%_26%_at_60%_70%,rgb(217_166_64/0.1),transparent_70%)]" />
+        <div className="grain absolute inset-0 opacity-70 [mask-image:radial-gradient(60%_70%_at_75%_25%,#000,transparent)]" />
+        {backdrop && (
+          <div className="absolute inset-y-0 right-0 w-full opacity-[0.13] [mask-image:linear-gradient(180deg,#000_30%,transparent),linear-gradient(90deg,transparent,#000_55%)] [mask-composite:intersect] [-webkit-mask-composite:source-in] lg:w-[62%] lg:opacity-[0.2] dark:opacity-[0.16] dark:lg:opacity-[0.24]">
+            <img src={backdrop} alt="" decoding="async" fetchPriority="low" className="kb-slow size-full object-cover object-[60%_35%] [filter:saturate(0.85)]" />
+          </div>
+        )}
+        <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,var(--line)_30%,var(--line)_70%,transparent)]" />
+      </div>
       <div className={cn('container-x grid items-center gap-8 pb-10 pt-5 lg:pb-16 lg:pt-12', (art || aside) && 'lg:grid-cols-[1.35fr_1fr] lg:gap-14')}>
         <div className="min-w-0">
           {crumbs && (

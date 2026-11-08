@@ -13,6 +13,7 @@ const NAV = [
   { to: '/about', label: 'About RPC' },
   { to: '/courses', label: 'Courses' },
   { to: '/awards', label: 'Awards' },
+  { to: '/gallery', label: 'Gallery' },
   { to: '/contact', label: 'Admissions' },
 ]
 
@@ -84,16 +85,18 @@ function Header() {
     return () => window.removeEventListener('keydown', esc)
   }, [open])
 
+  const overHero = loc.pathname === '/' && !scrolled
   const showMega = () => { window.clearTimeout(timer.current); setMega(true) }
   const hideMega = () => { timer.current = window.setTimeout(() => setMega(false), 120) }
 
   return (
     <header className="sticky top-0 z-40 pt-[env(safe-area-inset-top)]">
-      <div className={cn('transition-[background-color,box-shadow,border-color] duration-300', scrolled ? 'border-b border-line bg-glass shadow-[0_8px_30px_-20px_rgb(11_30_74/0.4)] backdrop-blur-xl backdrop-saturate-150' : 'border-b border-transparent')}>
+      {/* Home: the header sits on the dark hero until the page scrolls, so it uses the dark tokens there. */}
+      <div className={cn('transition-[background-color,box-shadow,border-color] duration-300', overHero && 'dark', scrolled ? 'border-b border-line bg-glass shadow-[0_8px_30px_-20px_rgb(11_30_74/0.4)] backdrop-blur-xl backdrop-saturate-150' : 'border-b border-transparent')}>
         <nav className="container-x flex h-[4.5rem] items-center justify-between gap-4" aria-label="Main">
           <Link to="/" className="flex items-center gap-3">
             <Logo />
-            <span className="hidden text-[0.8rem] font-bold leading-tight text-ink-soft sm:block">Real Point<br />Computer Education</span>
+            <span className="hidden text-[0.8rem] font-bold leading-tight text-ink-soft sm:block lg:hidden xl:block">Real Point<br />Computer Education</span>
             <span className="sr-only"> (home)</span>
           </Link>
 
@@ -101,7 +104,7 @@ function Header() {
             {NAV.map((n) =>
               n.to === '/courses' ? (
                 <li key={n.to} className="relative flex items-center" onMouseEnter={showMega} onMouseLeave={hideMega}>
-                  <NavLink to={n.to} className={({ isActive }) => cn('inline-flex items-center gap-1 rounded-full px-4 py-2.5 text-[0.95rem] font-semibold transition-colors hover:bg-surface-2', isActive ? 'text-accent-text' : 'text-ink')}>
+                  <NavLink to={n.to} className={({ isActive }) => cn('inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2.5 text-[0.95rem] font-semibold xl:px-4 transition-colors hover:bg-surface-2', isActive ? 'text-accent-text' : 'text-ink')}>
                     {n.label}
                   </NavLink>
                   <button aria-label="Show all courses" aria-expanded={mega} onClick={() => setMega((m) => !m)} className="-ml-2 inline-grid size-8 place-items-center rounded-full text-ink hover:bg-surface-2">
@@ -111,7 +114,7 @@ function Header() {
                 </li>
               ) : (
                 <li key={n.to}>
-                  <NavLink to={n.to} end className={({ isActive }) => cn('rounded-full px-4 py-2.5 text-[0.95rem] font-semibold transition-colors hover:bg-surface-2', isActive ? 'text-accent-text' : 'text-ink')}>
+                  <NavLink to={n.to} end className={({ isActive }) => cn('whitespace-nowrap rounded-full px-3 py-2.5 text-[0.95rem] font-semibold transition-colors xl:px-4 hover:bg-surface-2', isActive ? 'text-accent-text' : 'text-ink')}>
                     {n.label}
                   </NavLink>
                 </li>
@@ -121,10 +124,10 @@ function Header() {
 
           <div className="flex items-center gap-1">
             <ThemeToggle />
-            <a href={telLink()} className="hidden items-center gap-2 rounded-full px-3 py-2.5 text-[0.95rem] font-bold text-ink hover:bg-surface-2 xl:inline-flex">
+            <a href={telLink()} className="hidden items-center gap-2 whitespace-nowrap rounded-full px-3 py-2.5 text-[0.95rem] font-bold text-ink hover:bg-surface-2 2xl:inline-flex">
               <Phone className="size-4" /> {SITE.phone}
             </a>
-            <Link to="/contact" className="btn-primary hidden min-h-11 px-5 lg:inline-flex">Enquire now</Link>
+            <Link to="/contact" className="btn-primary hidden min-h-11 whitespace-nowrap px-5 lg:inline-flex">Enquire now</Link>
             <button onClick={() => setOpen(true)} aria-label="Open menu" className="grid size-11 place-items-center rounded-full text-ink hover:bg-surface-2 lg:hidden">
               <Menu className="size-6" />
             </button>
