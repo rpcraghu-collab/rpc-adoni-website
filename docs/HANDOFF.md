@@ -66,4 +66,11 @@ We are ahead: all public pages are built on 8 Nov.
 - Full-page screenshots need a scroll pass first (scroll-reveal sections stay hidden otherwise).
 - Award 3 exists only in low-res (`award-3-sm.webp`).
 
-Last updated: 8 Nov 2026
+- No picture may repeat on a page (founder 9 Nov, "13 courses showing same images"). Each course has its own `CourseArt` cover; CTAs use `CoverFan`. Check with the scratchpad `audit.cjs` dup test (the home hero's blurred glow copy is the only allowed repeat).
+
+## 9 Nov 2026
+- Pushed 8b13c84 to `rpcraghu-collab/rpc-adoni-website` main. It includes the new phone menu, 13 course covers, the About/Home hero/Courses redesigns, version.json, and the duplicate-image fixes.
+- Vercel picks the push up only if the project is linked to that repo. Check this in browser af87ad88.
+- Admin announcement strip still reads "Edited from the admin test". This is live admin content; clear it in /admin.
+
+Last updated: 9 Nov 2026
