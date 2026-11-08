@@ -73,4 +73,9 @@ We are ahead: all public pages are built on 8 Nov.
 - Vercel picks the push up only if the project is linked to that repo. Check this in browser af87ad88.
 - Admin announcement strip still reads "Edited from the admin test". This is live admin content; clear it in /admin.
 
-Last updated: 9 Nov 2026
+## 9 Nov night: desktop test of the founder's phone flow
+- `desk.cjs` (scratchpad) at 1440, light + dark: every header link is SPA (138-506 ms), mega menu, chips, compare table, card→detail, lightbox, form errors, theme, Back all OK; 0 console errors. audit.cjs: 44/44 OK (only the hero's allowed blur copy repeats).
+- Phone "white page + spinner" = full reloads from VersionWatch while new builds went live mid-test. Fix 8718fa0 (pushed): never reload on route change; the new build loads only when the tab returns to view. Public pages don't load Firebase (only react, motion, index).
+- Phone-video audio has no clear speech (Whisper te output = noise).
+
+Last updated: 9 Nov 2026 night
