@@ -14,7 +14,7 @@ import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
 import { getVersion, initContent, subscribe } from './lib/content'
 import { setBooting } from './lib/boot'
-import { checkVersion, isStale, loadNewBuild } from './lib/version'
+import { checkVersion, loadNewBuild } from './lib/version'
 
 // Public pages are bundled into the main file (about 18 KB gzip in total), so moving between
 // pages never downloads anything and can't fail on weak mobile data or after a new deploy.
@@ -46,10 +46,12 @@ function VersionWatch() {
   const first = useRef(true)
   const path = useRef(pathname)
   path.current = pathname
+  // Never reload while someone is browsing: a full load mid-visit shows a white page in in-app browsers
+  // (founder's phone test, 9 Nov). Public pages are bundled, so an older build keeps working; the new build
+  // loads when the tab comes back into view, and a failed chunk still reloads via vite:preloadError.
   useEffect(() => {
     if (first.current) { first.current = false; return }
-    if (isStale()) loadNewBuild()
-    else void checkVersion()
+    void checkVersion()
   }, [pathname])
   useEffect(() => {
     const quiet = () => /^\/(admin|contact)/.test(path.current)
