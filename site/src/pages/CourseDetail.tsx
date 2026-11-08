@@ -4,7 +4,8 @@ import { ArrowRight, Award, CalendarDays, Clock, IndianRupee, ListChecks, Users,
 import { COURSES, SITE, listed, waLink } from '../content/site'
 import { JsonLd, Reveal, Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { CtaBand, FacilityList, MiniCourseCard, TINT, groupOf } from '../components/course'
+import { CtaBand, FacilityList, MiniCourseCard, groupOf } from '../components/course'
+import { CourseArt } from '../components/CourseArt'
 import { cn } from '../lib/cn'
 import NotFound from './NotFound'
 
@@ -39,8 +40,7 @@ export default function CourseDetail() {
         crumbs={[{ to: '/courses', label: 'Courses' }, { to: `/courses?group=${c.group}`, label: group.label }]}
         title={<>{c.code}{c.name !== c.code && <span className="mt-2.5 block font-sans text-[0.4em] font-bold leading-snug tracking-normal text-ink-soft">{c.name}</span>}</>}
         text={c.tagline}
-        art={group.art}
-        artTint={TINT[c.group]}
+        artNode={<CourseArt slug={c.slug} className="size-full" />}
       >
         <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold text-ink-soft">
           <li className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 ring-1 ring-line"><Users className="size-4 text-muted" />{c.forWho}</li>

@@ -11,13 +11,15 @@ const ease = [0.22, 1, 0.36, 1] as const
 export type Crumb = { to: string; label: string }
 
 /** Inner-page hero. Same type scale, background and motion as the Home hero. */
-export default function PageHero({ eyebrow, title, text, children, art, artTint = 'bg-surface', crumbs, aside, backdrop }: {
+export default function PageHero({ eyebrow, title, text, children, art, artNode, artTint = 'bg-surface', crumbs, aside, backdrop }: {
   eyebrow?: ReactNode
   title: ReactNode
   text?: ReactNode
   children?: ReactNode
   /** 3D illustration in a tinted tile (desktop: right column; mobile: small tile beside the title). */
   art?: string
+  /** A drawn cover (e.g. CourseArt) used instead of an art image: same two places. */
+  artNode?: ReactNode
   artTint?: string
   crumbs?: Crumb[]
   /** Custom right column on desktop (replaces the art tile there). */
@@ -39,7 +41,7 @@ export default function PageHero({ eyebrow, title, text, children, art, artTint 
         )}
         <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,var(--line)_30%,var(--line)_70%,transparent)]" />
       </div>
-      <div className={cn('container-x grid items-center gap-8 pb-10 pt-5 lg:pb-16 lg:pt-12', (art || aside) && 'lg:grid-cols-[1.35fr_1fr] lg:gap-14')}>
+      <div className={cn('container-x grid items-center gap-8 pb-10 pt-5 lg:pb-16 lg:pt-12', (art || artNode || aside) && 'lg:grid-cols-[1.35fr_1fr] lg:gap-14')}>
         <div className="min-w-0">
           {crumbs && (
             <nav aria-label="Breadcrumb" className="-mt-2 mb-2">
@@ -60,7 +62,9 @@ export default function PageHero({ eyebrow, title, text, children, art, artTint 
                 {title}
               </motion.h1>
             </div>
-            {art && (
+            {artNode ? (
+              <span className="mt-1 size-[4.5rem] shrink-0 overflow-hidden rounded-[1.1rem] shadow-[0_14px_24px_-14px_rgb(11_30_74/0.5)] lg:hidden" aria-hidden>{artNode}</span>
+            ) : art && (
               <span className={cn('mt-1 grid size-[4.5rem] shrink-0 place-items-center rounded-[1.1rem] lg:hidden', artTint)} aria-hidden>
                 <img src={art} srcSet={artSet(art)} sizes="72px" alt="" width={72} height={72} decoding="async" className="size-[92%] object-contain drop-shadow-[0_8px_10px_rgb(11_30_74/0.18)]" />
               </span>
@@ -71,6 +75,8 @@ export default function PageHero({ eyebrow, title, text, children, art, artTint 
         </div>
         {aside ? (
           <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className="hidden lg:block">{aside}</motion.div>
+        ) : artNode ? (
+          <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className="hidden aspect-[4/3] w-full max-w-[26rem] justify-self-end overflow-hidden rounded-[2rem] shadow-[0_40px_70px_-40px_rgb(11_30_74/0.6)] lg:block" aria-hidden>{artNode}</motion.div>
         ) : art ? (
           <motion.div initial={enter({ opacity: 0, y: 20 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08, ease }} className={cn('hidden aspect-[4/3] w-full max-w-[25rem] place-items-center justify-self-end rounded-[2rem] lg:grid', artTint)} aria-hidden>
             <img src={art} srcSet={artSet(art)} sizes="(min-width:1024px) 320px, 1px" alt="" width={ART_SIZE[art]?.[0] ?? 320} height={ART_SIZE[art]?.[1] ?? 320} decoding="async" className="float w-[62%] object-contain drop-shadow-[0_24px_30px_rgb(11_30_74/0.22)]" />

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { animate, motion, useMotionValue, type PanInfo } from 'motion/react'
 import { ArrowRight, ChevronLeft, ChevronRight, Clock, Pause, Play } from 'lucide-react'
 import { listed, type Course } from '../../content/site'
-import { TINT, artOf, artSet, groupOf } from '../course'
+import { groupOf } from '../course'
+import { CourseArt } from '../CourseArt'
 import { Reveal, useReduce } from '../ui'
 import { cn } from '../../lib/cn'
 
@@ -35,7 +36,6 @@ function place(d: number): CSSProperties {
 
 function Card({ c, n, total, d, onPick }: { c: Course; n: number; total: number; d: number; onPick: () => void }) {
   const g = groupOf(c.group)
-  const art = artOf(c.group)
   const front = d === 0
   return (
     <div
@@ -53,8 +53,8 @@ function Card({ c, n, total, d, onPick }: { c: Course; n: number; total: number;
         onClick={(e) => { if (!front) { e.preventDefault(); onPick() } }}
         className="group relative flex h-full flex-col rounded-[1.9rem] bg-surface p-1.5 shadow-[0_40px_70px_-40px_rgb(11_30_74/0.55)] ring-1 ring-line select-none"
       >
-        <span className={cn('relative grid h-[44%] place-items-center overflow-hidden rounded-[calc(1.9rem-0.375rem)]', TINT[c.group])}>
-          <img src={art} srcSet={artSet(art)} sizes="(min-width: 640px) 240px, 50vw" alt="" width={240} height={200} loading="lazy" decoding="async" draggable={false} className="h-[86%] w-auto object-contain drop-shadow-[0_18px_22px_rgb(11_30_74/0.25)] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1 group-hover:scale-[1.04]" />
+        <span className="relative block h-[44%] overflow-hidden rounded-[calc(1.9rem-0.375rem)]">
+          <CourseArt slug={c.slug} className="size-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
           <span className="absolute left-3 top-3 rounded-full bg-surface/90 px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-[0.1em] text-ink">{g.label}</span>
         </span>
         <span className="flex min-h-0 flex-1 flex-col px-4 pb-4 pt-4">

@@ -136,7 +136,7 @@ function Header() {
       </div>
 
       <AnimatePresence>
-        {open && <MobileMenu nav={NAV} onClose={() => setOpen(false)} themeToggle={<ThemeToggle className="text-white hover:bg-white/10" />} />}
+        {open && <MobileMenu nav={NAV} onClose={() => setOpen(false)} themeToggle={<ThemeToggle />} />}
       </AnimatePresence>
     </header>
   )
