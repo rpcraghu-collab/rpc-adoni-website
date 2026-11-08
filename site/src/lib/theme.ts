@@ -11,7 +11,7 @@ export function useTheme() {
   const toggle = () => {
     const next = !isDark()
     document.documentElement.classList.toggle('dark', next)
-    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', next ? '#070F24' : '#F6F4EF'))
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', next ? '#070F24' : '#F4F6FA'))
     try { localStorage.setItem('rpc-theme', next ? 'dark' : 'light') } catch { /* private mode */ }
     listeners.forEach((l) => l())
   }
