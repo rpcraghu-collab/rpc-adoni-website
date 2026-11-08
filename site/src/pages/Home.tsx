@@ -82,7 +82,7 @@ function Hero() {
 
 function Facts() {
   const facts = [
-    { big: '2000', small: 'Teaching computers in Adoni since' },
+    { big: '25+', small: 'Years teaching computers in Adoni, since 2000' },
     { big: String(listed().length), small: 'Courses, from MS Office to Python' },
     { big: '2', small: 'Batches every day, morning and evening' },
     { big: '5×', small: 'Education Excellence Award' },
@@ -150,11 +150,11 @@ function FindCourse() {
         </Reveal>
         <Link to="/courses" className="hidden items-center gap-2 font-bold text-ink hover:text-accent-text sm:inline-flex">All {listed().length} courses <ArrowRight className="size-4" /></Link>
       </div>
-      <div role="tablist" aria-label="I am a" className="no-scrollbar -mx-4 mt-8 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+      <div role="tablist" aria-label="I am a" className="mt-8 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         {FINDER.map((f) => (
           <button
             key={f.id} role="tab" aria-selected={who === f.id} onClick={() => setWho(f.id)}
-            className={cn('relative min-h-12 shrink-0 rounded-full px-5 text-[0.95rem] font-bold transition-colors', who === f.id ? 'text-bg' : 'bg-surface text-ink ring-1 ring-line hover:ring-ink/25')}
+            className={cn('relative min-h-12 rounded-full px-3 text-[0.92rem] font-bold leading-tight transition-colors sm:px-5 sm:text-[0.95rem]', who === f.id ? 'text-bg' : 'bg-surface text-ink ring-1 ring-line hover:ring-ink/25')}
           >
             {who === f.id && <motion.span layoutId="finder-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
             <span className="relative">{f.label}</span>
@@ -274,18 +274,10 @@ function Faq() {
   const [open, setOpen] = useState<number | null>(0)
   return (
     <section className="container-x pb-16 lg:pb-24" aria-labelledby="faq-h">
-      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-        <div>
-          <SectionHead eyebrow="Questions" title={<span id="faq-h">Before you join.</span>} />
-          <Reveal delay={0.1} className="mt-6">
-            <div className="rounded-[1.5rem] bg-surface-2 p-6">
-              <p className="font-display text-lg font-bold text-ink">Didn't find your answer?</p>
-              <p className="mt-1 text-sm text-muted">Ask us directly. We usually reply during class hours.</p>
-              <a href={waLink('Hello RPC, I have a question about your courses.')} target="_blank" rel="noopener" className="btn-primary mt-5 w-full"><WhatsAppIcon /> Ask on WhatsApp</a>
-            </div>
-          </Reveal>
-        </div>
-        <ul className="divide-y divide-line border-y border-line">
+      {/* Phones: heading, questions, then the help card. Desktop: help card under the heading. */}
+      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-x-16 lg:gap-y-6">
+        <SectionHead eyebrow="Questions" title={<span id="faq-h">Before you join.</span>} />
+        <ul className="divide-y divide-line border-y border-line lg:col-start-2 lg:row-span-2 lg:row-start-1">
           {FAQS.map((f, i) => {
             const isOpen = open === i
             return (
@@ -307,6 +299,15 @@ function Faq() {
             )
           })}
         </ul>
+        <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
+          <Reveal delay={0.1}>
+            <div className="rounded-[1.5rem] bg-surface-2 p-6">
+              <p className="font-display text-lg font-bold text-ink">Didn't find your answer?</p>
+              <p className="mt-1 text-sm text-muted">Ask us directly. We usually reply during class hours.</p>
+              <a href={waLink('Hello RPC, I have a question about your courses.')} target="_blank" rel="noopener" className="btn-primary mt-5 w-full"><WhatsAppIcon /> Ask on WhatsApp</a>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   )
