@@ -64,9 +64,10 @@ export default function Awards() {
             const [wd, ht] = SIZE[w.img] ?? [1280, 872]
             return (
               <Reveal as="li" key={w.n} delay={(i % 2) * 0.06} className={i === 0 ? 'md:col-span-2' : undefined}>
-                <button type="button" onClick={(e) => show(i, e.currentTarget)} className="group block w-full overflow-hidden rounded-[1.5rem] bg-surface text-left ring-1 ring-line transition-shadow hover:shadow-[0_24px_50px_-30px_rgb(11_30_74/0.45)]" aria-label={`View award ${w.n} of ${AWARDS.length}, presented by ${w.from}`}>
+                <button type="button" onClick={(e) => show(i, e.currentTarget)} className="group block w-full overflow-hidden rounded-[1.5rem] bg-surface text-left ring-1 ring-line transition-shadow hover:shadow-[0_24px_50px_-30px_rgb(11_30_74/0.45)]">
+                  <span className="sr-only">View award photo: </span>
                   <span className="relative block overflow-hidden bg-surface-2">
-                    <img src={`/img/${w.img}-sm.webp`} srcSet={w.img === 'award-3' ? undefined : `/img/${w.img}-sm.webp 640w, /img/${w.img}.webp ${wd}w`} sizes={i === 0 ? '(min-width:768px) 90vw, 92vw' : '(min-width:768px) 45vw, 92vw'} loading={i === 0 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : undefined} decoding="async" width={wd} height={ht} alt={`${SITE.founder} receiving the Education Excellence Award from ${w.from}`} className={cn('w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none', i === 0 ? 'aspect-[4/3] sm:aspect-[16/8]' : 'aspect-[4/3]')} />
+                    <img src={`/img/${w.img}-sm.webp`} srcSet={w.img === 'award-3' ? undefined : `/img/${w.img}-sm.webp 640w, /img/${w.img}.webp ${wd}w`} sizes={i === 0 ? '(min-width:768px) 90vw, 92vw' : '(min-width:768px) 45vw, 92vw'} loading={i === 0 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : undefined} decoding="async" width={wd} height={ht} alt="" className={cn('w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none', i === 0 ? 'aspect-[4/3] sm:aspect-[16/8]' : 'aspect-[4/3]')} />
                     <span aria-hidden className="absolute right-3 top-3 inline-flex min-h-10 items-center gap-1.5 rounded-full bg-black/55 px-3 text-sm font-bold text-white backdrop-blur"><Expand className="size-4" /> View</span>
                   </span>
                   <span className="flex items-center gap-4 p-5 sm:p-6">
