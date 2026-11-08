@@ -1,3 +1,4 @@
+import { enter } from '../lib/boot'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
@@ -22,20 +23,21 @@ function Hero() {
       </div>
       <div className="container-x grid items-center gap-9 pb-14 pt-5 lg:grid-cols-[1.12fr_1fr] lg:gap-14 lg:pb-24 lg:pt-14">
         <div>
-          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2.5 rounded-full bg-surface py-1.5 pl-2.5 pr-3.5 text-[0.8rem] font-bold text-ink-soft shadow-[0_1px_2px_rgb(11_30_74/0.08)] ring-1 ring-line">
+          <motion.p initial={enter({ opacity: 0, y: 8 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2.5 rounded-full bg-surface py-1.5 pl-2.5 pr-3.5 text-[0.8rem] font-bold text-ink-soft shadow-[0_1px_2px_rgb(11_30_74/0.08)] ring-1 ring-line">
             <span className="relative flex size-2.5" aria-hidden>
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#14803f] opacity-60 motion-reduce:animate-none" />
               <span className="relative inline-flex size-2.5 rounded-full bg-[#14803f]" />
             </span>
             Admissions open · Morning & evening batches
           </motion.p>
-          <motion.h1 initial={{ y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.05, ease }} className="mt-5 text-[clamp(2.35rem,4.6vw,4.1rem)] font-extrabold leading-[0.98] [text-wrap:balance]">
+          <motion.h1 initial={enter({ y: 16 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.05, ease }} className="mt-5 text-[clamp(2.35rem,4.6vw,4.1rem)] font-extrabold leading-[0.98] [text-wrap:balance]">
             Computer courses in Adoni that make you <span className="text-accent-text">job-ready.</span>
           </motion.h1>
-          <motion.p initial={{ y: 12 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="mt-5 max-w-[34rem] text-[1.06rem] leading-relaxed text-ink-soft">
+          <p lang="te" className="mt-3 text-[1.02rem] font-semibold leading-snug text-ink-soft">అడోనిలో 2000 నుండి, ఉద్యోగానికి సిద్ధం చేసే కంప్యూటర్ కోర్సులు</p>
+          <motion.p initial={enter({ y: 12 })} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="mt-5 max-w-[34rem] text-[1.06rem] leading-relaxed text-ink-soft">
             PGDCA, DCA, Tally Prime with GST, Java, Python and more. 100% practical classes at Babu Plaza, taught since 2000.
           </motion.p>
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <motion.div initial={enter({ opacity: 0, y: 12 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Magnetic>
               <a href={waLink()} target="_blank" rel="noopener" className="btn-primary h-14 px-7 text-base">
                 <WhatsAppIcon /> Enquire on WhatsApp
@@ -46,14 +48,14 @@ function Hero() {
               {SITE.phone.replace('+91 ', '')}
             </a>
           </motion.div>
-          <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[0.85rem] font-semibold text-ink-soft">
+          <motion.ul initial={enter({ opacity: 0 })} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[0.85rem] font-semibold text-ink-soft">
             {trust.map((t) => (
               <li key={t} className="flex items-center gap-1.5"><BadgeCheck className="size-4 text-accent-text" />{t}</li>
             ))}
           </motion.ul>
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease }} className="relative">
+        <motion.div initial={enter({ opacity: 0, y: 24 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease }} className="relative">
           <div className="rounded-[2rem] bg-brand p-2.5 shadow-[0_40px_80px_-36px_rgb(11_30_74/0.6)] sm:p-3.5">
             <div className="flex items-center justify-between px-3 pb-3 pt-2.5 text-white">
               <h2 className="font-display text-lg font-bold text-white sm:text-xl">What do you want to learn?</h2>
@@ -61,7 +63,7 @@ function Hero() {
             </div>
             <ul className="grid gap-2">
               {groups.map((g, i) => (
-                <motion.li key={g.id} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + i * 0.08, ease }}>
+                <motion.li key={g.id} initial={enter({ opacity: 0, x: 18 })} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + i * 0.08, ease }}>
                   <Link to={`/courses?group=${g.id}`} className="group flex items-center gap-4 rounded-[1.4rem] bg-surface p-2.5 pr-4 transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]">
                     <span className={cn('grid size-[5.25rem] shrink-0 place-items-center rounded-[1.05rem] sm:size-28', TINT[g.id])}>
                       <img src={g.art} srcSet={artSet(g.art)} sizes="160px" alt="" width={160} height={160} decoding="async" fetchPriority={i === 0 ? 'high' : undefined} className="size-[94%] object-contain drop-shadow-[0_10px_12px_rgb(11_30_74/0.18)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105" />

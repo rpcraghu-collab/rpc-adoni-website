@@ -11,7 +11,8 @@ import CourseDetail from './pages/CourseDetail'
 import Awards from './pages/Awards'
 import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
-import { getVersion, subscribe } from './lib/content'
+import { getVersion, initContent, subscribe } from './lib/content'
+import { setBooting } from './lib/boot'
 
 // Public pages are bundled into the main file (about 18 KB gzip in total), so moving between
 // pages never downloads anything and can't fail on weak mobile data or after a new deploy.
@@ -41,8 +42,10 @@ function ScrollTop() {
 
 export default function App() {
   // Re-render every page when the admin's live content arrives or changes.
-  useSyncExternalStore(subscribe, getVersion)
+  useSyncExternalStore(subscribe, getVersion, getVersion)
   const { pathname } = useLocation()
+  // Once the app has attached to the ready-made page: animations on, then load the admin's latest content.
+  useEffect(() => { setBooting(false); initContent() }, [])
   return (
     <MotionConfig reducedMotion="user">
       <ScrollTop />

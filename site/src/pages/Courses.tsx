@@ -1,3 +1,4 @@
+import { enter } from '../lib/boot'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
@@ -72,7 +73,7 @@ export default function Courses() {
         </div>
       </div>
 
-      <motion.div key={f} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} className="container-x space-y-14 pb-16 pt-8 lg:space-y-20 lg:pb-24 lg:pt-12">
+      <motion.div key={f} initial={enter({ opacity: 0, y: 10 })} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} className="container-x space-y-14 pb-16 pt-8 lg:space-y-20 lg:pb-24 lg:pt-12">
         {shown.map((g) => (
           <section key={g.id} aria-labelledby={`g-${g.id}`}>
             <div className="flex items-center gap-4">
