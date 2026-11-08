@@ -50,6 +50,30 @@ export const GROUPS: { id: CourseGroup; label: string; blurb: string; art: strin
   { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python for Degree & B.Tech', art: '/img/art/programming.webp' },
 ]
 
+// Standard syllabus for the single-language courses (written 8 Nov 2026; RPC can edit it in /admin → Courses).
+const SYLLABUS: Record<'C' | 'C++' | 'Java' | 'Oracle' | 'Python', Course['modules']> = {
+  C: [
+    { title: 'Basics', items: ['Program structure, compiling and running', 'Data types, variables and operators', 'Input and output', 'Decision making: if, else, switch', 'Loops: for, while, do-while'] },
+    { title: 'Core C', items: ['Arrays and strings', 'Functions and recursion', 'Pointers', 'Structures and unions', 'File handling', 'Mini project'] },
+  ],
+  'C++': [
+    { title: 'Object-oriented basics', items: ['C++ program structure, input and output', 'Classes and objects', 'Constructors and destructors', 'Function and operator overloading'] },
+    { title: 'Advanced C++', items: ['Inheritance', 'Polymorphism and virtual functions', 'Templates', 'Exception handling', 'File streams', 'Mini project'] },
+  ],
+  Java: [
+    { title: 'Core Java', items: ['Java basics, JDK and JVM', 'Data types, operators and control statements', 'Classes, objects and methods', 'Inheritance, interfaces and packages', 'Strings and arrays'] },
+    { title: 'Advanced topics', items: ['Exception handling', 'Collections', 'Multithreading', 'File input and output', 'JDBC: connecting Java to a database', 'Mini project'] },
+  ],
+  Oracle: [
+    { title: 'SQL', items: ['Database and RDBMS concepts', 'DDL, DML and DCL commands', 'Constraints and keys', 'Functions, GROUP BY and HAVING', 'Joins and subqueries', 'Views, sequences and indexes'] },
+    { title: 'PL/SQL', items: ['PL/SQL blocks, variables and control structures', 'Cursors', 'Procedures and functions', 'Triggers', 'Exception handling', 'Practice project'] },
+  ],
+  Python: [
+    { title: 'Python basics', items: ['Installing Python and writing first programs', 'Data types, variables and operators', 'Conditions and loops', 'Lists, tuples, sets and dictionaries', 'Functions and modules'] },
+    { title: 'Applied Python', items: ['File handling and exception handling', 'Object-oriented Python', 'Data analysis basics with NumPy and Pandas', 'Automation scripts', 'Intro to web apps', 'Mini project'] },
+  ],
+}
+
 export const COURSES: Course[] = [
   {
     slug: 'pgdca',
@@ -163,7 +187,7 @@ export const COURSES: Course[] = [
     }[lang],
     forWho: 'Degree & B.Tech students',
     duration: [],
-    modules: [],
+    modules: SYLLABUS[lang],
     tools: [lang],
   })),
 ]
