@@ -1,6 +1,6 @@
 import { SITE } from '../content/site'
 import { JsonLd, Seo } from '../components/ui'
-import { CtaBand } from '../components/course'
+import { CoverFan, CtaBand } from '../components/course'
 import AboutHero from '../components/about/AboutHero'
 import Timeline from '../components/about/Timeline'
 import Founder from '../components/about/Founder'
@@ -32,7 +32,7 @@ export default function About() {
       <ProofStrip />
       <AwardsWall />
       <FacilityGrid />
-      <CtaBand title={<>Come and see<br />the classrooms.</>} text={`Visit us at ${SITE.addressShort}, or send a message. We will help you pick the course, the batch and the start date.`} art="/img/art/diplomas.webp" />
+      <CtaBand title={<>Come and see<br />the classrooms.</>} text={`Visit us at ${SITE.addressShort}, or send a message. We will help you pick the course, the batch and the start date.`} artNode={<CoverFan slugs={['oam', 'cca', 'c']} />} />
     </>
   )
 }

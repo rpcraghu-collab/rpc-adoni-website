@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Clock, FileCheck2, Laptop, MapPin, MonitorCheck, 
 import { FACILITIES, GROUPS, SITE, waLink, type Course, type CourseGroup } from '../content/site'
 import { Magnetic, Reveal, WhatsAppIcon } from './ui'
 import { cn } from '../lib/cn'
+import { CourseArt } from './CourseArt'
 
 /** Soft tile colour behind each group's 3D illustration. */
 export const TINT: Record<CourseGroup, string> = {
@@ -100,8 +101,21 @@ export function MiniCourseCard({ c, sub }: { c: Course; sub?: ReactNode }) {
   )
 }
 
+/** Three course covers fanned like cards, the first in front. Used where a page would otherwise repeat a picture. */
+export function CoverFan({ slugs }: { slugs: string[] }) {
+  const [a, b, c] = slugs
+  const card = 'absolute inset-0 overflow-hidden rounded-[1.5rem] ring-1 ring-white/15'
+  return (
+    <div aria-hidden className="relative mx-auto mb-12 mt-4 aspect-[4/3] w-52 sm:w-72 lg:my-0 lg:w-full lg:max-w-[21rem]">
+      {c && <div className={cn(card, 'translate-x-[16%] -translate-y-[8%] rotate-[9deg] opacity-75 shadow-[0_20px_40px_rgba(0,0,0,0.3)]')}><CourseArt slug={c} className="size-full" /></div>}
+      {b && <div className={cn(card, '-translate-x-[14%] -translate-y-[4%] -rotate-[7deg] opacity-90 shadow-[0_20px_40px_rgba(0,0,0,0.3)]')}><CourseArt slug={b} className="size-full" /></div>}
+      <div className={cn(card, 'float shadow-[0_30px_50px_rgba(0,0,0,0.45)] ring-white/25')}><CourseArt slug={a} className="size-full" /></div>
+    </div>
+  )
+}
+
 /** The navy closing call to action, shared by every page. */
-export function CtaBand({ title = <>Your career…<br />our commitment.</>, text = 'Visit us at Babu Plaza, or send a message. We will help you pick the course, the batch and the start date.', art = '/img/art/diplomas.webp' }: { title?: ReactNode; text?: ReactNode; art?: string }) {
+export function CtaBand({ title = <>Your career…<br />our commitment.</>, text = 'Visit us at Babu Plaza, or send a message. We will help you pick the course, the batch and the start date.', art = '/img/art/diplomas.webp', artNode }: { title?: ReactNode; text?: ReactNode; art?: string; artNode?: ReactNode }) {
   return (
     <section className="container-x pb-24">
       <Reveal>
@@ -121,7 +135,7 @@ export function CtaBand({ title = <>Your career…<br />our commitment.</>, text
                 <MapPin className="mt-0.5 size-4 shrink-0" /><span>{SITE.address} · <span className="underline underline-offset-4">Get directions</span></span>
               </a>
             </div>
-            <img src={art} srcSet={artSet(art)} sizes="(min-width:1024px) 384px, (min-width:640px) 320px, 256px" alt="" width={ART_SIZE[art]?.[0] ?? 800} height={ART_SIZE[art]?.[1] ?? 600} loading="lazy" decoding="async" className="float mx-auto w-48 drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)] sm:w-80 lg:w-full lg:max-w-[24rem]" />
+            {artNode ?? <img src={art} srcSet={artSet(art)} sizes="(min-width:1024px) 384px, (min-width:640px) 320px, 256px" alt="" width={ART_SIZE[art]?.[0] ?? 800} height={ART_SIZE[art]?.[1] ?? 600} loading="lazy" decoding="async" className="float mx-auto w-48 drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)] sm:w-80 lg:w-full lg:max-w-[24rem]" />}
           </div>
         </div>
       </Reveal>

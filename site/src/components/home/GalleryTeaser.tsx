@@ -4,7 +4,7 @@ import { allShots } from '../../content/gallery'
 import { MaskLines, Reveal } from '../ui'
 import { cn } from '../../lib/cn'
 
-const PICK = ['award-1', 'poster', 'award-2', 'award-5', 'award-4']
+const PICK = ['award-1', 'poster', 'award-2', 'award-3', 'award-4'] // award-5 already shows in the 25-years block
 
 /** Home: five photos in a bento, each opening the gallery. Admin campus photos take the small slots first. */
 export default function GalleryTeaser() {

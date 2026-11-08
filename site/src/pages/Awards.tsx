@@ -16,7 +16,7 @@ export default function Awards() {
   return (
     <>
       <Seo path="/awards" title="Education Excellence Awards: RPC Adoni" description={`${SITE.founder} and RPC received five Education Excellence Awards, presented by V.V.S. Laxman, Abhinav Bindra, Vijender Garg, Dr. V.B. Soni and Chetan Chauhan.`} />
-      <PageHero backdrop="/img/award-2-sm.webp" eyebrow="Awards & recognition" title={<>Five times honoured for <span className="text-accent-text">excellence in education.</span></>} text={`${SITE.founder} receiving the Education Excellence Award for RPC, presented by national figures from sport and public life.`} />
+      <PageHero backdrop="/img/hero/hero-achieve-sm.webp" eyebrow="Awards & recognition" title={<>Five times honoured for <span className="text-accent-text">excellence in education.</span></>} text={`${SITE.founder} receiving the Education Excellence Award for RPC, presented by national figures from sport and public life.`} />
 
       <section className="container-x pb-20 lg:pb-24" aria-label="The five awards">
         <ul className="grid gap-4 sm:gap-5 md:grid-cols-2">

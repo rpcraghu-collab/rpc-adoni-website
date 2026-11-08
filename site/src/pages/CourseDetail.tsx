@@ -4,7 +4,7 @@ import { ArrowRight, Award, CalendarDays, Clock, IndianRupee, ListChecks, Users,
 import { COURSES, SITE, listed, waLink } from '../content/site'
 import { JsonLd, Reveal, Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { CtaBand, FacilityList, MiniCourseCard, groupOf } from '../components/course'
+import { CoverFan, CtaBand, FacilityList, MiniCourseCard, groupOf } from '../components/course'
 import { CourseArt } from '../components/CourseArt'
 import { cn } from '../lib/cn'
 import NotFound from './NotFound'
@@ -136,7 +136,7 @@ export default function CourseDetail() {
         </div>
       </section>
 
-      <CtaBand title={<>Ready to start<br />{c.code}?</>} text={`Ask on WhatsApp for the ${c.code} fee and the next batch date, or visit us at ${SITE.addressShort}.`} art={group.art} />
+      <CtaBand title={<>Ready to start<br />{c.code}?</>} text={`Ask on WhatsApp for the ${c.code} fee and the next batch date, or visit us at ${SITE.addressShort}.`} artNode={<CoverFan slugs={[c.slug, ...related.map((r) => r.slug)]} />} />
     </>
   )
 }

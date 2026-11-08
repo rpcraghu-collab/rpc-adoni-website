@@ -9,7 +9,8 @@ import { cn } from '../../lib/cn'
 import { SCENE_SIZE, sceneSet, sceneSrc } from './data'
 import './courses.css'
 
-const SCENES = ['hero-achieve', 'hero-office', 'hero-code', 'hero-career']
+// Each chapter below has its own scene (achieve, office, code), so the hero keeps the fourth one.
+const SCENES = ['hero-career']
 const ICON: Record<string, LucideIcon> = { school: Backpack, inter: NotebookPen, degree: GraduationCap, work: BriefcaseBusiness }
 
 /** Courses for one FINDER persona, in its order, leaving out hidden or missing ones. */

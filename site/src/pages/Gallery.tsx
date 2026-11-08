@@ -7,7 +7,7 @@ import { AWARD_SHOTS, KINDS, allShots, campusShots, type Shot, type ShotKind } f
 import { Reveal, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
 import Lightbox from '../components/Lightbox'
-import { CtaBand } from '../components/course'
+import { CoverFan, CtaBand } from '../components/course'
 import { cn } from '../lib/cn'
 
 type Open = { items: Shot[]; i: number } | null
@@ -109,17 +109,17 @@ function Strip({ items, onOpen }: { items: Shot[]; onOpen: (items: Shot[], i: nu
   )
 }
 
-/** Layout 3: every photo in a masonry wall, filtered by the chips. */
-function Masonry({ onOpen }: { onOpen: (items: Shot[], i: number) => void }) {
+/** Layout 3: the photos not already shown above (admin uploads), in a masonry wall filtered by the chips. Hidden when there are none. */
+function Masonry({ all, onOpen }: { all: Shot[]; onOpen: (items: Shot[], i: number) => void }) {
   const [kind, setKind] = useState<ShotKind | 'all'>('all')
-  const all = allShots()
+  if (!all.length) return null
   const kinds = KINDS.filter((k) => k.id === 'all' || all.some((s) => s.kind === k.id))
   const items = kind === 'all' ? all : all.filter((s) => s.kind === kind)
   return (
     <section className="container-x py-16 lg:py-24" aria-labelledby="all-h">
       <Reveal>
-        <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Every photo</p>
-        <h2 id="all-h" className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] font-bold leading-[1.05]">The full gallery.</h2>
+        <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />More photos</p>
+        <h2 id="all-h" className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] font-bold leading-[1.05]">More from the institute.</h2>
       </Reveal>
       <div className="no-scrollbar edge-fade -mx-4 mt-6 overflow-x-auto px-4 sm:mx-0 sm:px-0 sm:[mask-image:none]">
         <ul className="flex w-max gap-2" aria-label="Show photos of">
@@ -159,6 +159,8 @@ export default function Gallery() {
   const [open, setOpen] = useState<Open>(null)
   const onOpen = (items: Shot[], i: number) => setOpen({ items, i })
   const stripItems = [...campusShots(), ...allShots().filter((s) => s.kind === 'flyers')]
+  const shown = new Set([...AWARD_SHOTS, ...stripItems].map((s) => s.id))
+  const extraShots = allShots().filter((s) => !shown.has(s.id))
   return (
     <>
       <Seo path="/gallery" title="Photo gallery: RPC Computer Education, Adoni" description={`Award days with national figures, RPC's course flyers and photos from classes and events at ${SITE.name}, Babu Plaza, Adoni.`} />
@@ -166,12 +168,12 @@ export default function Gallery() {
         eyebrow="Gallery"
         title={<>Moments from <span className="text-accent-text">25 years</span> of RPC.</>}
         text="Award days with national figures, our course flyers, and photos from classes and events. Tap any photo to see it full size."
-        backdrop="/img/award-1-sm.webp"
+        backdrop="/img/hero/hero-career-sm.webp"
       />
       <Bento onOpen={onOpen} />
       <Strip items={stripItems} onOpen={onOpen} />
-      <Masonry onOpen={onOpen} />
-      <CtaBand title={<>Come and see<br />the institute.</>} art="/img/art/career.webp" />
+      <Masonry all={extraShots} onOpen={onOpen} />
+      <CtaBand title={<>Come and see<br />the institute.</>} artNode={<CoverFan slugs={['python', 'oam-advanced', 'java']} />} />
       <Lightbox items={open?.items ?? []} index={open?.i ?? null} onIndex={(i) => setOpen((o) => (o ? { ...o, i } : o))} onClose={() => setOpen(null)} />
     </>
   )

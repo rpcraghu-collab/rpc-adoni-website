@@ -8,9 +8,10 @@ import Lightbox from '../Lightbox'
 import { cn } from '../../lib/cn'
 
 // Display order (indexes into AWARDS): the Olympic champion leads the wall.
-const ORDER = [1, 0, 4, 3, 2]
+// The hero (0) and founder (3) photos already show above, so the wall shows the other three.
+const ORDER = [1, 4, 2]
 // Desktop bento: one large photo, two beside it, two wide ones below. Phones: one large, then two by two.
-const SPAN = ['col-span-2 lg:col-span-4 lg:row-span-2', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-3', 'lg:col-span-3']
+const SPAN = ['col-span-2 lg:col-span-4 lg:row-span-2', 'lg:col-span-2', 'lg:col-span-2']
 
 /** The five real award photos as a wall. Each opens the full-screen viewer. */
 export default function AwardsWall() {

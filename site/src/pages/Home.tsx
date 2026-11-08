@@ -12,7 +12,8 @@ import Coverflow from '../components/home/Coverflow'
 import CardWall from '../components/home/CardWall'
 import GalleryTeaser from '../components/home/GalleryTeaser'
 import StackCards from '../components/home/StackCards'
-import { CourseCard, CtaBand, FacilityList, artSet } from '../components/course'
+import { CourseCard, CoverFan, CtaBand, FacilityList } from '../components/course'
+import { CourseArt } from '../components/CourseArt'
 
 const bySlug = (s: string) => COURSES.find((c) => c.slug === s && !c.hidden)
 const ease = [0.22, 1, 0.36, 1] as const
@@ -167,7 +168,7 @@ function WhyRpc() {
       <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.6fr]">
         <Reveal>
           <div className="relative flex h-full flex-col overflow-hidden rounded-[1.6rem] bg-brand p-6 text-white sm:p-8">
-            <img src="/img/art/career.webp" srcSet={artSet('/img/art/career.webp')} sizes="192px" alt="" width={260} height={228} loading="lazy" decoding="async" className="float pointer-events-none absolute -right-6 -top-4 w-40 opacity-95 drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)] sm:w-48" />
+            <div aria-hidden className="float pointer-events-none absolute -right-4 -top-6 w-36 rotate-[8deg] overflow-hidden rounded-[1.2rem] shadow-[0_20px_30px_rgba(0,0,0,0.35)] ring-1 ring-white/20 sm:w-44"><CourseArt slug="tally" className="aspect-[4/3] w-full" /></div>
             <Clock className="size-7 text-white/70" />
             <p className="relative mt-8 max-w-[12rem] font-display text-[2rem] font-extrabold leading-[1.02] sm:max-w-none">Two batches,<br />every day.</p>
             <div className="relative mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
@@ -261,7 +262,7 @@ export default function Home() {
       <CardWall />
       <GalleryTeaser />
       <Faq />
-      <CtaBand />
+      <CtaBand artNode={<CoverFan slugs={['pgdca', 'dcp', 'oracle']} />} />
     </>
   )
 }
