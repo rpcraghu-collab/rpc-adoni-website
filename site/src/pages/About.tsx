@@ -1,80 +1,129 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BadgeCheck, Heart } from 'lucide-react'
-import { CREDENTIALS, FACILITIES, SITE } from '../content/site'
+import { AWARDS, CREDENTIALS, FACILITIES, SITE } from '../content/site'
 import { Reveal, SectionHead, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
+import { CtaBand, FAC_ICONS, TINT } from '../components/course'
+import { cn } from '../lib/cn'
 
 const STORY = [
-  { year: '2000', title: 'RPC opens in Adoni', text: `${SITE.founder} starts Real Point Computer Education with one goal: quality computer education for everyone in Adoni.` },
+  { year: '2000', title: 'RPC opens in Adoni', text: `${SITE.founder} starts Real Point Computer Education: quality computer education for everyone in Adoni.` },
   { year: '2006', title: 'Government permission & ISO', text: 'Permission from the Directorate of Employment & Training, Govt of Andhra Pradesh, and ISO certification.' },
-  { year: 'Awards', title: 'Five Education Excellence Awards', text: 'Honoured on national stages, from V.V.S. Laxman, Abhinav Bindra, Chetan Chauhan and others.' },
+  { year: 'Awards', title: 'Five Education Excellence Awards', text: 'Honoured on national stages by V.V.S. Laxman, Abhinav Bindra, Chetan Chauhan and others.' },
   { year: 'Today', title: '25 years of teaching', text: 'ISO 9001:2015 certified and MSME registered. Coding and non-coding courses, basic to advanced.' },
 ]
 
 export default function About() {
+  const founderAward = AWARDS[4]
   return (
     <>
       <Seo path="/about" title="About RPC: 25 years of computer education in Adoni" description={`Founded in 2000 by ${SITE.founder}. ISO 9001:2015 certified, AP Govt DET permission since 2006, MSME registered, 5-time Education Excellence Award winners.`} />
-      <PageHero eyebrow="About RPC" title={<>Twenty-five years of <span className="text-accent-text">teaching Adoni</span> to use computers.</>} text="Real Point Computer Education offers quality computer education, basic to advanced, coding and non-coding, for children, students, housewives and business people." />
+      <PageHero
+        eyebrow="About RPC"
+        title={<>Teaching Adoni <span className="text-accent-text">computers</span> since 2000.</>}
+        text="25 years of quality computer education, basic to advanced, coding and non-coding, for children, students, homemakers and business people."
+        art="/img/art/career.webp"
+        artTint={TINT.programming}
+      />
 
-      <section className="container-x pb-20">
-        <ol className="relative grid gap-4 md:grid-cols-4">
-          {STORY.map((s, i) => (
-            <Reveal key={s.year} delay={i * 0.08}>
-              <li className="card h-full p-6">
-                <p className="font-display text-3xl font-extrabold text-accent-text">{s.year}</p>
-                <p className="mt-4 font-display text-lg font-bold leading-tight text-ink">{s.title}</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
-              </li>
-            </Reveal>
-          ))}
-        </ol>
-      </section>
-
-      <section className="bg-surface py-20 lg:py-28">
-        <div className="container-x grid items-center gap-12 lg:grid-cols-2">
+      {/* Founder */}
+      <section className="container-x pb-16 lg:pb-24" aria-labelledby="founder-h">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16">
+          <Reveal>
+            <figure className="overflow-hidden rounded-[1.8rem] bg-surface-2">
+              <img src="/img/award-5-sm.webp" srcSet="/img/award-5-sm.webp 640w, /img/award-5.webp 1280w" sizes="(min-width:1024px) 46vw, 92vw" loading="lazy" decoding="async" width={1280} height={872} alt={`${SITE.founder} receiving an Education Excellence Award from ${founderAward?.from ?? 'a guest of honour'}`} className="aspect-[4/3] w-full object-cover" />
+              {founderAward && <figcaption className="px-5 py-3.5 text-sm font-semibold text-ink-soft">Receiving the Education Excellence Award from {founderAward.from}.</figcaption>}
+            </figure>
+          </Reveal>
           <div>
-            <SectionHead eyebrow="Our founder" title={SITE.founder} text="He founded RPC in 2000 and built it around practical, hands-on learning: every concept shown on the projector, then practised on the computer." />
-            <Reveal delay={0.1} className="mt-8 rounded-2xl border border-line bg-bg p-6">
-              <Heart className="size-6 text-accent-text" />
-              <p className="mt-3 font-display text-xl font-bold text-ink">Education for every family</p>
-              <p className="mt-2 leading-relaxed text-ink-soft">RPC also supports computer education for tribal and poor students in and around Adoni.</p>
+            <Reveal>
+              <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Our founder</p>
+              <h2 id="founder-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]">{SITE.founder}</h2>
+              <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-muted">He founded RPC in {SITE.since} and built it around practical, hands-on learning: every concept shown on the projector, then practised on the computer.</p>
+            </Reveal>
+            <Reveal delay={0.08} className="mt-7">
+              <div className="flex gap-4 rounded-[1.5rem] bg-surface p-5 ring-1 ring-line sm:p-6">
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><Heart className="size-5" /></span>
+                <div>
+                  <p className="font-display text-lg font-bold text-ink">Education for every family</p>
+                  <p className="mt-1 leading-relaxed text-ink-soft">RPC also supports computer education for tribal and poor students in and around Adoni.</p>
+                </div>
+              </div>
             </Reveal>
           </div>
-          <Reveal>
-            <figure className="overflow-hidden rounded-[2rem] border-4 border-surface shadow-[0_40px_90px_-40px_rgb(11_30_74/0.6)]">
-              <img src="/img/award-5-sm.webp" srcSet="/img/award-5-sm.webp 640w, /img/award-5.webp 1280w" sizes="(min-width:1024px) 45vw, 92vw" loading="lazy" width={1280} height={872} alt={`${SITE.founder} receiving an Education Excellence Award`} className="aspect-[4/3] w-full object-cover" />
-            </figure>
+        </div>
+      </section>
+
+      {/* Journey + credentials */}
+      <section className="border-y border-line bg-surface py-16 lg:py-24" aria-labelledby="journey-h">
+        <div className="container-x grid gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+          <div>
+            <SectionHead eyebrow="Our journey" title={<span id="journey-h">From one institute to five national awards.</span>} />
+            <ol className="mt-8">
+              {STORY.map((s, i) => (
+                <Reveal key={s.year} delay={0.05 * i}>
+                  <li className="relative flex gap-5 pb-7 last:pb-0">
+                    {i < STORY.length - 1 && <span aria-hidden className="absolute left-[2.1rem] top-11 h-[calc(100%-2.75rem)] w-px bg-line" />}
+                    <span className={cn('grid h-10 w-[4.2rem] shrink-0 place-items-center rounded-xl font-display text-sm font-extrabold', i === STORY.length - 1 ? 'bg-accent text-white' : 'bg-surface-2 text-ink')}>{s.year}</span>
+                    <div className="pt-1.5">
+                      <p className="font-display text-[1.1rem] font-bold leading-tight text-ink">{s.title}</p>
+                      <p className="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">{s.text}</p>
+                    </div>
+                  </li>
+                </Reveal>
+              ))}
+            </ol>
+            <Reveal delay={0.1} className="mt-8 flex flex-wrap items-center gap-4">
+              <ul className="flex -space-x-3">
+                {AWARDS.map((a) => (
+                  <li key={a.n}><img src={`/img/${a.img}-sm.webp`} alt={`Award from ${a.from}`} width={56} height={56} loading="lazy" decoding="async" className="size-14 rounded-2xl object-cover ring-4 ring-surface" /></li>
+                ))}
+              </ul>
+              <Link to="/awards" className="inline-flex min-h-12 items-center gap-2 font-bold text-ink hover:text-accent-text">See all 5 awards <ArrowRight className="size-4" /></Link>
+            </Reveal>
+          </div>
+          <Reveal className="lg:pt-24">
+            <div className="rounded-[1.6rem] bg-bg p-5 ring-1 ring-line sm:p-7">
+              <p className="font-display text-xl font-bold text-ink">Certified and registered</p>
+              <ul className="mt-3 divide-y divide-line">
+                {CREDENTIALS.map((c) => (
+                  <li key={c.title} className="flex items-center gap-4 py-4">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><BadgeCheck className="size-5" /></span>
+                    <span>
+                      <span className="block font-display text-lg font-bold leading-tight text-ink">{c.title}</span>
+                      <span className="text-sm text-muted">{c.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      <section className="container-x py-20 lg:py-28">
-        <SectionHead eyebrow="Recognised" title="Certified and registered." />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {CREDENTIALS.map((c, i) => (
-            <Reveal key={c.title} delay={i * 0.06}>
-              <div className="card h-full p-6">
-                <BadgeCheck className="size-6 text-accent-text" />
-                <p className="mt-4 font-display text-2xl font-bold text-ink">{c.title}</p>
-                <p className="mt-1 text-sm text-muted">{c.text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <SectionHead className="mt-20" eyebrow="Facilities" title="What you get at RPC." />
-        <ul className="mt-10 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-          {FACILITIES.map((f) => (
-            <li key={f.title} className="border-t-2 border-ink pt-4">
-              <p className="font-display text-lg font-bold text-ink">{f.title}</p>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{f.text}</p>
-            </li>
-          ))}
+      {/* Facilities */}
+      <section className="container-x py-16 lg:py-24" aria-labelledby="fac-h">
+        <SectionHead eyebrow="Facilities" title={<span id="fac-h">What you get at RPC.</span>} />
+        <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {FACILITIES.map((f, i) => {
+            const Icon = FAC_ICONS[i % FAC_ICONS.length]
+            return (
+              <Reveal key={f.title} delay={0.03 * i} className="h-full">
+                <li className="flex h-full flex-col rounded-[1.3rem] bg-surface p-4 ring-1 ring-line sm:p-5">
+                  <span className="grid size-11 place-items-center rounded-xl bg-accent/10 text-accent-text"><Icon className="size-5" /></span>
+                  <p className="mt-4 font-display text-[1rem] font-bold leading-tight text-ink sm:text-[1.05rem]">{f.title}</p>
+                  <p className="mt-1.5 hidden text-[0.85rem] leading-relaxed text-muted sm:block">{f.text}</p>
+                </li>
+              </Reveal>
+            )
+          })}
         </ul>
-        <Reveal className="mt-14">
-          <Link to="/courses" className="btn-primary h-14 px-7">See all courses <ArrowRight className="size-4" /></Link>
+        <Reveal className="mt-8">
+          <Link to="/courses" className="inline-flex min-h-12 items-center gap-2 font-bold text-ink hover:text-accent-text">See all courses <ArrowRight className="size-4" /></Link>
         </Reveal>
       </section>
+
+      <CtaBand title={<>Come and see<br />the classrooms.</>} text={`Visit us at ${SITE.addressShort}, or send a message. We will help you pick the course, the batch and the start date.`} art="/img/art/office.webp" />
     </>
   )
 }
