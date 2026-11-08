@@ -9,6 +9,8 @@
 // photo can be added the same way (same three sizes) with a caption that says what it shows.
 // The first slide is the page's main image (LCP): it loads first, the rest load later.
 
+import type { CourseGroup } from './site'
+
 export type HeroSlide = {
   /** Base name in public/img/hero/ (without size suffix or .webp). */
   name: string
@@ -20,19 +22,23 @@ export type HeroSlide = {
   to: string
   /** Alt text. Empty for decorative illustrations (the caption carries the meaning). */
   alt: string
-  /** Focus point on phones, where only a slice of the wide scene fits. Default '78% center'. */
+  /** Focus point on phones, where only a slice of the wide scene fits. Default '74% center'. */
   mobilePosition?: string
+  /** The headline's last word while this scene shows ("Learn computers for your <word>."). */
+  word: string
+  /** Course group whose codes show on the scene's 3D card (hidden courses left out). No group = the batch timings. */
+  group?: CourseGroup
 }
 
 export const HERO_SIZE = { width: 1672, height: 941 }
 export const heroSrc = (name: string) => `/img/hero/${name}.webp`
 export const heroSet = (name: string) => `/img/hero/${name}-sm.webp 768w, /img/hero/${name}-md.webp 1280w, /img/hero/${name}.webp 1672w`
 /** Phones: the stage is taller than wide, so the scene is drawn about 2.3x the screen width. */
-export const HERO_SIZES = '(max-width: 767px) 230vw, 100vw'
+export const HERO_SIZES = '(max-width: 1023px) 230vw, 100vw'
 
 export const HERO_SLIDES: HeroSlide[] = [
-  { name: 'hero-code', label: 'Programming', caption: 'C, C++, Java, Python and Oracle', to: '/courses?group=programming', alt: '' },
-  { name: 'hero-office', label: 'Office & accounts', caption: 'MS Office, Advanced Excel, Tally Prime with GST', to: '/courses?group=office', alt: '' },
-  { name: 'hero-achieve', label: 'Certified courses', caption: 'PGDCA, DCA and DCP diplomas · ISO 9001:2015 institute', to: '/courses?group=diploma', alt: '' },
-  { name: 'hero-career', label: 'Your next step', caption: 'Job-oriented computer skills, since 2000', to: '/contact', alt: '' },
+  { name: 'hero-code', word: 'degree', group: 'programming', label: 'Programming', caption: 'For Degree and B.Tech students', to: '/courses?group=programming', alt: '', mobilePosition: '66% center' },
+  { name: 'hero-office', word: 'business', group: 'office', label: 'Office & accounts', caption: 'MS Office, Advanced Excel, Tally Prime with GST', to: '/courses?group=office', alt: '', mobilePosition: '76% center' },
+  { name: 'hero-achieve', word: 'job', group: 'diploma', label: 'Certified diplomas', caption: 'From an ISO 9001:2015 certified institute', to: '/courses?group=diploma', alt: '', mobilePosition: '64% center' },
+  { name: 'hero-career', word: 'future', label: 'Your next step', caption: 'Morning and evening batches', to: '/contact', alt: '', mobilePosition: '80% center' },
 ]
