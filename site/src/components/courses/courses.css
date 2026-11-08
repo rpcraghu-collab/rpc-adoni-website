@@ -1,0 +1,17 @@
+/* Courses page: the code band types its lines in, the hero scenes crossfade. */
+@keyframes type-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes caret-blink { 50% { opacity: 0; } }
+.code-armed .code-line { clip-path: inset(0 100% 0 0); }
+.code-play .code-line { animation: type-in var(--d) steps(var(--n)) var(--t) both; }
+.caret { animation: caret-blink 1.05s steps(1) infinite; }
+
+.scene { opacity: 0; transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.scene.is-on { opacity: 1; }
+.scene.is-on img { animation: kb-a 9s cubic-bezier(0.3, 0.1, 0.3, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .code-armed .code-line, .code-play .code-line { clip-path: none; animation: none; }
+  .caret { animation: none; }
+  .scene { transition: none; }
+  .scene.is-on img { animation: none; }
+}

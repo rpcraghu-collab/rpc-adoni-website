@@ -83,7 +83,7 @@ export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: {
  * A headline whose lines slide up out of a mask, one after another. Same on-screen checks as Reveal, so it can
  * never stay hidden. Screen readers get the plain text once.
  */
-export function MaskLines({ lines, className, id, as = 'h2', delay = 0 }: { lines: ReactNode[]; className?: string; id?: string; as?: 'h2' | 'h3'; delay?: number }) {
+export function MaskLines({ lines, className, id, as = 'h2', delay = 0 }: { lines: ReactNode[]; className?: string; id?: string; as?: 'h1' | 'h2' | 'h3'; delay?: number }) {
   const ref = useRef<HTMLHeadingElement>(null)
   const visible = useRevealed(ref, delay)
   const reduce = useReducedMotion()
