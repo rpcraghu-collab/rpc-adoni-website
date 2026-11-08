@@ -8,6 +8,14 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 - Pages done: Home, About, Courses (filter), Course detail ×13 (`/courses/:slug`), Awards (lightbox), Admissions/Contact (form → Firestore when keys exist, then WhatsApp), 404.
 - Light + dark mode, mobile bottom bar, mega menu, SEO titles, JSON-LD, sitemap, robots, `vercel.json` (SPA rewrite + security headers).
 - Screenshots checked at 390 / 1440, light + dark (`shots/`, git-ignored): no console errors, no horizontal overflow.
+- 8 Nov 2026 inner-page redesign (founder rated it 2/10). Every page now matches Home: a shared `PageHero` (breadcrumbs and art tile) and shared course cards/CtaBand in `components/course.tsx`. Changes:
+  - Courses: `?group=` tabs and a fit guide.
+  - Course page: a sticky facts card and a course-aware bottom bar.
+  - About: a timeline.
+  - Awards: a full lightbox.
+  - Contact: focus on the first error, plus a 5 s save timeout.
+  - 404: popular courses.
+  Lighthouse mobile scores (Home, /courses/pgdca): a11y/BP/SEO 100, perf about 75. The LCP waits for the SPA JS; prerendering is the next speed step. Not pushed or deployed. Commits ac48e62..ba6b162.
 - Admin panel `/admin` built (Google sign-in; enquiries, courses, batches, gallery, settings, admins), emulator-tested.
 - Firebase project `rpc-adoni-4953b`: Google sign-in on, Firestore rules LIVE, web config in `site/src/lib/firebase-config.ts` (not secret, so Vercel needs no env vars). Owner rpcraghu@gmail.com is admin; extra admins at `admins/{email}`. Authorized domains include rpc-adoni.vercel.app.
 - Cloudinary cloud `q2nhyak9`, unsigned preset `rpc_gallery` (folder rpc-gallery, public ID disallowed, jpg/jpeg/png/webp/avif/heic only, incoming `c_limit,w_2400,h_2400`). Tested 8 Nov: upload OK, .txt rejected. Two 8×8 test PNGs left in rpc-gallery (harmless, delete in Media Library any time).
