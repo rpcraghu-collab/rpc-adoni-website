@@ -169,12 +169,16 @@ function Header() {
 }
 
 function BottomBar() {
+  const { pathname } = useLocation()
+  // On a course page, the bar asks about that course.
+  const course = pathname.startsWith('/courses/') ? listed().find((c) => c.slug === pathname.split('/')[2]) : undefined
+  const msg = course ? `Hello RPC, I want details about the ${course.code} course (fees and next batch).` : undefined
   return (
     <nav aria-label="Quick contact" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-glass pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 lg:hidden">
       <div className="grid grid-cols-3 gap-2 px-3 py-2">
         <a href={telLink()} className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-sm font-bold text-ink active:bg-surface-2"><Phone className="size-[1.1rem]" /> Call</a>
-        <a href={waLink()} target="_blank" rel="noopener" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#14803f] text-sm font-bold text-white active:scale-[0.97]"><WhatsAppIcon className="size-[1.15rem]" /> WhatsApp</a>
-        <Link to="/contact" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-accent text-sm font-bold text-white active:scale-[0.97]">Enquire</Link>
+        <a href={waLink(msg)} target="_blank" rel="noopener" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#14803f] text-sm font-bold text-white active:scale-[0.97]"><WhatsAppIcon className="size-[1.15rem]" /> WhatsApp</a>
+        <Link to={course ? `/contact?course=${course.slug}` : '/contact'} className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-accent text-sm font-bold text-white active:scale-[0.97]">Enquire</Link>
       </div>
     </nav>
   )
@@ -192,31 +196,32 @@ function WhatsAppFab() {
 function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[#071330] text-white">
-      <div className="container-x relative z-10 grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
-        <div>
+      <div className="container-x relative z-10 grid grid-cols-2 gap-x-6 gap-y-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1.2fr] md:gap-12 md:py-16">
+        <div className="col-span-2 md:col-span-1">
           <Logo invert />
           <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-white/70">Real Point Computer Education. Job-oriented computer courses in Adoni since 2000. ISO 9001:2015 certified.</p>
           <p className="mt-5 font-display text-lg font-semibold text-white/90">Learn Today… Build a Better Tomorrow.</p>
         </div>
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/60">Explore</p>
-          <ul className="mt-4 space-y-2.5 text-[0.95rem]">
-            {NAV.map((n) => <li key={n.to}><Link to={n.to} className="text-white/80 hover:text-white">{n.label}</Link></li>)}
+          <ul className="mt-2 text-[0.95rem]">
+            {NAV.map((n) => <li key={n.to}><Link to={n.to} className="inline-flex min-h-11 items-center text-white/80 hover:text-white">{n.label}</Link></li>)}
           </ul>
         </div>
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/60">Courses</p>
-          <ul className="mt-4 space-y-2.5 text-[0.95rem]">
-            {listed().slice(0, 6).map((c) => <li key={c.slug}><Link to={`/courses/${c.slug}`} className="text-white/80 hover:text-white">{c.code}</Link></li>)}
+          <ul className="mt-2 text-[0.95rem]">
+            {listed().slice(0, 6).map((c) => <li key={c.slug}><Link to={`/courses/${c.slug}`} className="inline-flex min-h-11 items-center text-white/80 hover:text-white">{c.code}</Link></li>)}
+            <li><Link to="/courses" className="inline-flex min-h-11 items-center gap-1 font-bold text-white hover:underline">All courses <ArrowRight className="size-4" /></Link></li>
           </ul>
         </div>
-        <div className="space-y-4 text-[0.95rem]">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/60">Visit or call</p>
-          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`} target="_blank" rel="noopener" className="flex gap-3 text-white/80 hover:text-white"><MapPin className="mt-0.5 size-4 shrink-0" />{SITE.address}</a>
-          <a href={telLink()} className="flex gap-3 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone}</a>
-          <a href={`mailto:${SITE.email}`} className="flex gap-3 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email}</a>
-          <p className="flex gap-3 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" /><span>{SITE.timings.map((t) => <span key={t.label} className="block">{t.label}: {t.time}</span>)}</span></p>
-          <a href={SITE.facebook} target="_blank" rel="noopener" className="inline-flex items-center gap-1 font-bold text-white hover:underline">Facebook: rpcadoni <ArrowUpRight className="size-4" /></a>
+        <div className="col-span-2 space-y-1 text-[0.95rem] md:col-span-1">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-white/60">Visit or call</p>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`} target="_blank" rel="noopener" className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><MapPin className="mt-0.5 size-4 shrink-0" />{SITE.address}</a>
+          <a href={telLink()} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone}</a>
+          <a href={`mailto:${SITE.email}`} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email}</a>
+          <p className="flex gap-3 py-2.5 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" /><span>{SITE.timings.map((t) => <span key={t.label} className="block">{t.label}: {t.time}</span>)}</span></p>
+          <a href={SITE.facebook} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1 font-bold text-white hover:underline">Facebook: rpcadoni <ArrowUpRight className="size-4" /></a>
         </div>
       </div>
       <div className="relative z-10 border-t border-white/10">
