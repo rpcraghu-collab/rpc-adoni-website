@@ -146,7 +146,7 @@ export default function Contact() {
         <div className="space-y-4">
           <a href={waLink()} target="_blank" rel="noopener" className="flex items-center gap-4 rounded-[1.5rem] bg-[#14803f] p-5 text-white transition-transform hover:-translate-y-0.5 sm:p-6">
             <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white/15"><WhatsAppIcon className="size-7" /></span>
-            <span className="min-w-0 flex-1"><b className="block font-display text-xl">Chat on WhatsApp</b><span className="text-sm text-white/85">Fastest reply for fees and batches</span></span>
+            <span className="min-w-0 flex-1"><b className="block font-display text-xl">Chat on WhatsApp</b><span className="text-sm text-white">Fastest reply for fees and batches</span></span>
             <ArrowUpRight className="size-5 shrink-0 opacity-80" />
           </a>
           <div className="rounded-[1.5rem] bg-surface px-5 ring-1 ring-line sm:px-6">
