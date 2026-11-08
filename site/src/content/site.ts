@@ -40,6 +40,8 @@ export type Course = {
   modules: { title?: string; items: string[] }[]
   tools: string[]
   featured?: boolean
+  hidden?: boolean // set in the admin panel: removed from lists and the enquiry form
+  fee?: string // set in the admin panel, e.g. 'Rs 6,000 (2 instalments)'
 }
 
 export const GROUPS: { id: CourseGroup; label: string; blurb: string; art: string }[] = [
@@ -205,4 +207,6 @@ export const FAQS = [
 
 export const waLink = (text = 'Hello RPC, I want details about your computer courses.') =>
   `https://wa.me/${SITE.phoneRaw}?text=${encodeURIComponent(text)}`
-export const telLink = `tel:${SITE.phone.replace(/\s/g, '')}`
+export const telLink = () => `tel:${SITE.phone.replace(/\s/g, '')}`
+/** Courses shown in lists, menus and the enquiry form (hidden ones are left out). */
+export const listed = () => COURSES.filter((c) => !c.hidden)

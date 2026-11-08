@@ -21,6 +21,12 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 
 We are ahead: all public pages are built on 8 Nov.
 
+## Founder instructions (8 Nov 2026, ~11:10 am): FINISH THE WHOLE SITE TODAY
+- GitHub, Firebase, Cloudinary and Vercel accounts are ALREADY CREATED on the client's Gmail rpcraghu@gmail.com.
+- Browser: Chrome deviceId `af87ad88-dbd5-43f3-80d5-6806a8240e56` (Profile 191, verified as rpcraghu@gmail.com). Use ONLY it for RPC accounts. If it's missing: `"C:/Program Files/Google/Chrome/Application/chrome.exe" --profile-directory="Profile 191"`.
+- Do everything yourself: Firebase project + web app keys → `site/.env`, Auth + Firestore rules (emulator-tested), admin panel, Cloudinary upload preset, GitHub repo push, Vercel project + deploy. The founder wants it complete today, so the timeline above is replaced.
+- **Do NOT send the client any update messages** (this cancels the daily 7 pm update). Ask the client only for information that is truly required.
+
 - 3D illustrations done (ChatGPT, Govardhan, 8 Nov): `site/public/img/art/*.webp`, sources + prompts in `assets/ai-art/`. Used on Courses (group cards + selected-group banner with WhatsApp button), course detail panel, Home final CTA.
 
 ## Next steps

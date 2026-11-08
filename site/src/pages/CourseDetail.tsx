@@ -7,21 +7,21 @@ import NotFound from './NotFound'
 
 export default function CourseDetail() {
   const { slug } = useParams()
-  const c = COURSES.find((x) => x.slug === slug)
+  const c = COURSES.find((x) => x.slug === slug && !x.hidden)
   if (!c) return <NotFound />
-  const related = COURSES.filter((x) => x.group === c.group && x.slug !== c.slug).slice(0, 3)
+  const related = COURSES.filter((x) => x.group === c.group && x.slug !== c.slug && !x.hidden).slice(0, 3)
   const msg = `Hello RPC, I want details about the ${c.code} course (fees and next batch).`
   const facts = [
     { icon: Users, label: 'Who it is for', value: c.forWho },
     { icon: Clock, label: 'Duration', value: c.duration.length ? c.duration.map((d, i) => <span key={d} className="block">{i > 0 && 'or '}{d}</span>) : 'Ask us' },
     { icon: CalendarDays, label: 'Batches', value: SITE.timings.map((t) => <span key={t.label} className="block">{t.time}</span>) },
-    { icon: IndianRupee, label: 'Fees', value: 'Ask for the current fee' },
+    { icon: IndianRupee, label: 'Fees', value: c.fee || 'Ask for the current fee' },
   ]
   return (
     <>
       <Seo path={`/courses/${c.slug}`} title={`${c.code} course in Adoni`} description={`${c.name} at RPC Adoni. ${c.tagline} ${c.forWho}.`} />
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Course', name: c.name, description: c.tagline, provider: { '@type': 'EducationalOrganization', name: SITE.name, sameAs: SITE.url } }} />
-      <PageHero eyebrow={GROUPS.find((g) => g.id === c.group)!.label} title={<>{c.code}{c.name !== c.code && <span className="mt-3 block text-[0.42em] font-bold leading-tight text-ink-soft">{c.name}</span>}</>} text={c.tagline}>
+      <PageHero eyebrow={GROUPS.find((g) => g.id === c.group)?.label ?? 'Course'} title={<>{c.code}{c.name !== c.code && <span className="mt-3 block text-[0.42em] font-bold leading-tight text-ink-soft">{c.name}</span>}</>} text={c.tagline}>
         <Link to="/courses" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-muted hover:text-ink"><ArrowLeft className="size-4" /> All courses</Link>
       </PageHero>
 

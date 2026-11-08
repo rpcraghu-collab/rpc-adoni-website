@@ -2,7 +2,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'motion/react'
 import { ArrowRight, ArrowUpRight, ChevronDown, Clock, Mail, MapPin, Menu, Moon, Phone, Sun, X } from 'lucide-react'
-import { COURSES, GROUPS, SITE, telLink, waLink } from '../content/site'
+import { GROUPS, SITE, listed, telLink, waLink } from '../content/site'
+import { LIVE } from '../lib/content'
 import { useTheme } from '../lib/theme'
 import { cn } from '../lib/cn'
 import { Logo, WhatsAppIcon } from './ui'
@@ -42,7 +43,7 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
           <div key={g.id} className="border-r border-line p-5">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted">{g.label}</p>
             <ul className="mt-3 space-y-0.5">
-              {COURSES.filter((c) => c.group === g.id).map((c) => (
+              {listed().filter((c) => c.group === g.id).map((c) => (
                 <li key={c.slug}>
                   <Link onClick={onClose} to={`/courses/${c.slug}`} className="group flex items-center justify-between rounded-xl px-2.5 py-2 text-[0.95rem] font-semibold text-ink hover:bg-surface-2">
                     {c.code}
@@ -119,7 +120,7 @@ function Header() {
 
           <div className="flex items-center gap-1">
             <ThemeToggle />
-            <a href={telLink} className="hidden items-center gap-2 rounded-full px-3 py-2.5 text-[0.95rem] font-bold text-ink hover:bg-surface-2 xl:inline-flex">
+            <a href={telLink()} className="hidden items-center gap-2 rounded-full px-3 py-2.5 text-[0.95rem] font-bold text-ink hover:bg-surface-2 xl:inline-flex">
               <Phone className="size-4" /> {SITE.phone}
             </a>
             <Link to="/contact" className="btn-primary hidden min-h-11 px-5 lg:inline-flex">Enquire now</Link>
@@ -155,7 +156,7 @@ function Header() {
               </ul>
               <p className="mt-6 text-xs font-bold uppercase tracking-[0.14em] text-muted">Popular courses</p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {COURSES.filter((c) => c.featured).map((c) => (
+                {listed().filter((c) => c.featured).map((c) => (
                   <Link key={c.slug} to={`/courses/${c.slug}`} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-ink">{c.code}</Link>
                 ))}
               </div>
@@ -171,7 +172,7 @@ function BottomBar() {
   return (
     <nav aria-label="Quick contact" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-glass pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 lg:hidden">
       <div className="grid grid-cols-3 gap-2 px-3 py-2">
-        <a href={telLink} className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-sm font-bold text-ink active:bg-surface-2"><Phone className="size-[1.1rem]" /> Call</a>
+        <a href={telLink()} className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-sm font-bold text-ink active:bg-surface-2"><Phone className="size-[1.1rem]" /> Call</a>
         <a href={waLink()} target="_blank" rel="noopener" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#178a48] text-sm font-bold text-white active:scale-[0.97]"><WhatsAppIcon className="size-[1.15rem]" /> WhatsApp</a>
         <Link to="/contact" className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-accent text-sm font-bold text-white active:scale-[0.97]">Enquire</Link>
       </div>
@@ -206,18 +207,15 @@ function Footer() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/60">Courses</p>
           <ul className="mt-4 space-y-2.5 text-[0.95rem]">
-            {['pgdca', 'dca', 'dcp', 'oam', 'oam-advanced', 'cca'].map((s) => {
-              const c = COURSES.find((x) => x.slug === s)!
-              return <li key={s}><Link to={`/courses/${s}`} className="text-white/80 hover:text-white">{c.code}</Link></li>
-            })}
+            {listed().slice(0, 6).map((c) => <li key={c.slug}><Link to={`/courses/${c.slug}`} className="text-white/80 hover:text-white">{c.code}</Link></li>)}
           </ul>
         </div>
         <div className="space-y-4 text-[0.95rem]">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/60">Visit or call</p>
           <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`} target="_blank" rel="noopener" className="flex gap-3 text-white/80 hover:text-white"><MapPin className="mt-0.5 size-4 shrink-0" />{SITE.address}</a>
-          <a href={telLink} className="flex gap-3 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone}</a>
+          <a href={telLink()} className="flex gap-3 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone}</a>
           <a href={`mailto:${SITE.email}`} className="flex gap-3 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email}</a>
-          <p className="flex gap-3 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" />8 am – 1 pm · 4 pm – 8 pm</p>
+          <p className="flex gap-3 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" /><span>{SITE.timings.map((t) => <span key={t.label} className="block">{t.label}: {t.time}</span>)}</span></p>
           <a href={SITE.facebook} target="_blank" rel="noopener" className="inline-flex items-center gap-1 font-bold text-white hover:underline">Facebook: rpcadoni <ArrowUpRight className="size-4" /></a>
         </div>
       </div>
@@ -236,6 +234,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <a href="#main" className="sr-only z-50 rounded-full bg-accent px-4 py-2 font-bold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+      {LIVE.announcement && (
+        <Link to="/contact" className="block bg-brand px-4 py-2.5 text-center text-sm font-bold text-white hover:underline">
+          {LIVE.announcement} <ArrowRight className="inline size-4 align-[-0.2em]" />
+        </Link>
+      )}
       <Header />
       <main id="main">{children}</main>
       <Footer />

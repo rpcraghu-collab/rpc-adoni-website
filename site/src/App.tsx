@@ -1,9 +1,12 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useSyncExternalStore } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { Toaster } from 'sonner'
 import Layout from './components/Layout'
 import Home from './pages/Home'
+import { getVersion, subscribe } from './lib/content'
+
+const AdminApp = lazy(() => import('./admin/AdminApp'))
 
 const About = lazy(() => import('./pages/About'))
 const Courses = lazy(() => import('./pages/Courses'))
@@ -32,9 +35,22 @@ function PageSkeleton() {
 }
 
 export default function App() {
+  // Re-render every page when the admin's live content arrives or changes.
+  useSyncExternalStore(subscribe, getVersion)
   return (
     <MotionConfig reducedMotion="user">
       <ScrollTop />
+      <Routes>
+        <Route path="/admin/*" element={<Suspense fallback={null}><AdminApp /></Suspense>} />
+        <Route path="*" element={<Site />} />
+      </Routes>
+      <Toaster position="top-center" richColors closeButton />
+    </MotionConfig>
+  )
+}
+
+function Site() {
+  return (
       <Layout>
         <Suspense fallback={<PageSkeleton />}>
           <Routes>
@@ -48,7 +64,5 @@ export default function App() {
           </Routes>
         </Suspense>
       </Layout>
-      <Toaster position="top-center" richColors closeButton />
-    </MotionConfig>
   )
 }

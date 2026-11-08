@@ -1,20 +1,23 @@
 // Firebase loads only when needed (form submit, admin), so it never slows the first page load.
-// Keys come from .env (VITE_FIREBASE_*), never from git.
-const cfg = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+// The web config is public by design (see firebase-config.ts); Firestore rules protect the data.
+import { firebaseConfig } from './firebase-config'
+
+export const firebaseReady = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId)
+
+export async function getFirebaseApp() {
+  const { initializeApp, getApps } = await import('firebase/app')
+  return getApps()[0] ?? initializeApp(firebaseConfig)
 }
 
-export const firebaseReady = Boolean(cfg.apiKey && cfg.projectId)
+/** Dev only (VITE_EMULATOR=1): talk to the local emulators, never the live project. Stripped from production builds. */
+export const EMU = import.meta.env.DEV && import.meta.env.VITE_EMULATOR === '1'
+let emuDb = false
 
 export async function getDb() {
-  const [{ initializeApp, getApps }, { getFirestore }] = await Promise.all([import('firebase/app'), import('firebase/firestore')])
-  const app = getApps()[0] ?? initializeApp(cfg)
-  return getFirestore(app)
+  const [app, { getFirestore, connectFirestoreEmulator }] = await Promise.all([getFirebaseApp(), import('firebase/firestore')])
+  const db = getFirestore(app)
+  if (EMU && !emuDb) { connectFirestoreEmulator(db, '127.0.0.1', 8085); emuDb = true }
+  return db
 }
 
 export type Enquiry = { name: string; phone: string; course: string; batch: string; message?: string }

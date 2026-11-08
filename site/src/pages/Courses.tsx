@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight, Clock, Users } from 'lucide-react'
-import { COURSES, GROUPS, waLink, type CourseGroup } from '../content/site'
+import { GROUPS, listed, waLink, type CourseGroup } from '../content/site'
 import { Seo, Tilt, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
 import { cn } from '../lib/cn'
@@ -11,8 +11,8 @@ type Filter = 'all' | CourseGroup
 
 export default function Courses() {
   const [f, setF] = useState<Filter>('all')
-  const list = COURSES.filter((c) => f === 'all' || c.group === f)
-  const tabs: { id: Filter; label: string }[] = [{ id: 'all', label: `All (${COURSES.length})` }, ...GROUPS.map((g) => ({ id: g.id, label: g.label }))]
+  const list = listed().filter((c) => f === 'all' || c.group === f)
+  const tabs: { id: Filter; label: string }[] = [{ id: 'all', label: `All (${listed().length})` }, ...GROUPS.map((g) => ({ id: g.id, label: g.label }))]
   return (
     <>
       <Seo path="/courses" title="Computer courses in Adoni: PGDCA, DCA, OAM, Tally, Java, Python" description="All courses at RPC Adoni: PGDCA, PGDCA Advanced, DCA, DCP, OAM, OAM Advanced, OAM PRO, CCA, and C, C++, Java, Oracle, Python. Morning and evening batches." />

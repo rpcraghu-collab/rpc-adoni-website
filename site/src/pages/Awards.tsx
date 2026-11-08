@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronLeft, ChevronRight, Expand, X } from 'lucide-react'
 import { AWARDS, SITE } from '../content/site'
+import { LIVE } from '../lib/content'
+import { cldUrl } from '../lib/cloudinary'
 import { Reveal, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
 
@@ -48,6 +50,22 @@ export default function Awards() {
           ))}
         </ul>
       </section>
+
+      {LIVE.gallery.length > 0 && (
+        <section className="container-x pb-24" aria-labelledby="gallery-h">
+          <h2 id="gallery-h" className="text-3xl font-extrabold sm:text-4xl">Life at RPC</h2>
+          <ul className="mt-8 columns-2 gap-4 md:columns-3 [&>li]:mb-4">
+            {LIVE.gallery.map((g) => (
+              <li key={g.id} className="break-inside-avoid overflow-hidden rounded-[1.2rem] bg-surface-2">
+                <figure>
+                  <img src={cldUrl(g.url, 640)} srcSet={`${cldUrl(g.url, 480)} 480w, ${cldUrl(g.url, 960)} 960w`} sizes="(min-width:768px) 30vw, 46vw" loading="lazy" alt={g.caption || 'Students and events at RPC Adoni'} className="w-full" />
+                  {g.caption && <figcaption className="px-3 py-2.5 text-sm font-semibold text-ink-soft">{g.caption}</figcaption>}
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <AnimatePresence>
         {a && (

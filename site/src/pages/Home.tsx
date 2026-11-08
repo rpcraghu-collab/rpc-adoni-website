@@ -5,11 +5,12 @@ import {
   ArrowRight, ArrowUpRight, Award, BadgeCheck, BookOpen, Building2, Clock, FileCheck2, GraduationCap, Laptop,
   MonitorCheck, Plus, Projector, Snowflake, Users, Zap,
 } from 'lucide-react'
-import { AWARDS, COURSES, CREDENTIALS, FACILITIES, FAQS, FINDER, SITE, TOOLS, waLink, type Course } from '../content/site'
+import { AWARDS, COURSES, CREDENTIALS, FACILITIES, FAQS, FINDER, SITE, TOOLS, listed, waLink, type Course } from '../content/site'
+import { LIVE } from '../lib/content'
 import { JsonLd, Magnetic, Reveal, SectionHead, Seo, Tilt, WhatsAppIcon } from '../components/ui'
 import { cn } from '../lib/cn'
 
-const bySlug = (s: string) => COURSES.find((c) => c.slug === s)!
+const bySlug = (s: string) => COURSES.find((c) => c.slug === s && !c.hidden)
 const ease = [0.22, 1, 0.36, 1] as const
 
 function Hero() {
@@ -112,6 +113,40 @@ function ProofStrip() {
   )
 }
 
+function Batches() {
+  const today = new Date().toISOString().slice(0, 10)
+  const list = LIVE.batches.filter((b) => b.starts >= today).slice(0, 4)
+  if (!list.length) return null
+  const fmt = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+  return (
+    <section className="container-x pb-16" aria-labelledby="batches-h">
+      <div className="card flex flex-col gap-5 p-5 sm:p-7 lg:flex-row lg:items-center">
+        <div className="lg:w-56 lg:shrink-0">
+          <p className="eyebrow">Admissions open</p>
+          <h2 id="batches-h" className="mt-2 text-2xl font-extrabold">New batches</h2>
+        </div>
+        <ul className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {list.map((b) => {
+            const c = COURSES.find((x) => x.code === b.course)
+            return (
+              <li key={b.id}>
+                <Link to={`/contact${c ? `?course=${c.slug}` : ''}`} className="flex h-full items-center gap-4 rounded-2xl bg-surface-2 p-4 transition-colors hover:bg-line/60">
+                  <span className="grid size-14 shrink-0 place-items-center rounded-xl bg-ink text-center font-display text-sm font-extrabold leading-tight text-bg">{fmt(b.starts)}</span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-lg font-bold text-ink">{b.course}</span>
+                    <span className="block text-sm text-ink-soft">{b.time}</span>
+                    {b.note && <span className="block text-xs font-semibold text-accent-text">{b.note}</span>}
+                  </span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
 function CourseRow({ c }: { c: Course }) {
   return (
     <Link to={`/courses/${c.slug}`} className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-ink/25 sm:p-5">
@@ -151,7 +186,7 @@ function Finder() {
         <div role="tabpanel" aria-live="polite" className="min-h-[22rem]">
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.ul key={who} className="space-y-3" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3, ease }}>
-              {pick.slugs.map((s) => <li key={s}><CourseRow c={bySlug(s)} /></li>)}
+              {pick.slugs.map(bySlug).filter((c): c is Course => !!c).map((c) => <li key={c.slug}><CourseRow c={c} /></li>)}
             </motion.ul>
           </AnimatePresence>
         </div>
@@ -162,15 +197,15 @@ function Finder() {
 
 function Bento() {
   const pg = bySlug('pgdca')
-  const langs = COURSES.filter((c) => c.group === 'programming')
+  const langs = listed().filter((c) => c.group === 'programming')
   return (
     <section className="container-x pb-20 lg:pb-28">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <SectionHead eyebrow="Flagship programs" title="Four courses most students start with." />
-        <Reveal><Link to="/courses" className="inline-flex items-center gap-2 font-bold text-ink hover:text-accent-text">All 13 courses <ArrowRight className="size-4" /></Link></Reveal>
+        <Reveal><Link to="/courses" className="inline-flex items-center gap-2 font-bold text-ink hover:text-accent-text">All {listed().length} courses <ArrowRight className="size-4" /></Link></Reveal>
       </div>
       <div className="mt-10 grid gap-4 md:grid-cols-6">
-        <Reveal className="md:col-span-3 md:row-span-3">
+        {pg && <Reveal className="md:col-span-3 md:row-span-3">
           <Tilt className="h-full rounded-[1.6rem]" max={4}>
             <Link to={`/courses/${pg.slug}`} className="flex h-full flex-col rounded-[1.6rem] bg-brand p-7 text-white sm:p-9">
               <div className="flex items-start justify-between gap-4">
@@ -193,9 +228,10 @@ function Bento() {
               </div>
             </Link>
           </Tilt>
-        </Reveal>
+        </Reveal>}
         {(['oam', 'oam-advanced', 'oam-pro'] as const).map((s, i) => {
           const c = bySlug(s)
+          if (!c) return null
           return (
             <Reveal key={s} delay={0.08 * (i + 1)} className="md:col-span-3">
               <Tilt className="h-full rounded-[1.6rem]" max={5}>
@@ -412,6 +448,7 @@ export default function Home() {
       <JsonLd data={jsonLd} />
       <Hero />
       <ProofStrip />
+      <Batches />
       <Finder />
       <Bento />
       <Marquee />

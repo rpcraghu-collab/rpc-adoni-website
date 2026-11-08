@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Clock, Loader2, Mail, MapPin, Phone, Send } from 'lucide-react'
-import { COURSES, SITE, telLink, waLink } from '../content/site'
+import { SITE, listed, telLink, waLink } from '../content/site'
 import { Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
 import { firebaseReady, saveEnquiry } from '../lib/firebase'
@@ -12,8 +12,8 @@ const field = 'mt-2 h-14 w-full rounded-xl border border-line bg-surface px-4 te
 
 export default function Contact() {
   const [params] = useSearchParams()
-  const initial = COURSES.find((c) => c.slug === params.get('course'))?.code ?? ''
-  const [form, setForm] = useState({ name: '', phone: '', course: initial, batch: 'Morning' })
+  const initial = listed().find((c) => c.slug === params.get('course'))?.code ?? ''
+  const [form, setForm] = useState({ name: '', phone: '', course: initial, batch: SITE.timings[0]?.label.split(' ')[0] ?? 'Morning' })
   const [err, setErr] = useState<Partial<Record<keyof typeof form, string>>>({})
   const [busy, setBusy] = useState(false)
   const set = (k: keyof typeof form) => (e: { target: { value: string } }) => setForm((f) => ({ ...f, [k]: e.target.value }))
@@ -41,7 +41,7 @@ export default function Contact() {
   }
 
   const info = [
-    { icon: Phone, label: 'Call', value: SITE.phone, href: telLink },
+    { icon: Phone, label: 'Call', value: SITE.phone, href: telLink() },
     { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
     { icon: MapPin, label: 'Visit', value: SITE.address, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}` },
   ]
@@ -55,7 +55,7 @@ export default function Contact() {
           <h2 className="text-2xl font-bold">Enquiry form</h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <label className="block text-sm font-bold text-ink">Your name
-              <input value={form.name} onChange={set('name')} autoComplete="name" className={cn(field, err.name && 'border-accent')} placeholder="Full name" aria-invalid={!!err.name} aria-describedby={err.name ? 'e-name' : undefined} />
+              <input value={form.name} onChange={set('name')} autoComplete="name" maxLength={80} className={cn(field, err.name && 'border-accent')} placeholder="Full name" aria-invalid={!!err.name} aria-describedby={err.name ? 'e-name' : undefined} />
               {err.name && <span id="e-name" className="mt-1.5 block text-sm font-semibold text-accent-text">{err.name}</span>}
             </label>
             <label className="block text-sm font-bold text-ink">Mobile number
@@ -65,7 +65,7 @@ export default function Contact() {
             <label className="block text-sm font-bold text-ink sm:col-span-2">Course
               <select value={form.course} onChange={set('course')} className={cn(field, 'appearance-none', err.course && 'border-accent')} aria-invalid={!!err.course} aria-describedby={err.course ? 'e-course' : undefined}>
                 <option value="">Choose a course</option>
-                {COURSES.map((c) => <option key={c.slug} value={c.code}>{c.code}{c.name !== c.code ? ` · ${c.name}` : ''}</option>)}
+                {listed().map((c) => <option key={c.slug} value={c.code}>{c.code}{c.name !== c.code ? ` · ${c.name}` : ''}</option>)}
                 <option value="Not sure, please guide me">Not sure, please guide me</option>
               </select>
               {err.course && <span id="e-course" className="mt-1.5 block text-sm font-semibold text-accent-text">{err.course}</span>}
