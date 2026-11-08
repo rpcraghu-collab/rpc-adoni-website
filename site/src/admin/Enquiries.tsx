@@ -55,7 +55,8 @@ export default function Enquiries({ ctx }: { ctx: AdminCtx }) {
   }
 
   function exportCsv() {
-    const esc = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`
+    // A leading ' stops Excel running visitor-typed text (e.g. =HYPERLINK(...)) as a formula.
+    const esc = (v: unknown) => { const s = String(v ?? ''); return `"${(/^[=+\-@\t\r]/.test(s) ? `'${s}` : s).replace(/"/g, '""')}"` }
     const lines = [['Date', 'Name', 'Mobile', 'Course', 'Batch', 'Status', 'Note'].join(',')]
     shown.forEach((r) => lines.push([when(r.createdAt), r.name, r.phone, r.course, r.batch, STATUS.find((s) => s.id === r.status)?.label ?? r.status, r.note].map(esc).join(',')))
     const url = URL.createObjectURL(new Blob(['﻿' + lines.join('\n')], { type: 'text/csv' }))

@@ -46,6 +46,8 @@ const HEAD_TAG = /<title>[\s\S]*?<\/title>|<meta (?:name="description"|property=
 
 let count = 0
 for (const route of ssr.routes()) {
+  // Last guard: a route is only lower-case letters, digits, dashes and slashes, so it can't break the HTML or leave dist/.
+  if (!/^\/[a-z0-9/-]*$/.test(route) || route.includes('//')) throw new Error(`prerender: unsafe route ${route}`)
   let body = ssr.render(route)
   const head = []
   body = body.replace(HEAD_TAG, (m) => { head.push(m); return '' })
