@@ -33,6 +33,7 @@ We are ahead: all public pages are built on 8 Nov.
 - Do everything yourself: Firebase project + web app keys → `site/.env`, Auth + Firestore rules (emulator-tested), admin panel, Cloudinary upload preset, GitHub repo push, Vercel project + deploy. The founder wants it complete today, so the timeline above is replaced.
 - **Do NOT send the client any update messages** (this cancels the daily 7 pm update). Ask the client only for information that is truly required.
 
+- **8 Nov afternoon (founder rated UI/UX 2/10, said pages don't open, wants light default):** fixed + LIVE. e42a184: light default, mobile menu closes on tap, pages preloaded, stale-chunk reload after deploys. 6895b93: Home redesign: hero with a navy "What do you want to learn?" picker (3D art tiles to `/courses?group=<id>`), one merged course finder (cards with art + durations), light "Our story" (award photo, 2000/2006/Today timeline, award thumbs), compact facilities + timings card, FAQ, CTA; ProofStrip/Marquee/dark awards band removed; cooler light palette (bg #f4f6fa). Mobile home 10.4k to 7.9k px. Live-checked: 7 pages x 390/1440 x light/dark, no overflow/errors, menu links open. Waiting for the founder's new rating.
 - 3D illustrations done (ChatGPT, Govardhan, 8 Nov): `site/public/img/art/*.webp`, sources + prompts in `assets/ai-art/`. Used on Courses (group cards + selected-group banner with WhatsApp button), course detail panel, Home final CTA.
 
 ## Next steps
