@@ -9,3 +9,4 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
 
  8 Nov 3:20 pm blank-page fix (pages bundled + error boundary).
  8 Nov 4 pm prerendered pages (no white screen on first open).
+ 8 Nov 6 pm inline CSS + font preload (faster first paint, no text jump).
