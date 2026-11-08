@@ -4,6 +4,16 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Arial sized to Manrope's metrics (measured 8 Nov), so text doesn't jump when Manrope arrives. */
+@font-face {
+  font-family: 'Manrope Fallback';
+  src: local('Arial'), local('ArialMT'), local('Roboto');
+  size-adjust: 98.9%;
+  ascent-override: 108.2%;
+  descent-override: 30.3%;
+  line-gap-override: 0%;
+}
+
 :root {
   --bg: #f4f6fa;
   --surface: #ffffff;
@@ -58,7 +68,7 @@
   --color-gold-text: var(--gold-text);
   --color-glass: var(--glass);
   --font-display: 'Bricolage Grotesque Variable', 'Arial Narrow', system-ui, sans-serif;
-  --font-sans: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Manrope Variable', 'Manrope Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 

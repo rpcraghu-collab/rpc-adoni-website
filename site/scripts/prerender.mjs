@@ -1,15 +1,28 @@
 // Turns every public page into ready-made HTML after `vite build` (runs on Vercel too).
 // Phones on slow data then show the real page from the first byte instead of a white screen,
 // and the app attaches to it when its JavaScript arrives (see src/main.tsx).
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 const dist = path.resolve('dist')
-const shell = readFileSync(path.join(dist, 'index.html'), 'utf8')
+const appShell = readFileSync(path.join(dist, 'index.html'), 'utf8')
 
 // Plain app shell for /admin and unknown addresses (vercel.json rewrites to it).
-writeFileSync(path.join(dist, 'app.html'), shell)
+writeFileSync(path.join(dist, 'app.html'), appShell)
+
+// Public pages: CSS inlined (no render-blocking request on slow data) and the two Latin
+// fonts preloaded (they start with the HTML instead of after the CSS, so no late text jump).
+const assets = readdirSync(path.join(dist, 'assets'))
+const cssLink = appShell.match(/<link rel="stylesheet"[^>]*href="\/assets\/([^"]+\.css)"[^>]*>/)
+if (!cssLink) throw new Error('prerender: stylesheet link not found')
+const css = readFileSync(path.join(dist, 'assets', cssLink[1]), 'utf8')
+const fonts = ['manrope-latin-wght-normal', 'bricolage-grotesque-latin-wght-normal'].map((p) => {
+  const f = assets.find((a) => a.startsWith(p + '-') && a.endsWith('.woff2'))
+  if (!f) throw new Error(`prerender: font ${p} not found`)
+  return `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`
+})
+const shell = appShell.replace(cssLink[0], `${fonts.join('\n    ')}\n    <style>${css.replace(/<\/style/gi, '<\\/style')}</style>`)
 
 const ssr = await import(pathToFileURL(path.resolve('dist-ssr/entry-server.js')).href)
 

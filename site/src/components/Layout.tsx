@@ -91,9 +91,10 @@ function Header() {
     <header className="sticky top-0 z-40 pt-[env(safe-area-inset-top)]">
       <div className={cn('transition-[background-color,box-shadow,border-color] duration-300', scrolled ? 'border-b border-line bg-glass shadow-[0_8px_30px_-20px_rgb(11_30_74/0.4)] backdrop-blur-xl backdrop-saturate-150' : 'border-b border-transparent')}>
         <nav className="container-x flex h-[4.5rem] items-center justify-between gap-4" aria-label="Main">
-          <Link to="/" className="flex items-center gap-3" aria-label="RPC since 2000 Real Point Computer Education, home">
+          <Link to="/" className="flex items-center gap-3">
             <Logo />
             <span className="hidden text-[0.8rem] font-bold leading-tight text-ink-soft sm:block">Real Point<br />Computer Education</span>
+            <span className="sr-only"> (home)</span>
           </Link>
 
           <ul className="hidden items-center gap-1 lg:flex">

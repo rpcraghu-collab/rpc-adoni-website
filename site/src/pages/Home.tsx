@@ -66,7 +66,7 @@ function Hero() {
                 <motion.li key={g.id} initial={enter({ opacity: 0, x: 18 })} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 + i * 0.08, ease }}>
                   <Link to={`/courses?group=${g.id}`} className="group flex items-center gap-4 rounded-[1.4rem] bg-surface p-2.5 pr-4 transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]">
                     <span className={cn('grid size-[5.25rem] shrink-0 place-items-center rounded-[1.05rem] sm:size-28', TINT[g.id])}>
-                      <img src={g.art} srcSet={artSet(g.art)} sizes="160px" alt="" width={160} height={160} decoding="async" fetchPriority={i === 0 ? 'high' : undefined} className="size-[94%] object-contain drop-shadow-[0_10px_12px_rgb(11_30_74/0.18)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105" />
+                      <img src={g.art} srcSet={artSet(g.art)} sizes="160px" alt="" width={160} height={160} decoding="async" className="size-[94%] object-contain drop-shadow-[0_10px_12px_rgb(11_30_74/0.18)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105" />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-display text-[1.2rem] font-bold leading-tight text-ink sm:text-[1.35rem]">{g.label}</span>
