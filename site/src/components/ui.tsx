@@ -1,5 +1,5 @@
-import { useRef, type ReactNode, type PointerEvent } from 'react'
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react'
+import { useEffect, useRef, useState, type ReactNode, type PointerEvent } from 'react'
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion, useInView } from 'motion/react'
 import { cn } from '../lib/cn'
 import { enter } from '../lib/boot'
 
@@ -20,14 +20,42 @@ export function WhatsAppIcon({ className }: { className?: string }) {
   )
 }
 
+/**
+ * Fades content in when it reaches the screen. Never relies only on IntersectionObserver:
+ * some in-app / older phone browsers never fire it after a client-side page change, which left
+ * whole pages blank. A plain rect check (on mount, scroll, resize) and a 1.2 s fail-safe also reveal it.
+ */
 export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: { children: ReactNode; delay?: number; className?: string; y?: number; as?: 'div' | 'li' }) {
   const M = as === 'li' ? motion.li : motion.div
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, amount: 0.05 })
+  const [shown, setShown] = useState(false)
+  useEffect(() => {
+    if (shown) return
+    const check = () => {
+      const el = ref.current
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      if (r.top < window.innerHeight * 0.98 && r.bottom > 0) setShown(true)
+    }
+    const raf = requestAnimationFrame(check)
+    const safety = window.setTimeout(() => setShown(true), 1200 + delay * 1000)
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(safety)
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [shown, delay])
+  const visible = shown || inView
   return (
     <M
+      ref={ref as never}
       className={className}
       initial={enter({ opacity: 0, y })}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.05 }}
+      animate={visible ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
