@@ -25,10 +25,20 @@ export function WhatsAppIcon({ className }: { className?: string }) {
  * some in-app / older phone browsers never fire it after a client-side page change, which left
  * whole pages blank. A plain rect check (on mount, scroll, resize) and a 1.2 s fail-safe also reveal it.
  */
-export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: { children: ReactNode; delay?: number; className?: string; y?: number; as?: 'div' | 'li' }) {
-  const M = as === 'li' ? motion.li : motion.div
-  const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.05 })
+/**
+ * The reduced-motion setting, but only after the first client render. Markup that depends on it then matches the
+ * ready-made HTML during hydration (reading it straight away caused React error 418 for reduced-motion visitors).
+ */
+export function useReduce() {
+  const r = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  return mounted && !!r
+}
+
+/** True once the element is on screen: IntersectionObserver, a plain rect check and a time fail-safe (see Reveal). */
+export function useRevealed(ref: { current: Element | null }, delay = 0) {
+  const inView = useInView(ref as never, { once: true, amount: 0.05 })
   const [shown, setShown] = useState(false)
   useEffect(() => {
     if (shown) return
@@ -48,8 +58,14 @@ export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: {
       window.removeEventListener('scroll', check)
       window.removeEventListener('resize', check)
     }
-  }, [shown, delay])
-  const visible = shown || inView
+  }, [shown, delay, ref])
+  return shown || inView
+}
+
+export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: { children: ReactNode; delay?: number; className?: string; y?: number; as?: 'div' | 'li' }) {
+  const M = as === 'li' ? motion.li : motion.div
+  const ref = useRef<HTMLElement>(null)
+  const visible = useRevealed(ref, delay)
   return (
     <M
       ref={ref as never}
@@ -60,6 +76,33 @@ export function Reveal({ children, delay = 0, className, y = 22, as = 'div' }: {
     >
       {children}
     </M>
+  )
+}
+
+/**
+ * A headline whose lines slide up out of a mask, one after another. Same on-screen checks as Reveal, so it can
+ * never stay hidden. Screen readers get the plain text once.
+ */
+export function MaskLines({ lines, className, id, as = 'h2', delay = 0 }: { lines: ReactNode[]; className?: string; id?: string; as?: 'h2' | 'h3'; delay?: number }) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  const visible = useRevealed(ref, delay)
+  const reduce = useReducedMotion()
+  const H = as
+  return (
+    <H ref={ref} id={id} className={className}>
+      {lines.map((l, i) => (
+        <span key={i} className="-mb-[0.14em] block overflow-hidden pb-[0.14em]">
+          <motion.span
+            className="block will-change-transform"
+            initial={reduce ? false : enter({ y: '108%' })}
+            animate={visible ? { y: '0%' } : undefined}
+            transition={{ duration: 0.9, delay: delay + i * 0.11, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {l}
+          </motion.span>
+        </span>
+      ))}
+    </H>
   )
 }
 
