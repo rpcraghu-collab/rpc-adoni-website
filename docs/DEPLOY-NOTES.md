@@ -11,3 +11,4 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
  8 Nov 4 pm prerendered pages (no white screen on first open).
  8 Nov 6 pm inline CSS + font preload (faster first paint, no text jump).
  8 Nov 6:30 pm contact contrast fix.
+  8 Nov 7 pm awards button labels.
