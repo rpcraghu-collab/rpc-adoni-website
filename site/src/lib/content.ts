@@ -39,6 +39,25 @@ export function phoneToRaw(phone: string) {
   return d.length === 10 ? `91${d}` : d
 }
 
+const SLUG = /^[a-z0-9][a-z0-9-]{0,59}$/
+const strList = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [])
+
+function cleanCourse(c: unknown): Course | null {
+  if (!c || typeof c !== 'object') return null
+  const o = c as Record<string, unknown>
+  if (typeof o.slug !== 'string' || !SLUG.test(o.slug) || typeof o.code !== 'string' || !o.code || typeof o.name !== 'string' || !o.name) return null
+  const modules = Array.isArray(o.modules)
+    ? o.modules.filter((m) => m && typeof m === 'object').map((m) => ({ title: str((m as { title?: unknown }).title), items: strList((m as { items?: unknown }).items) }))
+    : []
+  return {
+    slug: o.slug, code: o.code, name: o.name,
+    group: (['diploma', 'office', 'programming'].includes(o.group as string) ? o.group : 'office') as Course['group'],
+    tagline: str(o.tagline, 400) ?? '', forWho: str(o.forWho, 600) ?? '',
+    duration: strList(o.duration), modules, tools: strList(o.tools),
+    featured: o.featured === true || undefined, hidden: o.hidden === true || undefined, fee: str(o.fee, 120),
+  }
+}
+
 /** Apply overrides to the shared content objects (mutated in place so every page reads the live values). */
 export function applyOverrides(o: Overrides) {
   current = o ?? {}
@@ -49,12 +68,15 @@ export function applyOverrides(o: Overrides) {
     phoneRaw: phoneToRaw(phone),
     email: str(s.email, 120)?.trim() || DEFAULT_SITE.email,
     address: str(s.address)?.trim() || DEFAULT_SITE.address,
-    facebook: str(s.facebook, 200)?.trim() || DEFAULT_SITE.facebook,
-    timings: Array.isArray(s.timings) && s.timings.length ? s.timings.filter((t) => t && t.label && t.time) : DEFAULT_SITE.timings,
+    facebook: (str(s.facebook, 200)?.trim().startsWith('https://') && str(s.facebook, 200)?.trim()) || DEFAULT_SITE.facebook,
+    timings: Array.isArray(s.timings) && s.timings.length ? s.timings.filter((t) => typeof t?.label === 'string' && typeof t.time === 'string' && t.label && t.time) : DEFAULT_SITE.timings,
   })
-  const courses = Array.isArray(current.courses) && current.courses.length ? current.courses : DEFAULT_COURSES
+  // Only well-formed courses: a broken entry (bad slug, missing name, wrong types) is dropped instead of
+  // crashing every page, and a slug can never become a file path outside dist/ in the prerender.
+  const valid = Array.isArray(current.courses) ? current.courses.map(cleanCourse).filter((c): c is Course => c !== null) : []
+  const courses = valid.length ? valid : DEFAULT_COURSES
   COURSES.splice(0, COURSES.length, ...structuredClone(courses))
-  LIVE.batches = Array.isArray(current.batches) ? current.batches : []
+  LIVE.batches = Array.isArray(current.batches) ? current.batches.filter((b) => typeof b?.course === 'string' && typeof b.starts === 'string' && typeof b.time === 'string') : []
   LIVE.gallery = Array.isArray(current.gallery) ? current.gallery.filter((g) => typeof g?.url === 'string' && g.url.startsWith('https://res.cloudinary.com/')) : []
   LIVE.announcement = str(current.announcement, 200)?.trim() ?? ''
   version++
