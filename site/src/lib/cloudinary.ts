@@ -1,6 +1,6 @@
 // Gallery photo uploads (admin only). Unsigned preset, locked in Cloudinary to the rpc-gallery folder,
 // images only, max 10 MB. Cloud name and preset name are not secrets.
-export const CLOUDINARY = { cloud: 'CLOUD_NAME', preset: 'rpc_gallery' }
+export const CLOUDINARY = { cloud: 'q2nhyak9', preset: 'rpc_gallery' }
 
 export async function uploadImage(file: File): Promise<string> {
   const fd = new FormData()

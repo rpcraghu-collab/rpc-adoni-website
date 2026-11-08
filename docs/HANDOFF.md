@@ -8,7 +8,10 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 - Pages done: Home, About, Courses (filter), Course detail ×13 (`/courses/:slug`), Awards (lightbox), Admissions/Contact (form → Firestore when keys exist, then WhatsApp), 404.
 - Light + dark mode, mobile bottom bar, mega menu, SEO titles, JSON-LD, sitemap, robots, `vercel.json` (SPA rewrite + security headers).
 - Screenshots checked at 390 / 1440, light + dark (`shots/`, git-ignored): no console errors, no horizontal overflow.
-- Firebase: code ready (`site/src/lib/firebase.ts`), waiting for the client's project keys → `site/.env` (see `.env.example`). Cloudinary: waiting.
+- Admin panel `/admin` built (Google sign-in; enquiries, courses, batches, gallery, settings, admins), emulator-tested.
+- Firebase project `rpc-adoni-4953b`: Google sign-in on, Firestore rules LIVE, web config in `site/src/lib/firebase-config.ts` (not secret, so Vercel needs no env vars). Owner rpcraghu@gmail.com is admin; extra admins at `admins/{email}`. Authorized domains include rpc-adoni.vercel.app.
+- Cloudinary cloud `q2nhyak9`, unsigned preset `rpc_gallery` (folder rpc-gallery, public ID disallowed, jpg/jpeg/png/webp/avif/heic only, incoming `c_limit,w_2400,h_2400`). Tested 8 Nov: upload OK, .txt rejected. Two 8×8 test PNGs left in rpc-gallery (harmless, delete in Media Library any time).
+- GitHub: private `rpcraghu-collab/rpc-adoni-website` (main). Vercel: account rpcraghu, team "rpc", project `rpc-adoni` (root `site`, Vite) configured via the GitHub import page; **first deploy blocked by Vercel's "Verify your identity" email code** (Claude may not enter login codes). After it: live URL rpc-adoni.vercel.app, auto-deploys on push.
 
 ## Timeline promised to the client (sent 8 Nov 10:05 am)
 | Date | Work |
@@ -31,9 +34,11 @@ We are ahead: all public pages are built on 8 Nov.
 
 ## Next steps
 1. (done) Illustrations. Never AI photos of RPC classrooms/students; real photos only from the client.
-2. Admin panel `/admin` once Firebase keys arrive: Firestore rules (author + emulator test), content overrides for `content/site.ts`.
-3. Lighthouse run; then `security-audit` skill before the first deploy.
-4. Daily 7 pm client update (English + Telugu, DREAM TEAM SERVICES WhatsApp, @mention the client, screenshots as photos).
+2. (done) Admin panel, Firebase, Cloudinary, GitHub, Vercel project.
+3. Founder: in the RPC Chrome (Profile 191) Vercel import tab, Send Code → enter the code from rpcraghu Gmail → Deploy.
+4. After deploy: live test (contact form → /admin enquiry, admin sign-in, gallery upload, settings save), Lighthouse, quick `security-audit`.
+5. Later: rpcadoni.com DNS → Vercel (needs domain access) + add it to Firebase authorized domains.
+6. No client update messages (founder 8 Nov); ask the client only for must-have info.
 
 ## Client message log
 - 8 Nov 10:05 am: timeline sent.
