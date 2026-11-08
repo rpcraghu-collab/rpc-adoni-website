@@ -7,6 +7,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 - `site/` = Vite 6 + React 19 + TS + Tailwind v4 + motion. `npm run build` passes.
 - Pages done: Home, About, Courses (filter), Course detail ×13 (`/courses/:slug`), Awards (lightbox), Admissions/Contact (form → Firestore when keys exist, then WhatsApp), 404.
 - Light + dark mode, mobile bottom bar, mega menu, SEO titles, JSON-LD, sitemap, robots, `vercel.json` (SPA rewrite + security headers).
+- **Cinematic redesign (9 Nov, commits c807947..d57a0c8):** Home = sliding hero (4 AI hero images, never captioned as RPC), fact marquee, 3D coverflow, scroll-stacking course cards (`home/StackCards.tsx`, flat under reduced motion), 3D card wall, gallery teaser; new `/gallery` (bento + filters + shared `Lightbox.tsx`). Reduced-motion branching must use `useReduce()` from `ui.tsx` (plain `useReducedMotion` caused React #418 hydration errors). Header phone link shows only at >=1536 px.
 - Screenshots checked at 390 / 1440, light + dark (`shots/`, git-ignored): no console errors, no horizontal overflow.
 - 8 Nov 2026 inner-page redesign (founder rated it 2/10). Every page now matches Home: a shared `PageHero` (breadcrumbs and art tile) and shared course cards/CtaBand in `components/course.tsx`. Changes:
   - Courses: `?group=` tabs and a fit guide.
