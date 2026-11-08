@@ -373,6 +373,9 @@ function FinalCta() {
         <div className="relative overflow-hidden rounded-[2rem] bg-brand px-6 py-14 text-white sm:px-12 lg:py-20">
           <div aria-hidden className="absolute -right-24 -top-24 size-80 rounded-full bg-accent/90 blur-[2px]" />
           <div aria-hidden className="absolute -right-10 -top-10 size-44 rounded-full border-[14px] border-white/10" />
+          <div aria-hidden className="pointer-events-none absolute right-[3%] top-1/2 hidden w-[36%] max-w-[26rem] -translate-y-1/2 lg:block">
+            <img src="/img/art/career.webp" alt="" width={800} height={702} loading="lazy" decoding="async" className="float w-full drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]" />
+          </div>
           <div className="relative max-w-2xl">
             <p className="text-sm font-bold uppercase tracking-[0.14em] text-white/70">Admissions open</p>
             <h2 className="mt-4 text-[clamp(2.2rem,5.5vw,4rem)] font-extrabold leading-[0.98] text-white">Your career…<br />our commitment.</h2>

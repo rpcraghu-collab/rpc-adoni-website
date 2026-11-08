@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight, Clock, Users } from 'lucide-react'
-import { COURSES, GROUPS, type CourseGroup } from '../content/site'
-import { Seo, Tilt } from '../components/ui'
+import { COURSES, GROUPS, waLink, type CourseGroup } from '../content/site'
+import { Seo, Tilt, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
 import { cn } from '../lib/cn'
 
@@ -26,6 +26,34 @@ export default function Courses() {
             </button>
           ))}
         </div>
+        <AnimatePresence mode="wait" initial={false}>
+          {f === 'all' ? (
+            <motion.div key="all" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }} className="mt-6 grid gap-3 sm:grid-cols-3">
+              {GROUPS.map((g) => (
+                <button key={g.id} onClick={() => setF(g.id)} className="card group flex items-center gap-4 p-4 text-left transition-colors hover:border-ink/25">
+                  <img src={g.art} alt="" width={80} height={80} loading="lazy" decoding="async" className="size-20 shrink-0 object-contain transition-transform duration-300 group-hover:-translate-y-1 group-hover:-rotate-3" />
+                  <span className="min-w-0">
+                    <b className="block font-display text-lg text-ink">{g.label}</b>
+                    <span className="block text-sm leading-snug text-muted">{g.blurb}</span>
+                  </span>
+                </button>
+              ))}
+            </motion.div>
+          ) : (() => {
+            const g = GROUPS.find((x) => x.id === f)!
+            return (
+              <motion.div key={g.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }} className="mt-6 flex items-center gap-5 overflow-hidden rounded-[1.4rem] bg-brand p-5 text-white sm:gap-8 sm:p-7">
+                <img src={g.art} alt="" width={160} height={160} decoding="async" className="float size-24 shrink-0 object-contain drop-shadow-[0_18px_24px_rgba(0,0,0,0.35)] sm:size-36" />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/65">{list.length} courses</p>
+                  <p className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">{g.label}</p>
+                  <p className="mt-1 text-white/80">{g.blurb}</p>
+                </div>
+                <a href={waLink(`Hello RPC, I want details about ${g.label} courses (fees and next batch).`)} target="_blank" rel="noopener" className="btn ml-auto hidden h-12 shrink-0 bg-white px-6 text-brand hover:bg-white/90 md:inline-flex"><WhatsAppIcon className="text-[#178a48]" /> Ask about {g.label}</a>
+              </motion.div>
+            )
+          })()}
+        </AnimatePresence>
         <motion.ul layout className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {list.map((c) => (

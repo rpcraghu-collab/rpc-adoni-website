@@ -21,8 +21,10 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 
 We are ahead: all public pages are built on 8 Nov.
 
+- 3D illustrations done (ChatGPT, Govardhan, 8 Nov): `site/public/img/art/*.webp`, sources + prompts in `assets/ai-art/`. Used on Courses (group cards + selected-group banner with WhatsApp button), course detail panel, Home final CTA.
+
 ## Next steps
-1. ChatGPT illustrations (browser "Govardhan" 0728ba24): 3D art for the 3 course groups + final CTA panel. Illustrations only, never fake classroom/student photos. → WebP in `site/public/img/`.
+1. (done) Illustrations. Never AI photos of RPC classrooms/students; real photos only from the client.
 2. Admin panel `/admin` once Firebase keys arrive: Firestore rules (author + emulator test), content overrides for `content/site.ts`.
 3. Lighthouse run; then `security-audit` skill before the first deploy.
 4. Daily 7 pm client update (English + Telugu, DREAM TEAM SERVICES WhatsApp, @mention the client, screenshots as photos).

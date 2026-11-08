@@ -42,10 +42,10 @@ export type Course = {
   featured?: boolean
 }
 
-export const GROUPS: { id: CourseGroup; label: string; blurb: string }[] = [
-  { id: 'diploma', label: 'Diplomas', blurb: 'PGDCA, DCA, DCP: complete computer diplomas' },
-  { id: 'office', label: 'Office & Tally', blurb: 'MS Office, Advanced Excel, Tally Prime with GST' },
-  { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python for Degree & B.Tech' },
+export const GROUPS: { id: CourseGroup; label: string; blurb: string; art: string }[] = [
+  { id: 'diploma', label: 'Diplomas', blurb: 'PGDCA, DCA, DCP: complete computer diplomas', art: '/img/art/diplomas.webp' },
+  { id: 'office', label: 'Office & Tally', blurb: 'MS Office, Advanced Excel, Tally Prime with GST', art: '/img/art/office.webp' },
+  { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python for Degree & B.Tech', art: '/img/art/programming.webp' },
 ]
 
 export const COURSES: Course[] = [
