@@ -1,9 +1,9 @@
 import { useRef, useState, type FormEvent } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { toast } from 'sonner'
-import { ArrowUpRight, CheckCircle2, ChevronDown, Clock, Loader2, Mail, MapPin, Phone, RotateCcw, Send } from 'lucide-react'
-import { SITE, listed, telLink, waLink } from '../content/site'
+import { ArrowRight, ArrowUpRight, CheckCircle2, ChevronDown, Clock, Loader2, Mail, MapPin, Phone, RotateCcw, Send } from 'lucide-react'
+import { AWARDS, SITE, listed, telLink, waLink } from '../content/site'
 import { Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
 import { firebaseReady, saveEnquiry } from '../lib/firebase'
@@ -155,7 +155,7 @@ export default function Contact() {
                 <li key={i.label}>
                   <a href={i.href} target={i.ext ? '_blank' : undefined} rel="noopener" className="group flex min-h-16 items-start gap-4 py-4">
                     <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><i.icon className="size-[1.1rem]" /></span>
-                    <span className="min-w-0 flex-1"><span className="block text-xs font-bold uppercase tracking-[0.12em] text-muted">{i.label}</span><span className="mt-0.5 block font-semibold text-ink [overflow-wrap:anywhere] group-hover:text-accent-text">{i.value}</span></span>
+                    <span className="min-w-0 flex-1"><span className="block text-xs font-bold uppercase tracking-[0.12em] text-muted">{i.label}</span><span className="mt-0.5 block font-semibold text-ink [overflow-wrap:anywhere] group-hover:text-accent-text">{i.value}</span>{i.ext && <span className="mt-1 inline-flex items-center gap-1 text-sm font-bold text-accent-text underline underline-offset-4">Get directions <ArrowUpRight className="size-3.5" aria-hidden /></span>}</span>
                   </a>
                 </li>
               ))}
@@ -168,6 +168,16 @@ export default function Contact() {
               </li>
             </ul>
           </div>
+          <Link to="/awards" className="group flex items-center gap-4 rounded-[1.5rem] bg-surface p-5 ring-1 ring-line transition-colors hover:ring-ink/25 sm:p-6">
+            <ul className="flex shrink-0 -space-x-3" aria-hidden>
+              {AWARDS.slice(0, 3).map((a, i) => <li key={a.n} className={i === 2 ? 'max-sm:hidden' : undefined}><img src={`/img/${a.img}-sm.webp`} alt="" width={48} height={48} loading="lazy" decoding="async" className="size-12 rounded-xl object-cover ring-4 ring-surface" /></li>)}
+            </ul>
+            <span className="min-w-0 flex-1">
+              <b className="block font-display text-lg leading-tight text-ink">5× Education Excellence Award</b>
+              <span className="mt-0.5 block text-sm text-muted">ISO 9001:2015 certified · AP Govt DET permission since 2006</span>
+            </span>
+            <ArrowRight className="size-5 shrink-0 text-ink transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </div>
       </section>
     </>

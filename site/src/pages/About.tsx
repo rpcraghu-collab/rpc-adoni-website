@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BadgeCheck, Heart } from 'lucide-react'
+import { ArrowRight, BadgeCheck, Heart, Trophy } from 'lucide-react'
 import { AWARDS, CREDENTIALS, SITE } from '../content/site'
 import { Reveal, SectionHead, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
-import { CtaBand, FacilityList, TINT } from '../components/course'
+import { CtaBand, FacilityList } from '../components/course'
 import { cn } from '../lib/cn'
 
 const STORY = [
@@ -14,7 +14,9 @@ const STORY = [
 ]
 
 export default function About() {
-  const founderAward = AWARDS[4]
+  // Real award photos: Home already shows award-2 (hero) and award-5 (story), so About uses award-1 and award-4.
+  const heroAward = AWARDS[0]
+  const founderAward = AWARDS[3]
   return (
     <>
       <Seo path="/about" title="About RPC: 25 years of computer education in Adoni" description={`Founded in 2000 by ${SITE.founder}. ISO 9001:2015 certified, AP Govt DET permission since 2006, MSME registered, 5-time Education Excellence Award winners.`} />
@@ -22,8 +24,12 @@ export default function About() {
         eyebrow="About RPC"
         title={<>Teaching Adoni <span className="text-accent-text">computers</span> since 2000.</>}
         text="25 years of quality computer education, basic to advanced, coding and non-coding, for children, students, homemakers and business people."
-        art="/img/art/career.webp"
-        artTint={TINT.programming}
+        aside={heroAward && (
+          <figure className="overflow-hidden rounded-[2rem] bg-surface ring-1 ring-line">
+            <img src={`/img/${heroAward.img}-sm.webp`} srcSet={`/img/${heroAward.img}-sm.webp 640w, /img/${heroAward.img}.webp 1280w`} sizes="(min-width:1024px) 34vw, 1px" width={1280} height={854} decoding="async" alt={`RPC receiving the Education Excellence Award from ${heroAward.from}`} className="aspect-[3/2] w-full object-cover" />
+            <figcaption className="flex items-center gap-2 px-5 py-3.5 text-sm font-semibold text-ink-soft"><Trophy className="size-4 shrink-0 text-gold-text" aria-hidden />Education Excellence Award, presented by {heroAward.from}</figcaption>
+          </figure>
+        )}
       />
 
       {/* Founder */}
@@ -31,7 +37,7 @@ export default function About() {
         <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16">
           <Reveal>
             <figure className="overflow-hidden rounded-[1.8rem] bg-surface-2">
-              <img src="/img/award-5-sm.webp" srcSet="/img/award-5-sm.webp 640w, /img/award-5.webp 1280w" sizes="(min-width:1024px) 46vw, 92vw" loading="lazy" decoding="async" width={1280} height={872} alt={`${SITE.founder} receiving an Education Excellence Award from ${founderAward?.from ?? 'a guest of honour'}`} className="aspect-[4/3] w-full object-cover" />
+              <img src="/img/award-4-sm.webp" srcSet="/img/award-4-sm.webp 640w, /img/award-4.webp 1024w" sizes="(min-width:1024px) 46vw, 92vw" loading="lazy" decoding="async" width={1024} height={752} alt={`${SITE.founder} receiving an Education Excellence Award from ${founderAward?.from ?? 'a guest of honour'}`} className="aspect-[4/3] w-full object-cover" />
               {founderAward && <figcaption className="px-5 py-3.5 text-sm font-semibold text-ink-soft">Receiving the Education Excellence Award from {founderAward.from}.</figcaption>}
             </figure>
           </Reveal>
@@ -40,6 +46,15 @@ export default function About() {
               <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Our founder</p>
               <h2 id="founder-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]">{SITE.founder}</h2>
               <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-muted">He founded RPC in {SITE.since} and built it around practical, hands-on learning: every concept shown on the projector, then practised on the computer.</p>
+              <dl className="mt-7 grid max-w-xl grid-cols-3 divide-x divide-line rounded-[1.25rem] bg-surface py-4 ring-1 ring-line">
+                {[{ k: SITE.since, v: 'Founded RPC' }, { k: '5×', v: 'Excellence awards' }, { k: 'ISO', v: '9001:2015 certified' }].map((f) => (
+                  <div key={f.v} className="px-3 text-center sm:px-5">
+                    <dt className="sr-only">{f.v}</dt>
+                    <dd className="font-display text-[1.6rem] font-extrabold leading-none text-ink sm:text-[1.9rem]">{f.k}</dd>
+                    <dd className="mt-1.5 text-[0.8rem] font-semibold leading-snug text-muted sm:text-sm">{f.v}</dd>
+                  </div>
+                ))}
+              </dl>
             </Reveal>
             <Reveal delay={0.08} className="mt-7">
               <div className="flex gap-4 rounded-[1.5rem] bg-surface p-5 ring-1 ring-line sm:p-6">
@@ -80,7 +95,7 @@ export default function About() {
               <Link to="/awards" className="inline-flex min-h-12 items-center gap-2 font-bold text-ink hover:text-accent-text">See all 5 awards <ArrowRight className="size-4" /></Link>
             </Reveal>
           </div>
-          <Reveal className="lg:pt-24">
+          <Reveal className="lg:sticky lg:top-28 lg:mt-24 lg:self-start">
             <div className="rounded-[1.6rem] bg-bg p-5 ring-1 ring-line sm:p-7">
               <p className="font-display text-xl font-bold text-ink">Certified and registered</p>
               <ul className="mt-3 divide-y divide-line">
