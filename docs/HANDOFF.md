@@ -15,7 +15,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
   - Awards: a full lightbox.
   - Contact: focus on the first error, plus a 5 s save timeout.
   - 404: popular courses.
-  Lighthouse mobile scores (Home, /courses/pgdca): a11y/BP/SEO 100, perf about 75. The LCP waits for the SPA JS; prerendering is the next speed step. Not pushed or deployed. Commits ac48e62..ba6b162.
+  Lighthouse mobile scores (Home, /courses/pgdca): a11y/BP/SEO 100, perf about 75. The LCP waits for the SPA JS; prerendering is the next speed step. Commits ac48e62..ba6b162: pushed + LIVE 8 Nov ~2 pm (index-BFB7iIsC.js), live-checked 7 pages x 390/1440 x light/dark + mobile menu. [NEED] from client: syllabus/duration for C, C++, Java, Oracle, Python; OAM PRO duration; PGDCA vs PGDCA Advanced; real classroom photos; fees. Next speed step: prerender.
 - Admin panel `/admin` built (Google sign-in; enquiries, courses, batches, gallery, settings, admins), emulator-tested.
 - Firebase project `rpc-adoni-4953b`: Google sign-in on, Firestore rules LIVE, web config in `site/src/lib/firebase-config.ts` (not secret, so Vercel needs no env vars). Owner rpcraghu@gmail.com is admin; extra admins at `admins/{email}`. Authorized domains include rpc-adoni.vercel.app.
 - Cloudinary cloud `q2nhyak9`, unsigned preset `rpc_gallery` (folder rpc-gallery, public ID disallowed, jpg/jpeg/png/webp/avif/heic only, incoming `c_limit,w_2400,h_2400`). Tested 8 Nov: upload OK, .txt rejected. Two 8×8 test PNGs left in rpc-gallery (harmless, delete in Media Library any time).
