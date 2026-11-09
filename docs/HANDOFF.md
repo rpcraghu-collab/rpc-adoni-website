@@ -80,4 +80,6 @@ We are ahead: all public pages are built on 8 Nov.
 
 - **9 Nov 6 am: deployed LIVE** (version 20261109003022). Live-tested 1440 + 390, light + dark: every page change stays in-app (no reload, no white page), 0 console errors, no overflow.
 
-Last updated: 9 Nov 2026 6 am
+- **9 Nov ~7 am "_ is not a function" blank site (founder report), fixed in 945efd7, pushed, NOT yet live (deploy needs the founder's OK; the GitHub web-commit dialog for DEPLOY-NOTES.md is ready in browser af87ad88).** Root cause: `ScrollTop` used `useEffect(() => window.scrollTo(...))`; in-app browsers (WhatsApp/Instagram) patch scrollTo to return a value, React called it as a cleanup on the next page change, and with no boundary above it the whole site unmounted. Reproduced with a patched scrollTo (blank, same error), fixed build passes. Same family fixed: `structuredClone` at load (dead app on iOS < 15.4 / old WebViews; now a JSON `clone`), root `PageErrorBoundary` around everything. `scripts/check-safety.mjs` runs first in `npm run build` and fails on effects without `{ }` and on APIs missing on old phones.
+
+Last updated: 9 Nov 2026 7 am
