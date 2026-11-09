@@ -15,3 +15,5 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
   8 Nov 6:30 pm UI round 2 (founder photo hero, cleaner course cards, one facilities list).
 
  9 Nov 6 am no reload mid-browse (load new build when the tab returns).
+
+ 9 Nov 7 am blank-site fix (in-app browsers + older phones) + root error boundary.
