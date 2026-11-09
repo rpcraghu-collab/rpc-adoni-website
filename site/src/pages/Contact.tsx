@@ -24,6 +24,8 @@ export default function Contact() {
   const [busy, setBusy] = useState(false)
   const [sent, setSent] = useState<Sent | null>(null)
   const card = useRef<HTMLDivElement>(null)
+  // Honeypot: hidden from people, but form-filling bots type into it. A filled trap is never saved.
+  const trap = useRef<HTMLInputElement>(null)
   const set = (k: keyof Form) => (e: { target: { value: string } }) => {
     setForm((f) => ({ ...f, [k]: e.target.value }))
     if (err[k]) setErr((x) => ({ ...x, [k]: undefined }))
@@ -44,7 +46,7 @@ export default function Contact() {
     let saved = false
     try {
       // Never keep the student waiting on a slow network: after 5 s, go on to WhatsApp anyway.
-      if (firebaseReady) saved = (await Promise.race([saveEnquiry({ name: form.name.trim(), phone, course: form.course, batch: form.batch }), new Promise<false>((r) => setTimeout(() => r(false), 5000))])) !== false
+      if (firebaseReady && !trap.current?.value) saved = (await Promise.race([saveEnquiry({ name: form.name.trim(), phone, course: form.course, batch: form.batch }), new Promise<false>((r) => setTimeout(() => r(false), 5000))])) !== false
     } catch {
       toast.message('Opening WhatsApp to send your enquiry.')
     }
@@ -94,6 +96,7 @@ export default function Contact() {
               <motion.form key="form" onSubmit={submit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
                 <h2 className="text-2xl font-bold">Enquiry form</h2>
                 <p className="mt-1 text-sm text-muted">All four fields are needed.</p>
+                <input ref={trap} name="company" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" defaultValue="" className="absolute -left-[9999px] size-px opacity-0" />
                 <div className="mt-6 grid gap-5 sm:grid-cols-2">
                   <label className="block text-sm font-bold text-ink">Your name
                     <input id="f-name" value={form.name} onChange={set('name')} autoComplete="name" maxLength={80} enterKeyHint="next" className={cn(field, err.name && errCls)} placeholder="Full name" aria-invalid={!!err.name} aria-describedby={err.name ? 'e-name' : undefined} />

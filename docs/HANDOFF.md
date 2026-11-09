@@ -21,7 +21,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Competitors: `docs/COMP
 - **8 Nov late, UI round 1 to 10/10 (local commits 40bca07..9fccf1f, NOT pushed/deployed):** grades 8.5-9 → 9.5 on every page; fixes in `docs/UI-SCORECARD.md`. Local Lighthouse a11y/BP/SEO 100 (perf: re-measure live after deploy). 10/10 needs client data: syllabus/duration C, C++, Java, Oracle, Python; OAM PRO duration; PGDCA vs Advanced; classroom photos; fees; award years.
 - Admin panel `/admin` built (Google sign-in; enquiries, courses, batches, gallery, settings, admins), emulator-tested.
 - Firebase project `rpc-adoni-4953b`: Google sign-in on, Firestore rules LIVE, web config in `site/src/lib/firebase-config.ts` (not secret, so Vercel needs no env vars). Owner rpcraghu@gmail.com is admin; extra admins at `admins/{email}`. Authorized domains include rpc-adoni.vercel.app.
-- Cloudinary cloud `q2nhyak9`, unsigned preset `rpc_gallery` (folder rpc-gallery, public ID disallowed, jpg/jpeg/png/webp/avif/heic only, incoming `c_limit,w_2400,h_2400`). Tested 8 Nov: upload OK, .txt rejected. Two 8×8 test PNGs left in rpc-gallery (harmless, delete in Media Library any time).
+- Cloudinary cloud `q2nhyak9`, unsigned preset `rpc_gallery` (folder rpc-gallery, public ID disallowed, jpg/jpeg/png/webp/avif/heic only, incoming `c_limit,w_2400,h_2400`). Tested 8 Nov: upload OK, .txt rejected. The two 8×8 test PNGs were deleted 9 Nov (folder kept).
 - GitHub: private `rpcraghu-collab/rpc-adoni-website` (main). Vercel: account rpcraghu, team "rpc", project `rpc-adoni` (root `site`, Vite).
 - **LIVE: https://rpc-adoni.vercel.app** (8 Nov). Live test: all pages 200 at 390/1440, no console errors, no overflow; contact form → Firestore write OK (test enquiry deleted after). `content/site` created with json `{}` (admin's first save fills it). Lighthouse mobile home: A11y 97→fixed contrast/label, Best Practices 100, SEO 100; llms.txt added.
 - **Deploy gotcha:** Vercel Hobby + private repo deploys ONLY commits authored by rpcraghu-collab. Pushes from this PC (author govardhan9692) show "Blocked". To deploy: push, then make any small commit in the GitHub web UI in the RPC Chrome (it builds latest main). See `docs/DEPLOY-NOTES.md`.
@@ -53,7 +53,7 @@ We are ahead: all public pages are built on 8 Nov.
 1. (done) Illustrations. Never AI photos of RPC classrooms/students; real photos only from the client.
 2. (done) Admin panel, Firebase, Cloudinary, GitHub, Vercel project.
 3. (done) Deployed + live-tested + Lighthouse.
-4. Before rpcadoni.com goes live: quick `security-audit` (rules already strict; only public writes = enquiries, validated).
+4. (done 9 Nov) Security check: rules strict, admin content escaped/https-only, no secrets in git history, contact form honeypot added. npm audit: firebase/grpc-js (server-only, not in the browser) and react-router 6 open-redirect (no URL-driven navigation in the app) are not exploitable; react-router 7 upgrade optional later. Spam beyond the honeypot: Firebase App Check (reCAPTCHA) if enquiries get flooded.
 5. Later: rpcadoni.com DNS → Vercel (needs domain access) + add it to Firebase authorized domains.
 6. No client update messages (founder 8 Nov); ask the client only for must-have info.
 
@@ -71,7 +71,7 @@ We are ahead: all public pages are built on 8 Nov.
 ## 9 Nov 2026
 - Pushed 8b13c84 to `rpcraghu-collab/rpc-adoni-website` main. It includes the new phone menu, 13 course covers, the About/Home hero/Courses redesigns, version.json, and the duplicate-image fixes.
 - Vercel picks the push up only if the project is linked to that repo. Check this in browser af87ad88.
-- Admin announcement strip still reads "Edited from the admin test". This is live admin content; clear it in /admin.
+- (done 9 Nov) Admin announcement strip: `content/site` json is `{}`, nothing shows.
 
 ## 9 Nov night: desktop test of the founder's phone flow
 - `desk.cjs` (scratchpad) at 1440, light + dark: every header link is SPA (138-506 ms), mega menu, chips, compare table, card→detail, lightbox, form errors, theme, Back all OK; 0 console errors. audit.cjs: 44/44 OK (only the hero's allowed blur copy repeats).
