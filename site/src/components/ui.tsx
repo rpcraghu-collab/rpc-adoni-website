@@ -32,7 +32,7 @@ export function WhatsAppIcon({ className }: { className?: string }) {
 export function useReduce() {
   const r = useReducedMotion()
   const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  useEffect(() => { setMounted(true) }, [])
   return mounted && !!r
 }
 

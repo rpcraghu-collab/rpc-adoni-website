@@ -3,7 +3,7 @@ import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 
 import { toast } from 'sonner'
 import { ArrowDown, ArrowUp, CalendarDays, ChevronDown, Eye, EyeOff, Image as ImageIcon, Loader2, Plus, RotateCcw, Save, Trash2, Upload, Users } from 'lucide-react'
 import { GROUPS, type Course, type CourseGroup } from '../content/site'
-import { DEFAULT_COURSES, DEFAULT_SITE, type Batch, type GalleryItem, type Timing } from '../lib/content'
+import { clone, DEFAULT_COURSES, DEFAULT_SITE, type Batch, type GalleryItem, type Timing } from '../lib/content'
 import { cldUrl, uploadImage } from '../lib/cloudinary'
 import { cn } from '../lib/cn'
 import { area, Empty, Field, iconBtn, input, move, OWNER_EMAIL, Panel, smallBtn, uid, type AdminCtx } from './shared'
@@ -59,7 +59,7 @@ function textToModules(t: string): Course['modules'] {
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `course-${uid()}`
 
 export function CoursesEditor({ ctx }: { ctx: AdminCtx }) {
-  const d = useDraft<Course[]>(structuredClone(ctx.content.courses?.length ? ctx.content.courses : DEFAULT_COURSES))
+  const d = useDraft<Course[]>(clone(ctx.content.courses?.length ? ctx.content.courses : DEFAULT_COURSES))
   const [open, setOpen] = useState<string | null>(null)
   const list = d.draft
   const set = (i: number, patch: Partial<Course>) => d.setDraft(list.map((c, j) => (j === i ? { ...c, ...patch } : c)))
@@ -129,7 +129,7 @@ export function CoursesEditor({ ctx }: { ctx: AdminCtx }) {
           )
         })}
       </ul>
-      <button onClick={() => { if (confirm('Put all courses back to the original website text? Your fees and changes will be removed after you press Save.')) d.setDraft(structuredClone(DEFAULT_COURSES)) }} className="mt-4 text-sm font-semibold text-muted underline-offset-4 hover:text-ink hover:underline">Reset courses to the original text</button>
+      <button onClick={() => { if (confirm('Put all courses back to the original website text? Your fees and changes will be removed after you press Save.')) d.setDraft(clone(DEFAULT_COURSES)) }} className="mt-4 text-sm font-semibold text-muted underline-offset-4 hover:text-ink hover:underline">Reset courses to the original text</button>
       <SaveBar dirty={d.dirty} busy={d.busy} onSave={save} onUndo={d.undo} />
     </Panel>
   )
@@ -145,7 +145,7 @@ function ModulesBox({ value, onChange }: { value: Course['modules']; onChange: (
 const today = () => new Date().toISOString().slice(0, 10)
 
 export function BatchesEditor({ ctx }: { ctx: AdminCtx }) {
-  const d = useDraft<Batch[]>(structuredClone(ctx.content.batches ?? []))
+  const d = useDraft<Batch[]>(clone(ctx.content.batches ?? []))
   const courses = (ctx.content.courses?.length ? ctx.content.courses : DEFAULT_COURSES).filter((c) => !c.hidden)
   const list = d.draft
   const set = (i: number, patch: Partial<Batch>) => d.setDraft(list.map((b, j) => (j === i ? { ...b, ...patch } : b)))
@@ -186,7 +186,7 @@ export function BatchesEditor({ ctx }: { ctx: AdminCtx }) {
 /* ---------- Gallery ---------- */
 
 export function GalleryEditor({ ctx }: { ctx: AdminCtx }) {
-  const d = useDraft<GalleryItem[]>(structuredClone(ctx.content.gallery ?? []))
+  const d = useDraft<GalleryItem[]>(clone(ctx.content.gallery ?? []))
   const [uploading, setUploading] = useState(0)
   const fileRef = useRef<HTMLInputElement>(null)
   const list = d.draft
@@ -252,7 +252,7 @@ type SettingsDraft = { phone: string; email: string; address: string; facebook: 
 
 export function SettingsEditor({ ctx }: { ctx: AdminCtx }) {
   const s = { ...DEFAULT_SITE, ...ctx.content.site }
-  const d = useDraft<SettingsDraft>(structuredClone({ phone: s.phone, email: s.email, address: s.address, facebook: s.facebook, timings: s.timings?.length ? s.timings : DEFAULT_SITE.timings, announcement: ctx.content.announcement ?? '' }))
+  const d = useDraft<SettingsDraft>(clone({ phone: s.phone, email: s.email, address: s.address, facebook: s.facebook, timings: s.timings?.length ? s.timings : DEFAULT_SITE.timings, announcement: ctx.content.announcement ?? '' }))
   const v = d.draft
   const set = (patch: Partial<SettingsDraft>) => d.setDraft({ ...v, ...patch })
   const setT = (i: number, patch: Partial<Timing>) => set({ timings: v.timings.map((t, j) => (j === i ? { ...t, ...patch } : t)) })
@@ -313,7 +313,9 @@ export function AdminsEditor({ ctx }: { ctx: AdminCtx }) {
   const [rows, setRows] = useState<{ email: string; addedBy?: string }[] | null>(null)
   const [email, setEmail] = useState('')
 
-  useEffect(() => onSnapshot(collection(ctx.db, 'admins'), (s) => setRows(s.docs.map((x) => ({ email: x.id, addedBy: x.data().addedBy }))), () => setRows([])), [ctx.db])
+  useEffect(() => {
+    return onSnapshot(collection(ctx.db, 'admins'), (s) => setRows(s.docs.map((x) => ({ email: x.id, addedBy: x.data().addedBy }))), () => setRows([]))
+  }, [ctx.db])
 
   async function add(e: React.FormEvent) {
     e.preventDefault()

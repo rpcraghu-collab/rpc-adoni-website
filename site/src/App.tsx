@@ -69,7 +69,10 @@ function VersionWatch() {
 
 function ScrollTop() {
   const { pathname } = useLocation()
-  useEffect(() => window.scrollTo({ top: 0 }), [pathname])
+  // Block body on purpose: an effect must return nothing or a cleanup function. In-app browsers
+  // (WhatsApp, Instagram) replace scrollTo with one that returns a value, and returning it here made React
+  // call that value as a cleanup on the next page change: "_ is not a function" and a blank site (9 Nov).
+  useEffect(() => { try { window.scrollTo(0, 0) } catch { /* ignore */ } }, [pathname])
   return null
 }
 
@@ -81,13 +84,16 @@ export default function App() {
   useEffect(() => { setBooting(false); initContent() }, [])
   return (
     <MotionConfig reducedMotion="user">
-      <ScrollTop />
-      <VersionWatch />
-      <Routes>
-        <Route path="/admin/*" element={<PageErrorBoundary resetKey={pathname}><Suspense fallback={null}><AdminApp /></Suspense></PageErrorBoundary>} />
-        <Route path="*" element={<Site pathname={pathname} />} />
-      </Routes>
-      <Toaster position="top-center" richColors closeButton />
+      {/* Last safety net: anything that breaks outside a page (header, footer, effects) shows a retry box, never a white screen. */}
+      <PageErrorBoundary resetKey={pathname}>
+        <ScrollTop />
+        <VersionWatch />
+        <Routes>
+          <Route path="/admin/*" element={<PageErrorBoundary resetKey={pathname}><Suspense fallback={null}><AdminApp /></Suspense></PageErrorBoundary>} />
+          <Route path="*" element={<Site pathname={pathname} />} />
+        </Routes>
+        <Toaster position="top-center" richColors closeButton />
+      </PageErrorBoundary>
     </MotionConfig>
   )
 }

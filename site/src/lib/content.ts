@@ -17,8 +17,12 @@ export type Overrides = {
   announcement?: string
 }
 
-export const DEFAULT_SITE: SiteSettings = structuredClone({ phone: SITE.phone, email: SITE.email, address: SITE.address, facebook: SITE.facebook, timings: SITE.timings })
-export const DEFAULT_COURSES: Course[] = structuredClone(COURSES)
+// JSON copy, not structuredClone: that is missing on iOS < 15.4 and older Android WebViews, and failing
+// here (at load) stopped the whole app from starting. The data is plain JSON.
+export const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v)) as T
+
+export const DEFAULT_SITE: SiteSettings = clone({ phone: SITE.phone, email: SITE.email, address: SITE.address, facebook: SITE.facebook, timings: SITE.timings })
+export const DEFAULT_COURSES: Course[] = clone(COURSES)
 
 /** Extra live content that has no default in the build. */
 export const LIVE = { batches: [] as Batch[], gallery: [] as GalleryItem[], announcement: '' }
@@ -75,7 +79,7 @@ export function applyOverrides(o: Overrides) {
   // crashing every page, and a slug can never become a file path outside dist/ in the prerender.
   const valid = Array.isArray(current.courses) ? current.courses.map(cleanCourse).filter((c): c is Course => c !== null) : []
   const courses = valid.length ? valid : DEFAULT_COURSES
-  COURSES.splice(0, COURSES.length, ...structuredClone(courses))
+  COURSES.splice(0, COURSES.length, ...clone(courses))
   LIVE.batches = Array.isArray(current.batches) ? current.batches.filter((b) => typeof b?.course === 'string' && typeof b.starts === 'string' && typeof b.time === 'string') : []
   LIVE.gallery = Array.isArray(current.gallery) ? current.gallery.filter((g) => typeof g?.url === 'string' && g.url.startsWith('https://res.cloudinary.com/')) : []
   LIVE.announcement = str(current.announcement, 200)?.trim() ?? ''
