@@ -78,4 +78,6 @@ We are ahead: all public pages are built on 8 Nov.
 - Phone "white page + spinner" = full reloads from VersionWatch while new builds went live mid-test. Fix 8718fa0 (pushed): never reload on route change; the new build loads only when the tab returns to view. Public pages don't load Firebase (only react, motion, index).
 - Phone-video audio has no clear speech (Whisper te output = noise).
 
-Last updated: 9 Nov 2026 night
+- **9 Nov 6 am: deployed LIVE** (version 20261109003022). Live-tested 1440 + 390, light + dark: every page change stays in-app (no reload, no white page), 0 console errors, no overflow.
+
+Last updated: 9 Nov 2026 6 am
