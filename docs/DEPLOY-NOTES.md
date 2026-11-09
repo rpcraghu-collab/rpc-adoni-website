@@ -17,3 +17,4 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
  9 Nov 6 am no reload mid-browse (load new build when the tab returns).
 
  9 Nov 7 am blank-site fix (in-app browsers + older phones) + root error boundary.
+ 9 Nov security: contact form honeypot.
