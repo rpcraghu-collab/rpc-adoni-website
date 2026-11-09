@@ -172,7 +172,7 @@ function Footer() {
     <footer className="relative overflow-hidden bg-[#071330] text-white">
       <div className="container-x relative z-10 grid grid-cols-2 gap-x-6 gap-y-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1.2fr] md:gap-12 md:py-16">
         <div className="col-span-2 md:col-span-1">
-          <Logo invert />
+          <Link to="/about" aria-label="About RPC" className="inline-block rounded-md"><Logo invert /></Link>
           <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-white/70">Real Point Computer Education. Job-oriented computer courses in Adoni since 2000. ISO 9001:2015 certified.</p>
           <p className="mt-5 font-display text-lg font-semibold text-white/90">Learn Today… Build a Better Tomorrow.</p>
         </div>
@@ -199,9 +199,17 @@ function Footer() {
         </div>
       </div>
       <div className="relative z-10 border-t border-white/10">
-        <div className="container-x flex flex-col gap-2 py-6 pb-28 text-sm text-white/60 sm:flex-row sm:justify-between lg:pb-6">
-          <p>© {new Date().getFullYear()} Real Point Computer Education, Adoni.</p>
-          <p>ISO 9001:2015 · AP Govt DET permission · MSME registered</p>
+        <div className="container-x flex flex-col gap-2 py-6 pb-28 text-sm text-white/60 lg:flex-row lg:items-center lg:justify-between lg:pb-6">
+          <div className="space-y-1">
+            <p>© {new Date().getFullYear()} Real Point Computer Education, Adoni.</p>
+            <p>ISO 9001:2015 · AP Govt DET permission · MSME registered</p>
+          </div>
+          <p className="mt-2 lg:mt-0">
+            Designed and developed by{' '}
+            <a href="https://www.thedreamteamservices.com/" target="_blank" rel="noopener" className="inline-flex min-h-11 items-center whitespace-nowrap font-bold tracking-wide text-white/85 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white hover:decoration-white">
+              DREAM TEAM SERVICES
+            </a>
+          </p>
         </div>
       </div>
       <p aria-hidden className="pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 select-none font-display text-[30vw] font-extrabold leading-none text-white/[0.035]">RPC</p>
