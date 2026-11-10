@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/brand/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/img/brand/favicon-192.png" />
     <meta name="theme-color" content="#F4F6FA" />
     <title>RPC Adoni · Computer Courses since 2000 | Real Point Computer Education</title>
     <meta name="description" content="Real Point Computer Education, Adoni: PGDCA, DCA, DCP, OAM, Tally Prime with GST, C, C++, Java, Python. ISO 9001:2015 certified, AP Govt DET permission, since 2000." />
@@ -20,11 +21,8 @@
       /* Brand opening animation: plays on every page open or reload, pure CSS so it runs before any JS and always clears itself. */
       #rpc-splash{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#071330;color:#fff;pointer-events:none;animation:rpcs-out .55s cubic-bezier(.76,0,.24,1) 1.15s forwards}
       #rpc-splash .c{display:flex;flex-direction:column;align-items:center;padding:0 16px}
-      #rpc-splash .w{display:inline-flex;flex-direction:column;align-items:stretch;line-height:1}
-      #rpc-splash .t{display:flex;overflow:hidden;font:800 clamp(4rem,18vw,7.5rem)/1 'Bricolage Grotesque Variable','Arial Narrow',system-ui,sans-serif;letter-spacing:.08em}
-      #rpc-splash .t span{display:block;transform:translateY(105%);animation:rpcs-up .6s cubic-bezier(.22,1,.36,1) forwards}
-      #rpc-splash .t span:nth-child(2){animation-delay:.08s}#rpc-splash .t span:nth-child(3){animation-delay:.16s}
-      #rpc-splash .b{margin-top:6px;border-radius:4px;background:#d3201a;padding:4px 0;text-align:center;font:800 clamp(.7rem,2.6vw,1rem)/1 'Manrope Variable',system-ui,sans-serif;letter-spacing:.3em;text-indent:.3em;transform:scaleX(0);transform-origin:left;animation:rpcs-bar .45s cubic-bezier(.22,1,.36,1) .45s forwards}
+      #rpc-splash .w{display:block;width:clamp(150px,42vw,260px);height:auto;border-radius:8px;box-shadow:0 0 0 1px rgb(255 255 255/.18);opacity:0;transform:scale(.92);animation:rpcs-logo .6s cubic-bezier(.22,1,.36,1) .05s forwards}
+      @keyframes rpcs-logo{to{opacity:1;transform:none}}
       #rpc-splash .s{margin-top:18px;text-align:center;font:600 clamp(.8rem,2.8vw,1rem)/1.3 'Manrope Variable',system-ui,sans-serif;color:rgb(255 255 255/.7);opacity:0;animation:rpcs-in .4s ease-out .65s forwards}
       #rpc-splash .p{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#d3201a;transform:scaleX(0);transform-origin:left;animation:rpcs-bar 1.1s cubic-bezier(.65,0,.35,1) forwards}
       @keyframes rpcs-up{to{transform:none}}
@@ -36,7 +34,7 @@
     </style>
   </head>
   <body>
-    <div id="rpc-splash" aria-hidden="true"><div class="c"><div class="w"><div class="t"><span>R</span><span>P</span><span>C</span></div><div class="b">SINCE 2000</div></div><div class="s">Learn Today… Build a Better Tomorrow.</div></div><div class="p"></div></div>
+    <div id="rpc-splash" aria-hidden="true"><div class="c"><img class="w" src="/img/brand/rpc-logo.webp" width="480" height="267" alt="" /><div class="s">Learn Today… Build a Better Tomorrow.</div></div><div class="p"></div></div>
     <script>
       (function () {
         var s = document.getElementById('rpc-splash');

@@ -10,13 +10,12 @@ import Compare from './Compare'
 const COMPARE_TITLE: Partial<Record<CourseGroup, string>> = { diploma: 'Compare diplomas', office: 'Compare office courses' }
 
 /** A wide, dark image banner that opens each group: chapter number, title, blurb, the courses in it, and a WhatsApp ask. */
-export function ChapterBanner({ g, n, total, list }: { g: (typeof GROUPS)[number]; n: number; total: number; list: Course[] }) {
+export function ChapterBanner({ g, list }: { g: (typeof GROUPS)[number]; n?: number; total?: number; list: Course[] }) {
   const ref = useRef<HTMLDivElement>(null)
   const reduce = useReduce()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const y = useTransform(scrollYProgress, (p) => (reduce ? '0%' : `${(p - 0.5) * 12}%`))
   const scene = GROUP_SCENE[g.id]
-  const pad = (v: number) => String(v).padStart(2, '0')
   return (
     <div ref={ref}>
       <div className="relative isolate overflow-hidden rounded-[2rem] bg-[#061840] text-white shadow-[0_40px_80px_-40px_rgb(6_24_64/0.7)] ring-1 ring-white/10">
@@ -31,11 +30,10 @@ export function ChapterBanner({ g, n, total, list }: { g: (typeof GROUPS)[number
         </div>
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(6_24_64/0.2)_0%,rgb(6_24_64/0)_5rem,rgb(6_24_64/0.9)_10.5rem,#061840_12.5rem)] sm:bg-[linear-gradient(90deg,#061840_0%,rgb(6_24_64/0.94)_34%,rgb(6_24_64/0.4)_62%,rgb(6_24_64/0.05)_85%)]" />
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_70%_40%,transparent_55%,rgb(2_8_26/0.5)_100%)]" />
-        <span aria-hidden className="pointer-events-none absolute -bottom-[0.2em] right-4 hidden font-display text-[13rem] font-extrabold leading-none tracking-[-0.05em] text-white/[0.06] lg:block">{pad(n)}</span>
 
         <div className="relative px-5 pb-6 pt-[9.5rem] sm:max-w-[62%] sm:px-9 sm:py-12 lg:max-w-[56%] lg:px-12 lg:py-16">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-white ring-1 ring-white/15 backdrop-blur-md">
-            Chapter {pad(n)} / {pad(total)} <span className="size-1 rounded-full bg-[#ff7a72]" aria-hidden /> {list.length} {list.length === 1 ? 'course' : 'courses'}
+            {list.length} {list.length === 1 ? 'course' : 'courses'}
           </p>
           <MaskLines id={`g-${g.id}`} className="mt-4 text-[clamp(2.4rem,7vw,4.4rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white" lines={[g.label]} />
           <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-white/85 sm:text-[1.08rem]">{g.blurb}</p>

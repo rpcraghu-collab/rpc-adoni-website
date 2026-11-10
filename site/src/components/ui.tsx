@@ -5,10 +5,14 @@ import { enter } from '../lib/boot'
 
 export function Logo({ className, invert }: { className?: string; invert?: boolean }) {
   return (
-    <span className={cn('inline-flex flex-col items-stretch leading-none', className)} aria-label="RPC, since 2000">
-      <span className={cn('font-display text-[1.7rem] font-extrabold tracking-[0.08em]', invert ? 'text-white' : 'text-ink')}>RPC</span>
-      <span className="mt-[3px] rounded-[3px] bg-accent px-1 py-[2px] text-center text-[0.5rem] font-extrabold tracking-[0.16em] text-white">SINCE 2000</span>
-    </span>
+    <img
+      src="/img/brand/rpc-logo.webp"
+      alt="RPC, since 2000"
+      width={480}
+      height={267}
+      decoding="async"
+      className={cn('block h-11 w-auto rounded-[4px]', invert && 'ring-1 ring-white/25', className)}
+    />
   )
 }
 

@@ -1,10 +1,10 @@
 import { useRef, useState, type PointerEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Expand, FolderOpen } from 'lucide-react'
+import { ArrowRight, Camera, ChevronDown, ChevronLeft, ChevronRight, Expand, FolderOpen } from 'lucide-react'
 import { SITE } from '../content/site'
 import { useYears } from '../lib/years'
-import { AWARD_SHOTS, KINDS, albumShots, albums, allShots, campusShots, type Shot, type ShotKind } from '../content/gallery'
+import { KINDS, albumShots, albums, allShots, campusShots, type Shot, type ShotKind } from '../content/gallery'
 import { Reveal, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
 import Lightbox from '../components/Lightbox'
@@ -29,34 +29,6 @@ function Caption({ s, n, big, tight }: { s: Shot; n?: number; big?: boolean; tig
 const ViewChip = () => (
   <span aria-hidden className="absolute right-3 top-3 grid size-10 place-items-center rounded-full bg-black/45 text-white opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"><Expand className="size-4" /></span>
 )
-
-/** Layout 1: the five award days as an asymmetric bento grid. */
-function Bento({ onOpen }: { onOpen: (items: Shot[], i: number) => void }) {
-  const cell = ['col-span-2 row-span-2 md:col-span-3', 'col-span-2 md:col-span-3', 'md:col-span-1', 'md:col-span-1', 'col-span-2 md:col-span-1']
-  return (
-    <section className="container-x pb-16 lg:pb-24" aria-labelledby="bento-h">
-      <Reveal className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Award days</p>
-          <h2 id="bento-h" className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] font-bold leading-[1.05]">Five Education Excellence Awards.</h2>
-        </div>
-        <Link to="/awards" className="inline-flex min-h-12 items-center gap-2 font-bold text-ink hover:text-accent-text">The award stories <ArrowRight className="size-4" aria-hidden /></Link>
-      </Reveal>
-      <ul className="mt-8 grid auto-rows-[9.5rem] grid-cols-2 gap-3 sm:auto-rows-[12rem] sm:gap-4 md:auto-rows-[13.5rem] md:grid-cols-6 lg:auto-rows-[15rem]">
-        {AWARD_SHOTS.map((s, i) => (
-          <Reveal as="li" key={s.id} delay={0.05 * i} className={cn('min-h-0', cell[i])}>
-            <button type="button" onClick={() => onOpen(AWARD_SHOTS, i)} className="group relative block size-full overflow-hidden rounded-[1.5rem] bg-surface-2 ring-1 ring-line">
-              <span className="sr-only">Open photo: </span>
-              <img src={s.thumb} srcSet={s.srcSet} sizes={i === 0 ? '(min-width: 768px) 50vw, 92vw' : '(min-width: 768px) 25vw, 46vw'} width={s.w} height={s.h} alt={s.alt} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" className="size-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] motion-reduce:transition-none" />
-              <Caption s={s} n={i + 1} big={i === 0} tight={i >= 2} />
-              <ViewChip />
-            </button>
-          </Reveal>
-        ))}
-      </ul>
-    </section>
-  )
-}
 
 /** Layout 2: a sideways strip you can drag with the mouse, swipe on a phone, or move with the arrow buttons. */
 function Strip({ items, onOpen }: { items: Shot[]; onOpen: (items: Shot[], i: number) => void }) {
@@ -218,23 +190,42 @@ function Albums({ onOpen }: { onOpen: (items: Shot[], i: number) => void }) {
   )
 }
 
+/** Shown until RPC adds event photos in the admin panel. */
+function ComingSoon() {
+  return (
+    <section className="container-x pb-16 lg:pb-24" aria-labelledby="soon-h">
+      <Reveal className="flex flex-col items-start gap-5 rounded-[1.6rem] bg-surface p-6 ring-1 ring-line sm:flex-row sm:items-center sm:p-8">
+        <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-surface-2 text-accent-text"><Camera className="size-7" aria-hidden /></span>
+        <span className="min-w-0 flex-1">
+          <h2 id="soon-h" className="font-display text-[clamp(1.3rem,2.6vw,1.8rem)] font-bold leading-tight">Event photos are on the way.</h2>
+          <span className="mt-1 block text-muted">Photos from our functions, festivals and celebrations will appear here soon. The award photos have their own page.</span>
+        </span>
+        <Link to="/awards" className="btn-ghost shrink-0">See the awards <ArrowRight className="size-4" aria-hidden /></Link>
+      </Reveal>
+    </section>
+  )
+}
+
 export default function Gallery() {
   const years = useYears()
   const [open, setOpen] = useState<Open>(null)
   const onOpen = (items: Shot[], i: number) => setOpen({ items, i })
-  const stripItems = [...campusShots(), ...allShots().filter((s) => s.kind === 'flyers')]
-  const shown = new Set([...AWARD_SHOTS, ...stripItems].map((s) => s.id))
-  const extraShots = allShots().filter((s) => !shown.has(s.id))
+  // Awards live on /awards only; the gallery is events, functions, festivals, classes and RPC's flyers.
+  const noAwards = allShots().filter((s) => s.kind !== 'awards')
+  const stripItems = [...campusShots(), ...noAwards.filter((s) => s.kind === 'flyers')]
+  const shown = new Set(stripItems.map((s) => s.id))
+  const extraShots = noAwards.filter((s) => !shown.has(s.id))
+  const hasEvents = albums().length > 0 || campusShots().length > 0
   return (
     <>
-      <Seo path="/gallery" title="Photo gallery: RPC Computer Education, Adoni" description={`Award days with national figures, RPC's course flyers and photos from classes, festivals and events at ${SITE.name}, Babu Plaza, Adoni.`} />
+      <Seo path="/gallery" title="Photo gallery: RPC Computer Education, Adoni" description={`Photos from functions, festivals, celebrations and classes at ${SITE.name}, Babu Plaza, Adoni.`} />
       <PageHero
         eyebrow="Gallery"
         title={<>Moments from <span className="text-accent-text">{years} years</span> of RPC.</>}
-        text="Award days with national figures, our course flyers, and photos from classes and events. Tap any photo to see it full size."
+        text="Functions, festivals, celebrations and everyday classes at RPC. Tap any photo to see it full size."
         backdrop="/img/hero/hero-career-sm.webp"
       />
-      <Bento onOpen={onOpen} />
+      {!hasEvents && <ComingSoon />}
       <Albums onOpen={onOpen} />
       <Strip items={stripItems} onOpen={onOpen} />
       <Masonry all={extraShots} onOpen={onOpen} />

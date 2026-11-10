@@ -10,7 +10,7 @@ import { Magnetic, WhatsAppIcon, useReduce } from '../ui'
 import './hero.css'
 
 const SLIDE_MS = 6000
-const WIPE_MS = 1200
+const FADE_MS = 1600
 const ease = [0.22, 1, 0.36, 1] as const
 const N = HERO_SLIDES.length
 const LONGEST = HERO_SLIDES.reduce((a, s) => (s.word.length > a.length ? s.word : a), '')
@@ -162,8 +162,8 @@ function Proof({ className }: { className?: string }) {
 }
 
 /**
- * Home hero. A cinematic stage of four 3D scenes: each new scene wipes in over the last with a gold
- * light on its edge, under a slow Ken Burns move. The headline's last word, the 3D card deck and the
+ * Home hero. A cinematic stage of four 3D scenes: each new scene crossfades in over the last,
+ * under a slow Ken Burns move. The headline's last word, the 3D card deck and the
  * story bars change with the scene. Phones get a story layout: the scene fills the top of the screen
  * over a blurred copy of itself, story bars under the header, swipe or tap to change, press and hold
  * to pause, and all of the copy sits above the quick-contact bar. Reduced motion: the first scene, still.
@@ -174,6 +174,10 @@ export default function CinematicHero() {
   const [prev, setPrev] = useState<number | null>(null)
   const [dir, setDir] = useState<1 | -1>(1)
   const [tick, setTick] = useState(0)
+  // The tick at which each scene last came on: its image keeps that key, so the outgoing scene is never
+  // re-mounted (a re-mount restarted its zoom mid-fade, which showed as a jump).
+  const [starts, setStarts] = useState<number[]>(() => Array(N).fill(0))
+  const tickRef = useRef(0)
   const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0]))
   const [hover, setHover] = useState(false)
   const [focus, setFocus] = useState(false)
@@ -193,9 +197,11 @@ export default function CinematicHero() {
     if (next === from) return
     cur.current = next
     setDir(d ?? (next > from ? 1 : -1))
+    const nt = ++tickRef.current
     setPrev(from)
     setActive(next)
-    setTick((t) => t + 1)
+    setTick(nt)
+    setStarts((st) => { const c = [...st]; c[next] = nt; return c })
     setLoaded((l) => new Set(l).add(next).add((next + 1) % N))
     left.current = SLIDE_MS
   }, [])
@@ -210,10 +216,10 @@ export default function CinematicHero() {
     }
   }, [paused, active, go])
 
-  // The old scene is dropped once the wipe has covered it.
+  // The old scene is dropped once the new one has fully faded in.
   useEffect(() => {
     if (prev === null) return
-    const t = window.setTimeout(() => setPrev(null), WIPE_MS + 100)
+    const t = window.setTimeout(() => setPrev(null), FADE_MS + 100)
     return () => window.clearTimeout(t)
   }, [prev, tick])
 
@@ -347,7 +353,7 @@ export default function CinematicHero() {
       <div aria-hidden className="absolute inset-0 -z-20 overflow-hidden lg:hidden">
         {HERO_SLIDES.map((sl, i) => ((i === active || i === prev) && loaded.has(i) ? (
           <img
-            key={`${sl.name}-amb-${i === active ? tick : 'p'}`}
+            key={`${sl.name}-amb-${starts[i]}`}
             src={heroSrc(sl.name)} srcSet={heroSet(sl.name)} sizes={HERO_SIZES} width={HERO_SIZE.width} height={HERO_SIZE.height} alt=""
             className={cn('absolute inset-0 size-full scale-125 object-cover opacity-70 blur-[38px] saturate-[1.35]', i === active ? 'z-[1]' : 'z-0', i === active && tick > 0 && 'hx-fade')}
             style={{ objectPosition: sl.mobilePosition ?? '74% center' }}
@@ -374,34 +380,27 @@ export default function CinematicHero() {
                 className={cn(
                   'absolute inset-0 overflow-hidden',
                   on ? 'z-[2]' : out ? 'z-[1]' : 'invisible',
-                  on && tick > 0 && !reduce && (dir === 1 ? 'hx-wipe-next' : 'hx-wipe-prev'),
-                  out && !reduce && (dir === 1 ? 'hx-out-next' : 'hx-out-prev'),
+                  on && tick > 0 && !reduce && 'hx-fade',
                 )}
               >
                 <img
-                  key={`${sl.name}-${on ? tick : 'idle'}`}
+                  key={`${sl.name}-${starts[i]}`}
                   src={heroSrc(sl.name)} srcSet={heroSet(sl.name)} sizes={HERO_SIZES}
                   width={HERO_SIZE.width} height={HERO_SIZE.height}
                   alt={sl.alt}
                   fetchPriority={i === 0 ? 'high' : 'low'}
-                  loading={i === 0 ? 'eager' : 'lazy'}
+                  loading="eager"
                   decoding={i === 0 ? 'sync' : 'async'}
                   style={{ '--mp': sl.mobilePosition ?? '74% center' } as CSSProperties}
                   className={cn(
                     'size-full object-cover [object-position:var(--mp)] lg:object-[72%_center]',
                     'origin-[60%_45%] lg:origin-[80%_45%]',
-                    moving ? ((tick + i) % 2 === 0 ? 'hx-kb-a' : 'hx-kb-b') : 'scale-[1.03]',
+                    moving ? ((starts[i] + i) % 2 === 0 ? 'hx-kb-a' : 'hx-kb-b') : 'scale-[1.03]',
                   )}
                 />
               </div>
             )
           })}
-          {/* Gold light on the wipe's edge. */}
-          {tick > 0 && !reduce && (
-            <div key={`edge-${tick}`} className={cn('pointer-events-none absolute inset-0 z-[3]', dir === 1 ? 'hx-edge-next' : 'hx-edge-prev')}>
-              <div className={cn('absolute inset-y-0 w-28 bg-[linear-gradient(90deg,transparent,rgb(255_200_110/0.3),rgb(255_244_220/0.55)_50%,rgb(255_200_110/0.3),transparent)] mix-blend-screen', dir === 1 ? 'left-0 -translate-x-1/2' : 'right-0 translate-x-1/2')} />
-            </div>
-          )}
         </motion.div>
 
         {/* Phone grade: dark under the header, clear over the scene, deep navy into the copy. */}

@@ -47,7 +47,7 @@ export default function Awards() {
             <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/10"><Images className="size-7" aria-hidden /></span>
             <span className="min-w-0 flex-1">
               <span className="block font-display text-2xl font-bold leading-tight sm:text-3xl">See the photo gallery</span>
-              <span className="mt-1 block text-white/75">{LIVE.gallery.length || LIVE.albums.some((a) => a.photos.length) ? 'Award days, classes, events and our flyers.' : 'Award days and our course flyers, in one place.'}</span>
+              <span className="mt-1 block text-white/75">{LIVE.gallery.length || LIVE.albums.some((a) => a.photos.length) ? 'Functions, festivals, classes and our flyers.' : 'Functions, festivals and celebrations at RPC.'}</span>
             </span>
             <span className="grid size-12 shrink-0 place-items-center rounded-full bg-white text-[#0b1e4a] transition-transform group-hover:translate-x-1"><ArrowRight className="size-5" aria-hidden /></span>
           </Link>

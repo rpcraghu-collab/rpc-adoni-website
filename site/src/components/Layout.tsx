@@ -161,9 +161,13 @@ function BottomBar() {
 
 function WhatsAppFab() {
   return (
-    <a href={waLink()} target="_blank" rel="noopener" aria-label="Chat with RPC on WhatsApp" className="group fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-[#14803f] p-4 text-white shadow-[0_18px_40px_-12px_rgb(23_138_72/0.7)] transition-transform hover:scale-105 lg:flex">
-      <WhatsAppIcon className="size-6" />
-      <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-bold transition-[max-width] duration-300 group-hover:max-w-40">Chat with us</span>
+    <a href={waLink()} target="_blank" rel="noopener" aria-label="Chat with RPC on WhatsApp" className="group fixed bottom-6 right-6 z-40 hidden items-center lg:flex">
+      {/* Label slides out to the left on hover; the button itself is always a perfect circle. */}
+      <span aria-hidden className="pointer-events-none mr-3 translate-x-2 whitespace-nowrap rounded-full bg-ink px-4 py-2 text-sm font-bold text-bg opacity-0 shadow-lg transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">Chat with us</span>
+      <span className="relative grid size-14 shrink-0 place-items-center rounded-full bg-[linear-gradient(145deg,#1eb35a,#11793c)] text-white shadow-[0_14px_30px_-10px_rgb(17_121_60/0.8),inset_0_1px_0_rgb(255_255_255/0.25)] ring-4 ring-white/70 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06] group-active:scale-95 dark:ring-white/10">
+        <span aria-hidden className="absolute inset-0 animate-ping rounded-full bg-[#1eb35a]/35 [animation-duration:2.6s] motion-reduce:hidden" />
+        <WhatsAppIcon className="relative size-7" />
+      </span>
     </a>
   )
 }

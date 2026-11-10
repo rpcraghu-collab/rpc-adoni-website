@@ -8,9 +8,9 @@ import { CourseArt } from '../CourseArt'
 import { Reveal, useReduce } from '../ui'
 import { cn } from '../../lib/cn'
 
-const AUTO_MS = 4800
+const AUTO_MS = 3800
 /** After the visitor drags, clicks or presses a key, autoplay waits this long before moving again. */
-const IDLE_MS = 9000
+const IDLE_MS = 6000
 
 /** Signed distance from the active card, wrapped around the ring (…, -2, -1, 0, 1, 2, …). */
 function offsetOf(i: number, active: number, n: number) {
@@ -80,13 +80,13 @@ function Card({ c, n, total, d, onPick }: { c: Course; n: number; total: number;
 
 /**
  * Every listed course as a 3D carousel: drag or swipe, arrows, dots, or the keyboard's arrow keys.
- * It turns on its own every few seconds, and stops while hovered, focused or after the visitor takes over.
+ * It turns on its own every few seconds (also while the mouse is over it). It waits a few seconds after the visitor
+ * takes over, and stops only for keyboard focus, the pause button or reduced motion.
  */
 export default function Coverflow() {
   const courses = listed()
   const n = courses.length
   const [active, setActive] = useState(0)
-  const [hover, setHover] = useState(false)
   const [focus, setFocus] = useState(false)
   const [userPaused, setUserPaused] = useState(false)
   const [idleUntil, setIdleUntil] = useState(0)
@@ -109,7 +109,7 @@ export default function Coverflow() {
     return () => io.disconnect()
   }, [])
 
-  const paused = reduce || userPaused || hover || focus || !visible
+  const paused = reduce || userPaused || focus || !visible
   useEffect(() => {
     if (paused) return
     const wait = Math.max(AUTO_MS, idleUntil - Date.now())
@@ -145,9 +145,7 @@ export default function Coverflow() {
         role="region"
         aria-roledescription="carousel"
         aria-label="Courses"
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onFocus={() => setFocus(true)}
+        onFocus={(e) => { if ((e.target as Element).matches?.(':focus-visible')) setFocus(true) }}
         onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocus(false) }}
         onKeyDown={(e) => {
           if (e.key === 'ArrowRight') { e.preventDefault(); step(1) }

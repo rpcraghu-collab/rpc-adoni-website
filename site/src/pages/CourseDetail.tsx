@@ -30,7 +30,6 @@ export default function CourseDetail() {
   const msg = `Hello RPC, I want details about the ${c.code} course (fees and next batch).`
   const paces = c.duration.map((d) => { const [pace, length = ''] = d.split(' · '); return { pace: pace.replace(' daily', ' a day'), length } })
   const topics = c.modules.reduce((n, m) => n + m.items.length, 0)
-  let n = 0
 
   return (
     <>
@@ -84,17 +83,14 @@ export default function CourseDetail() {
                 <Reveal key={i} delay={i * 0.06} className="h-full">
                   <div className="h-full rounded-[1.5rem] bg-surface p-5 ring-1 ring-line sm:p-6">
                     {m.title && <p className="mb-2 inline-flex rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-bg">{m.title}</p>}
-                    <ol className={c.modules.length === 1 ? 'sm:columns-2 sm:gap-8' : ''}>
-                      {m.items.map((it) => {
-                        n += 1
-                        return (
-                          <li key={it} className="flex break-inside-avoid items-start gap-3 border-b border-line py-3 last:border-0">
-                            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-surface-2 text-xs font-extrabold tabular-nums text-ink-soft">{n}</span>
-                            <span className="pt-0.5 font-semibold text-ink">{it}</span>
-                          </li>
-                        )
-                      })}
-                    </ol>
+                    <ul className={c.modules.length === 1 ? 'sm:columns-2 sm:gap-8' : ''}>
+                      {m.items.map((it) => (
+                        <li key={it} className="flex break-inside-avoid items-start gap-3 border-b border-line py-3 last:border-0">
+                          <span aria-hidden className="mt-[0.55rem] size-2 shrink-0 rounded-full bg-accent" />
+                          <span className="font-semibold text-ink">{it}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </Reveal>
               ))}

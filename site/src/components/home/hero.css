@@ -1,39 +1,16 @@
-/* Home hero (CinematicHero.tsx): scene wipes, Ken Burns and the wipe's light edge. */
+/* Home hero (CinematicHero.tsx): a slow Ken Burns move and a cinematic crossfade between scenes. */
 
 @keyframes hx-kb-a { from { transform: scale(1.03) translate3d(0, 0, 0); } to { transform: scale(1.15) translate3d(-1.6%, -1.1%, 0); } }
 @keyframes hx-kb-b { from { transform: scale(1.15) translate3d(1.4%, 0.9%, 0); } to { transform: scale(1.03) translate3d(-0.5%, 0, 0); } }
 .hx-kb-a { animation: hx-kb-a 9.5s cubic-bezier(0.3, 0.1, 0.3, 1) both; }
 .hx-kb-b { animation: hx-kb-b 9.5s cubic-bezier(0.3, 0.1, 0.3, 1) both; }
 
-/* The new scene is revealed by a wipe; the old one drifts away and darkens underneath it. */
-@keyframes hx-wipe-next { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
-@keyframes hx-wipe-prev { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-.hx-wipe-next { animation: hx-wipe-next 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
-.hx-wipe-prev { animation: hx-wipe-prev 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
-
-@keyframes hx-push-next { to { transform: translate3d(-6%, 0, 0); } }
-@keyframes hx-push-prev { to { transform: translate3d(6%, 0, 0); } }
-@keyframes hx-dim { from { opacity: 0; } to { opacity: 0.7; } }
-.hx-out-next { animation: hx-push-next 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
-.hx-out-prev { animation: hx-push-prev 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
-.hx-out-next::after, .hx-out-prev::after {
-  content: ''; position: absolute; inset: 0; background: #020818;
-  animation: hx-dim 1.2s cubic-bezier(0.77, 0, 0.18, 1) both;
-}
-
-/* A soft gold light riding the wipe's edge. */
-@keyframes hx-edge-next { from { transform: translate3d(100%, 0, 0); opacity: 1; } 80% { opacity: 1; } to { transform: translate3d(0, 0, 0); opacity: 0; } }
-@keyframes hx-edge-prev { from { transform: translate3d(-100%, 0, 0); opacity: 1; } 80% { opacity: 1; } to { transform: translate3d(0, 0, 0); opacity: 0; } }
-.hx-edge-next { animation: hx-edge-next 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
-.hx-edge-prev { animation: hx-edge-prev 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
-
-/* Phones: a soft, blurred copy of the scene fills the screen behind the text. */
+/* The new scene fades in over the old one, which stays put underneath until the fade ends. */
 @keyframes hx-fade { from { opacity: 0; } to { opacity: 1; } }
-.hx-fade { animation: hx-fade 1.2s ease both; }
+.hx-fade { animation: hx-fade 1.6s cubic-bezier(0.45, 0, 0.25, 1) both; }
 
 .is-paused .hx-kb-a, .is-paused .hx-kb-b { animation-play-state: paused; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hx-kb-a, .hx-kb-b, .hx-wipe-next, .hx-wipe-prev, .hx-out-next, .hx-out-prev, .hx-fade { animation: none; }
-  .hx-edge-next, .hx-edge-prev { display: none; }
+  .hx-kb-a, .hx-kb-b, .hx-fade { animation: none; }
 }

@@ -23,7 +23,6 @@ export type Shot = {
 
 export const KINDS: { id: ShotKind | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
-  { id: 'awards', label: 'Awards' },
   { id: 'campus', label: 'Campus & events' },
   { id: 'flyers', label: 'Flyers' },
 ]

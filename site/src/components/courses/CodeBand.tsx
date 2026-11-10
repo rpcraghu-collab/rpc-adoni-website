@@ -121,9 +121,8 @@ function Editor({ c, rec }: { c: Course; rec?: boolean }) {
 }
 
 /** Programming as a dark, code-themed band: each language is an editor window with a tiny real program. */
-export default function CodeBand({ n, total, list, rec }: { n: number; total: number; list: Course[]; rec: Set<string> }) {
+export default function CodeBand({ list, rec }: { n?: number; total?: number; list: Course[]; rec: Set<string> }) {
   const g = GROUPS.find((x) => x.id === 'programming')!
-  const pad = (v: number) => String(v).padStart(2, '0')
   // Desktop: two wide windows on top, three below (or an even grid for other counts).
   const span = (i: number) => (list.length === 5 ? (i < 2 ? 'lg:col-span-3' : 'lg:col-span-2') : 'lg:col-span-2')
   return (
@@ -138,7 +137,7 @@ export default function CodeBand({ n, total, list, rec }: { n: number; total: nu
       <div className="container-x">
         <div className="max-w-2xl pt-28 sm:pt-0">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 font-mono text-[0.75rem] font-bold uppercase tracking-[0.12em] text-white ring-1 ring-white/15 backdrop-blur-md">
-            <Terminal className="size-3.5" aria-hidden /> Chapter {pad(n)} / {pad(total)} · {list.length} {list.length === 1 ? 'language' : 'languages'}
+            <Terminal className="size-3.5" aria-hidden /> {list.length} {list.length === 1 ? 'language' : 'languages'}
           </p>
           <MaskLines id="g-programming" className="mt-4 text-[clamp(2.4rem,7vw,4.4rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white" lines={[g.label]} />
           <p className="mt-3 max-w-lg text-[1rem] leading-relaxed text-white/80 sm:text-[1.08rem]">{g.blurb}. Learn one language at a time, at your pace.</p>

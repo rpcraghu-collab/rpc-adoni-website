@@ -1,8 +1,9 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, Clock, FileCheck2, Laptop, MapPin, MonitorCheck, Projector, Snowflake, Users, Zap } from 'lucide-react'
 import { FACILITIES, GROUPS, SITE, waLink, type Course, type CourseGroup } from '../content/site'
-import { Magnetic, Reveal, WhatsAppIcon } from './ui'
+import { Magnetic, Reveal, WhatsAppIcon, useReduce } from './ui'
 import { cn } from '../lib/cn'
 import { CourseArt } from './CourseArt'
 
@@ -104,14 +105,57 @@ export function MiniCourseCard({ c, sub }: { c: Course; sub?: ReactNode }) {
 }
 
 /** Three course covers fanned like cards, the first in front. Used where a page would otherwise repeat a picture. */
+// Where each card of the deck sits: the front card, then the back-left and back-right cards fanned out
+// far enough to be clearly seen; any further cards wait hidden behind the front one.
+const FAN = [
+  { x: '0%', y: '0%', rotate: 0, scale: 1, opacity: 1, z: 3, dim: 0 },
+  { x: '-34%', y: '-10%', rotate: -11, scale: 0.84, opacity: 1, z: 2, dim: 0.28 },
+  { x: '34%', y: '-14%', rotate: 11, scale: 0.78, opacity: 1, z: 1, dim: 0.4 },
+]
+const FAN_HIDDEN = { x: '0%', y: '-6%', rotate: 0, scale: 0.7, opacity: 0, z: 0, dim: 0.5 }
+
+/**
+ * Three course covers as a fanned deck. Every few seconds the front card slides to the back and the next one
+ * comes forward. Stops off screen, in a hidden tab and for reduced motion.
+ */
 export function CoverFan({ slugs }: { slugs: string[] }) {
-  const [a, b, c] = slugs
-  const card = 'absolute inset-0 overflow-hidden rounded-[1.5rem] ring-1 ring-white/15'
+  const list = slugs.filter(Boolean).slice(0, 4)
+  const n = list.length
+  const reduce = useReduce()
+  const [k, setK] = useState(0)
+  const ref = useRef<HTMLDivElement>(null)
+  const [onScreen, setOnScreen] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') { setOnScreen(true); return }
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { threshold: 0.2 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  useEffect(() => {
+    if (reduce || !onScreen || n < 2) return
+    const t = window.setInterval(() => { if (!document.hidden) setK((v) => (v + 1) % n) }, 3000)
+    return () => window.clearInterval(t)
+  }, [reduce, onScreen, n])
   return (
-    <div aria-hidden className="relative mx-auto mb-12 mt-4 aspect-[4/3] w-52 sm:w-72 lg:my-0 lg:w-full lg:max-w-[21rem]">
-      {c && <div className={cn(card, 'translate-x-[16%] -translate-y-[8%] rotate-[9deg] opacity-75 shadow-[0_20px_40px_rgba(0,0,0,0.3)]')}><CourseArt slug={c} className="size-full" /></div>}
-      {b && <div className={cn(card, '-translate-x-[14%] -translate-y-[4%] -rotate-[7deg] opacity-90 shadow-[0_20px_40px_rgba(0,0,0,0.3)]')}><CourseArt slug={b} className="size-full" /></div>}
-      <div className={cn(card, 'float shadow-[0_30px_50px_rgba(0,0,0,0.45)] ring-white/25')}><CourseArt slug={a} className="size-full" /></div>
+    <div ref={ref} aria-hidden className="relative mx-auto mb-12 mt-10 aspect-[4/3] w-60 sm:w-80 lg:my-6 lg:w-full lg:max-w-[23rem]">
+      {list.map((slug, i) => {
+        const p = (i - k + n) % n
+        const f = FAN[p] ?? FAN_HIDDEN
+        return (
+          <motion.div
+            key={slug}
+            className="absolute left-[14%] top-[10%] w-[72%] overflow-hidden rounded-[1.4rem] ring-1 ring-white/20 shadow-[0_26px_46px_rgba(0,0,0,0.4)] will-change-transform"
+            style={{ zIndex: f.z }}
+            initial={false}
+            animate={{ x: f.x, y: f.y, rotate: f.rotate, scale: f.scale, opacity: f.opacity }}
+            transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 120, damping: 20, mass: 0.9 }}
+          >
+            <CourseArt slug={slug} className="aspect-[4/3] w-full" />
+            <motion.span className="pointer-events-none absolute inset-0 bg-[#020b26]" initial={false} animate={{ opacity: f.dim }} transition={{ duration: 0.6 }} />
+          </motion.div>
+        )
+      })}
     </div>
   )
 }

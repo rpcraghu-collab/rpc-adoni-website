@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, Clock, Plus } from 'lucide-react'
@@ -186,9 +186,12 @@ function WhyRpc() {
       <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.6fr]">
         <Reveal>
           <div className="relative flex h-full flex-col overflow-hidden rounded-[1.6rem] bg-brand p-6 text-white sm:p-8">
-            <div aria-hidden className="float pointer-events-none absolute -right-4 -top-6 w-36 rotate-[8deg] overflow-hidden rounded-[1.2rem] shadow-[0_20px_30px_rgba(0,0,0,0.35)] ring-1 ring-white/20 sm:w-44"><CourseArt slug="tally" className="aspect-[4/3] w-full" /></div>
-            <Clock className="size-7 text-white/70" />
-            <p className="relative mt-8 max-w-[12rem] font-display text-[2rem] font-extrabold leading-[1.02] sm:max-w-none">Two batches,<br />every day.</p>
+            {/* The art sits in its own row beside the clock, so it can never cover the title or the times. */}
+            <div className="flex items-start justify-between gap-4">
+              <Clock className="mt-1 size-7 shrink-0 text-white/70" />
+              <div aria-hidden className="float pointer-events-none -mr-1 -mt-1 w-28 rotate-[6deg] overflow-hidden rounded-[1.1rem] shadow-[0_20px_30px_rgba(0,0,0,0.35)] ring-1 ring-white/20 sm:w-36"><CourseArt slug="tally" className="aspect-[4/3] w-full" /></div>
+            </div>
+            <p className="relative mt-4 font-display text-[2rem] font-extrabold leading-[1.02]">Two batches,<br />every day.</p>
             <div className="relative mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {SITE.timings.map((t) => (
                 <div key={t.label} className="rounded-2xl bg-white/10 px-4 py-3">
@@ -208,6 +211,15 @@ function WhyRpc() {
 
 function Faq() {
   const [open, setOpen] = useState<number | null>(0)
+  // Mouse: a question opens when the pointer rests on it for a moment (a quick sweep across the list opens nothing).
+  const intent = useRef<number | undefined>(undefined)
+  const hoverIn = (i: number) => (e: PointerEvent) => {
+    if (e.pointerType !== 'mouse') return
+    window.clearTimeout(intent.current)
+    intent.current = window.setTimeout(() => setOpen(i), 140)
+  }
+  const hoverOut = () => window.clearTimeout(intent.current)
+  useEffect(() => { return () => window.clearTimeout(intent.current) }, [])
   return (
     <section className="container-x pb-16 lg:pb-24" aria-labelledby="faq-h">
       {/* Phones: heading, questions, then the help card. Desktop: help card under the heading. */}
@@ -217,17 +229,23 @@ function Faq() {
           {FAQS.map((f, i) => {
             const isOpen = open === i
             return (
-              <li key={f.q}>
+              <li key={f.q} onPointerEnter={hoverIn(i)} onPointerLeave={hoverOut}>
                 <h3>
                   <button aria-expanded={isOpen} aria-controls={`faq-${i}`} onClick={() => setOpen(isOpen ? null : i)} className="flex min-h-14 w-full items-center justify-between gap-6 py-4 text-left font-display text-[1.08rem] font-bold text-ink sm:text-xl">
                     {f.q}
-                    <span className={cn('grid size-9 shrink-0 place-items-center rounded-full ring-1 ring-line transition-[transform,background-color] duration-300', isOpen && 'rotate-45 bg-accent text-white ring-accent')}><Plus className="size-4" /></span>
+                    <span className={cn('grid size-9 shrink-0 place-items-center rounded-full ring-1 ring-line transition-[transform,background-color,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]', isOpen && 'rotate-45 bg-accent text-white ring-accent')}><Plus className="size-4" /></span>
                   </button>
                 </h3>
                 <AnimatePresence initial={false}>
                   {isOpen && (
-                    <motion.div id={`faq-${i}`} initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease }} className="overflow-hidden">
-                      <p className="max-w-2xl pb-5 leading-relaxed text-ink-soft">{f.a}</p>
+                    <motion.div
+                      id={`faq-${i}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1, transition: { height: { duration: 0.55, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.4, delay: 0.08 } } }}
+                      exit={{ height: 0, opacity: 0, transition: { height: { duration: 0.45, ease: [0.4, 0, 0.2, 1] }, opacity: { duration: 0.2 } } }}
+                      className="overflow-hidden"
+                    >
+                      <motion.p initial={{ y: -6 }} animate={{ y: 0 }} exit={{ y: -6 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="max-w-2xl pb-5 leading-relaxed text-ink-soft">{f.a}</motion.p>
                     </motion.div>
                   )}
                 </AnimatePresence>
