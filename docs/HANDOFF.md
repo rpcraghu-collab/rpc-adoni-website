@@ -19,7 +19,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
 1. (done 10 Nov) Deployed + live data cleaned.
 2. Deploy recipe: push to `rpcraghu-collab/rpc-adoni-website`, then a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
 3. Logo: the client will send a NEW logo `[NEED]`. Swap `site/public` logo files + favicon when it arrives.
-4. Later: rpcadoni.com DNS → Vercel (needs domain access) + add it to Firebase authorized domains.
+4. rpcadoni.com → Vercel (10 Nov): DONE in Vercel (team slug `rpc16`): rpcadoni.com = Production, www → 308 to apex, Vercel DNS on, Hostinger email records copied (MX mx1 5/mx2 10, SPF, DKIM hostingermail-a/b/c, autodiscover/autoconfig). Firebase already lists both domains. LEFT: at GoDaddy (registrar, not logged in on the RPC browser) set nameservers to ns1.vercel-dns.com + ns2.vercel-dns.com (now ns1/ns2.dns-parking.com = Hostinger). Then check SSL + mail. WordPress at 82.180.165.145 goes offline on the domain after that.
 5. No client update messages (founder 8 Nov); ask the client only for must-have info.
 
 ## Gotchas
