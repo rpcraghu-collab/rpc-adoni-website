@@ -5,7 +5,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
 
 ## State (10 Nov 2026)
 - `site/` = Vite 6 + React 19 + TS + Tailwind v4 + motion, prerendered (23 pages). `npm run build` passes.
-- **LIVE: https://rpc-adoni.vercel.app** = the 9 Nov night build. The 10 Nov changes below are a LOCAL commit only (not pushed, not deployed).
+- **LIVE: https://rpc-adoni.vercel.app** = the 10 Nov build (d6efc8f + web commit 3274bea, version 20261110074319). Live-checked: new timing, OAM Pro, 26 years, pgdca-advanced 308 → pgdca. Live `content/site`: coursesRev 2 with the 16-course PDF list, test photo "hiii" removed (gallery empty, no folders yet).
 - Accounts (all on rpcraghu@gmail.com, Chrome deviceId `af87ad88-...`, Profile 191): GitHub `rpcraghu-collab/rpc-adoni-website`, Firebase `rpc-adoni-4953b`, Cloudinary `q2nhyak9` (preset `rpc_gallery`), Vercel team "rpc", project `rpc-adoni` (root `site`).
 - **10 Nov, client PDF changes (done, emulator + Playwright tested, 54/54 checks, 0 console errors):**
   - Timings 9:00 am – 1:30 pm and 4:00 pm – 8:00 pm everywhere (site.ts, menu status, contact, footer, llms.txt).
@@ -16,8 +16,8 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - Same-family fixes: course cards no longer repeat the name for one-language courses; check-safety handles CRLF.
 
 ## Next steps
-1. Deploy the 10 Nov commit: needs the user's OK. Then push to `rpcraghu-collab/rpc-adoni-website` and make a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
-2. After deploy: in /admin delete the test photo "hiii" from General photos, and press Save once on Courses so the live doc holds the new list (the old saved list is ignored anyway).
+1. (done 10 Nov) Deployed + live data cleaned.
+2. Deploy recipe: push to `rpcraghu-collab/rpc-adoni-website`, then a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
 3. Logo: the client will send a NEW logo `[NEED]`. Swap `site/public` logo files + favicon when it arrives.
 4. Later: rpcadoni.com DNS → Vercel (needs domain access) + add it to Firebase authorized domains.
 5. No client update messages (founder 8 Nov); ask the client only for must-have info.
