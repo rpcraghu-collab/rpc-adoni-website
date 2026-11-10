@@ -21,3 +21,5 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
  Opening animation + DTS footer credit.
 
  10 Nov PDF course sheet, new timings, auto years, finder on top, gallery folders.
+
+ 10 Nov client changes: original logo, awards/gallery split, hero fade, auto decks, FAQ hover, WhatsApp button, compact compare + old WP URL redirects.
