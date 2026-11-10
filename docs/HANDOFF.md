@@ -15,15 +15,15 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - Gallery folders: admin `/admin/gallery` has a "General photos" tab + folders (create, rename, reorder, delete with confirm, upload, caption, move/remove photos). Stored as `albums` inside `content/site` json (no rules change). Public `/gallery` shows an "Events" section with one section per folder (jump chips, show-all button, lightbox). Home teaser takes each folder's first photo.
   - Same-family fixes: course cards no longer repeat the name for one-language courses; check-safety handles CRLF.
 
-- **10 Nov client round 2 (commit 411a7f8, pushed, NOT live yet):** original logo, Awards page = awards only + Gallery = events (empty state until photos), no module numbers, hero crossfade, auto-turning course coverflow, FAQ opens on hover, rotating CTA card fans (Home/About), round WhatsApp button, batches card art beside the times, compact Compare table (fits one screen).
+- **10 Nov client round 2: LIVE (version 20261110134405, 7:14 pm), update sent to the client's WhatsApp 7:16 pm:** original logo, Awards page = awards only + Gallery = events (empty state until photos), no module numbers, hero crossfade, auto-turning course coverflow, FAQ opens on hover, rotating CTA card fans (Home/About), round WhatsApp button, batches card art beside the times, compact Compare table (fits one screen).
 
 ## Next steps
-0. Deploy 411a7f8 (web commit in RPC Chrome; the auto-mode check blocked it, needs the user's yes), verify live + /main-page/ 301, purge LiteSpeed, then send the link to the client group (DREAM TEAM SERVICES WhatsApp, @mention, EN + Telugu).
+0. Wait for the client's feedback on round 2; gallery needs their event/function/festival photos.
 1. (done 10 Nov) Deployed + live data cleaned.
 2. Deploy recipe: push to `rpcraghu-collab/rpc-adoni-website`, then a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
 3. (10 Nov) Original RPC logo now used site-wide (`site/public/img/brand/`, favicon, splash).
 4. rpcadoni.com shows the new site (10 Nov), user rule: only wp-admin + Vercel, no GoDaddy/Hostinger. DONE via WP plugin "RPC Vercel Proxy" (source + zip in `wp-proxy/`, uploaded through wp-admin → Plugins): every non-WordPress path is fetched from https://rpc-adoni.vercel.app and served under https://rpcadoni.com (www/http → 301 to https apex; wp-admin, wp-login, wp-json, wp-content stay WordPress; GET/HEAD only; LiteSpeed caches pages 5 min, /assets 7 days, purge via LiteSpeed in wp-admin if a deploy must show at once). New Vercel deploys appear automatically. Verified: pages, assets, images, robots, sitemap identical to Vercel; no console errors. Old "Redirect Redirection" rule is now bypassed (harmless). To undo: deactivate the plugin. Cleaner later: point DNS at Vercel (Vercel side already set up in team `rpc16`), then remove the plugin.
-5. (10 Nov) Google still lists old WP URLs (/main-page/ → 404). Commit 5321e8b adds 301s in site/vercel.json (main-page, about-us, awards-2, contact-us, btech/coding/non-codeing, feeds, wp-sitemap.xml). Pushed with 411a7f8. NOT deployed yet: the GitHub web commit (deploy recipe) still needs the user's OK, then check https://rpcadoni.com/main-page/ → 301 → / and purge LiteSpeed.
+5. (10 Nov) Google still lists old WP URLs (/main-page/ → 404). Commit 5321e8b adds 301s in site/vercel.json (main-page, about-us, awards-2, contact-us, btech/coding/non-codeing, feeds, wp-sitemap.xml). Pushed with 411a7f8. LIVE 10 Nov (308 on vercel.app and rpcadoni.com).
 5. No client update messages (founder 8 Nov); ask the client only for must-have info.
 
 ## Gotchas
@@ -32,6 +32,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
 - Files are CRLF (git autocrlf): line-based scripts must split on `/\r?\n/`; Python edits use `newline=''`.
 - Tests: emulators (Firestore 8085, Auth 9099), `node rules-test/seed2.mjs`, `VITE_EMULATOR=1 npx vite --port 5181`, then `node rules-test/shoot2.mjs <outdir>` (fakes Cloudinary; screenshots go to `shots/`, git-ignored).
 - Deploy: Vercel Hobby + private repo deploys ONLY commits authored by rpcraghu-collab.
+- vercel.json redirect `source` must be plain paths (list `/x` and `/x/` separately). `/x/?` or `/(a)?b/?` made Vercel reject the config: GitHub pushes then create NO deployment at all (no Blocked/Error row). Vercel → Deployments → ⋯ → Create Deployment (main) shows the real error.
 - Reduced-motion branching must use `useReduce()` from `ui.tsx` (plain `useReducedMotion` caused hydration errors). Effects need `{ }` bodies (check-safety enforces it).
 - No picture may repeat on a page (founder 9 Nov). Never AI photos of RPC classrooms/students.
 - Bash tool mangles `\n` / `\\` inside sed/python heredocs: edit such lines with the Edit tool.
