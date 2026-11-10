@@ -27,7 +27,7 @@ Source of every fact: old site rpcadoni.com (WordPress/Elementor by VL WEBS, rea
 - Facilities: experienced faculty (24 yrs), LED projectors, online exams, 100% study material, AC classrooms & labs, lift + generator, certification on completion, 100% practical training.
 - Timings: 9:00 am – 1:30 pm and 4:00 pm – 8:00 pm (client, 10 Nov 2026).
 - Years of teaching: shown as current year − 2000 (26 in 2026), updates by itself.
-- Logo: client will send a NEW logo `[NEED]`; swap it in when it arrives.
+- Logo: the client's original RPC logo is in use (10 Nov, `site/public/img/brand/`).
 - Address: Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. Phone/WhatsApp: +91 99596 63984. Email: rpcraghu@gmail.com. Facebook: facebook.com/rpcadoni.
 - Taglines (theirs): "Learn Today… Build a Better Tomorrow", "Skills for a Brighter Career", "Your Career… Our Commitment", "Job-oriented computer courses", "Coding + Non-coding skills".
 
