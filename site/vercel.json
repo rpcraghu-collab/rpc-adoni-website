@@ -1,24 +1,160 @@
 {
   "redirects": [
-    { "source": "/courses/pgdca-advanced", "destination": "/courses/pgdca", "permanent": true },
-    { "source": "/main-page/?", "destination": "/", "permanent": true },
-    { "source": "/about-us/?", "destination": "/about", "permanent": true },
-    { "source": "/awards-2/?", "destination": "/awards", "permanent": true },
-    { "source": "/contact-us/?", "destination": "/contact", "permanent": true },
-    { "source": "/(btech|coding|non-codeing)/?", "destination": "/courses", "permanent": true },
-    { "source": "/(comments/)?feed/?", "destination": "/", "permanent": true },
-    { "source": "/wp-sitemap.xml", "destination": "/sitemap.xml", "permanent": true }
+    {
+      "source": "/courses/pgdca-advanced",
+      "destination": "/courses/pgdca",
+      "permanent": true
+    },
+    {
+      "source": "/main-page",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/main-page/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/about-us/",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/awards-2",
+      "destination": "/awards",
+      "permanent": true
+    },
+    {
+      "source": "/awards-2/",
+      "destination": "/awards",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us/",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/btech",
+      "destination": "/courses",
+      "permanent": true
+    },
+    {
+      "source": "/btech/",
+      "destination": "/courses",
+      "permanent": true
+    },
+    {
+      "source": "/coding",
+      "destination": "/courses",
+      "permanent": true
+    },
+    {
+      "source": "/coding/",
+      "destination": "/courses",
+      "permanent": true
+    },
+    {
+      "source": "/non-codeing",
+      "destination": "/courses",
+      "permanent": true
+    },
+    {
+      "source": "/non-codeing/",
+      "destination": "/courses",
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/feed/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/comments/feed",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/comments/feed/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    }
   ],
-  "rewrites": [{ "source": "/((?!assets/).*)", "destination": "/app.html" }],
+  "rewrites": [
+    {
+      "source": "/((?!assets/).*)",
+      "destination": "/app.html"
+    }
+  ],
   "headers": [
-    { "source": "/admin(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] },
-    { "source": "/version.json", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
-    { "source": "/(.*)", "headers": [
-      { "key": "X-Content-Type-Options", "value": "nosniff" },
-      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-      { "key": "X-Frame-Options", "value": "DENY" },
-      { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
-    ] }
+    {
+      "source": "/admin(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/version.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
   ]
 }
