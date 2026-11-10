@@ -18,7 +18,7 @@ function versionFile(): Plugin {
 
 export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react(), tailwindcss(), ...(isSsrBuild ? [] : [versionFile()])],
-  define: { __APP_VERSION__: JSON.stringify(BUILD_ID) },
+  define: { __APP_VERSION__: JSON.stringify(BUILD_ID), __BUILD_YEAR__: JSON.stringify(new Date().getFullYear()) },
   // Local preview (phone testing on Wi-Fi): always ask the server for fresh pages instead of a cached copy.
   preview: { headers: { 'Cache-Control': 'no-cache' } },
   build: isSsrBuild

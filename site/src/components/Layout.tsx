@@ -6,6 +6,7 @@ import { GROUPS, SITE, listed, telLink, waLink } from '../content/site'
 import { LIVE } from '../lib/content'
 import { useTheme } from '../lib/theme'
 import { cn } from '../lib/cn'
+import { useYear } from '../lib/years'
 import { Logo, WhatsAppIcon } from './ui'
 import { MobileMenu } from './MobileMenu'
 
@@ -168,6 +169,7 @@ function WhatsAppFab() {
 }
 
 function Footer() {
+  const year = useYear()
   return (
     <footer className="relative overflow-hidden bg-[#071330] text-white">
       <div className="container-x relative z-10 grid grid-cols-2 gap-x-6 gap-y-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1.2fr] md:gap-12 md:py-16">
@@ -201,7 +203,7 @@ function Footer() {
       <div className="relative z-10 border-t border-white/10">
         <div className="container-x flex flex-col gap-2 py-6 pb-28 text-sm text-white/60 lg:flex-row lg:items-center lg:justify-between lg:pb-6">
           <div className="space-y-1">
-            <p>© {new Date().getFullYear()} Real Point Computer Education, Adoni.</p>
+            <p>© {year} Real Point Computer Education, Adoni.</p>
             <p>ISO 9001:2015 · AP Govt DET permission · MSME registered</p>
           </div>
           <p className="mt-2 lg:mt-0">

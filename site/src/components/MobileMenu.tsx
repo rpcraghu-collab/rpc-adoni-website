@@ -12,13 +12,25 @@ export type NavItem = { to: string; label: string }
 const EASE = [0.22, 1, 0.36, 1] as const
 const IN_OUT = [0.76, 0, 0.24, 1] as const
 
-/** Live class status from the two daily slots (8 am – 1 pm, 4 pm – 8 pm), in the visitor's local time. */
+/** "9:00 am – 1:30 pm" → [540, 810] minutes after midnight; null when the text is not a time range. */
+function slot(text: string): [number, number, string, string] | null {
+  const t = [...text.matchAll(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/gi)]
+  if (t.length < 2) return null
+  const min = (m: RegExpMatchArray) => ((+m[1] % 12) + (m[3].toLowerCase() === 'pm' ? 12 : 0)) * 60 + (+(m[2] ?? 0))
+  const say = (m: RegExpMatchArray) => `${m[1]}${m[2] && m[2] !== '00' ? `:${m[2]}` : ''} ${m[3].toLowerCase()}`
+  return [min(t[0]), min(t[1]), say(t[0]), say(t[1])]
+}
+
+/** Live class status from the daily slots in SITE.timings (admin-editable), in the visitor's local time. */
 function classStatus(now: Date): { open: boolean; text: string } {
-  const h = now.getHours() + now.getMinutes() / 60
-  if (h >= 8 && h < 13) return { open: true, text: 'Classes on now · till 1 pm' }
-  if (h >= 16 && h < 20) return { open: true, text: 'Classes on now · till 8 pm' }
-  if (h >= 13 && h < 16) return { open: false, text: 'Evening batch at 4 pm' }
-  return { open: false, text: h < 8 ? 'Opens today at 8 am' : 'Opens tomorrow at 8 am' }
+  const slots = SITE.timings.map((t) => slot(t.time)).filter((s) => s !== null).sort((x, y) => x[0] - y[0])
+  if (!slots.length) return { open: false, text: 'Morning & evening batches' }
+  const m = now.getHours() * 60 + now.getMinutes()
+  const on = slots.find((s) => m >= s[0] && m < s[1])
+  if (on) return { open: true, text: `Classes on now · till ${on[3]}` }
+  const next = slots.find((s) => m < s[0])
+  if (next) return { open: false, text: next === slots[0] ? `Opens today at ${next[2]}` : `Next batch at ${next[2]}` }
+  return { open: false, text: `Opens tomorrow at ${slots[0][2]}` }
 }
 
 /**

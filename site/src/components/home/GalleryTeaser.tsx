@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { allShots } from '../../content/gallery'
+import { albumShots, albums, allShots } from '../../content/gallery'
 import { MaskLines, Reveal } from '../ui'
 import { cn } from '../../lib/cn'
 
@@ -9,7 +9,7 @@ const PICK = ['award-1', 'poster', 'award-2', 'award-3', 'award-4'] // award-5 a
 /** Home: five photos in a bento, each opening the gallery. Admin campus photos take the small slots first. */
 export default function GalleryTeaser() {
   const all = allShots()
-  const campus = all.filter((s) => s.kind === 'campus')
+  const campus = [...all.filter((s) => s.kind === 'campus'), ...albums().flatMap((a) => albumShots(a).slice(0, 1))]
   const fixed = PICK.map((id) => all.find((s) => s.id === id)).filter((s) => !!s)
   // Keep the big award photo first; real campus photos replace the later slots when RPC adds them.
   const shots = [fixed[0], ...campus, ...fixed.slice(1)].slice(0, 5)

@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, Clock, Plus } from 'lucide-react'
-import { AWARDS, COURSES, FAQS, FINDER, SITE, listed, waLink, type Course } from '../content/site'
+import { AWARDS, COURSES, FAQS, FINDER, INDIVIDUAL, SITE, listed, waLink, type Course } from '../content/site'
 import { LIVE } from '../lib/content'
 import { JsonLd, Reveal, SectionHead, Seo, WhatsAppIcon } from '../components/ui'
 import { cn } from '../lib/cn'
+import { useYears } from '../lib/years'
 import CinematicHero from '../components/home/CinematicHero'
 import FactBand from '../components/home/FactBand'
 import Coverflow from '../components/home/Coverflow'
@@ -54,60 +55,77 @@ function Batches() {
 }
 
 
+/** The first thing after the hero: pick who you are, see where to start. Highlighted navy panel (conversion block). */
 function FindCourse() {
   const [who, setWho] = useState(FINDER[1].id)
   const pick = FINDER.find((f) => f.id === who)!
   const list = pick.slugs.map(bySlug).filter((c): c is Course => !!c)
-  const langs = listed().filter((c) => c.group === 'programming')
+  const single = INDIVIDUAL.map(bySlug).filter((c): c is Course => !!c)
+  const tiles = list.length + 1 // + the "not sure?" tile
   return (
-    <section id="find" className="container-x scroll-mt-24 py-16 lg:py-24" aria-labelledby="find-h">
-      <div className="flex flex-wrap items-end justify-between gap-5">
-        <Reveal className="max-w-2xl">
-          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Find your course</p>
-          <h2 id="find-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]">Tell us who you are. <span className="text-muted">We'll show where to start.</span></h2>
-        </Reveal>
-        <Link to="/courses" className="hidden items-center gap-2 font-bold text-ink hover:text-accent-text sm:inline-flex">All {listed().length} courses <ArrowRight className="size-4" /></Link>
-      </div>
-      <div role="tablist" aria-label="I am a" className="mt-8 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-        {FINDER.map((f) => (
-          <button
-            key={f.id} role="tab" aria-selected={who === f.id} onClick={() => setWho(f.id)}
-            className={cn('relative min-h-12 rounded-full px-3 text-[0.92rem] font-bold leading-tight transition-colors sm:px-5 sm:text-[0.95rem]', who === f.id ? 'text-bg' : 'bg-surface text-ink ring-1 ring-line hover:ring-ink/25')}
-          >
-            {who === f.id && <motion.span layoutId="finder-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
-            <span className="relative">{f.label}</span>
-          </button>
-        ))}
-      </div>
-      <p className="mt-4 text-sm font-semibold text-muted">{pick.note}</p>
-      <div role="tabpanel" aria-live="polite" className="mt-6">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.ul key={who} className={cn('grid gap-4 sm:grid-cols-2', list.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4')} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.28, ease }}>
-            {list.map((c) => <li key={c.slug}><CourseCard c={c} /></li>)}
-          </motion.ul>
-        </AnimatePresence>
-      </div>
-      <Reveal delay={0.05} className="mt-4">
-        <div className="flex flex-col gap-4 rounded-[1.5rem] bg-surface-2 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-          <div>
-            <p className="font-display text-xl font-bold text-ink">Just one language?</p>
-            <p className="mt-1 text-sm text-muted">Single-language courses for Degree and B.Tech students.</p>
+    <section id="find" className="container-x scroll-mt-24 pb-14 pt-2 lg:pb-20" aria-labelledby="find-h">
+      <div className="relative overflow-hidden rounded-[2rem] bg-[#0b1e4a] px-4 py-10 text-white sm:px-8 sm:py-12 lg:rounded-[2.5rem] lg:px-12 lg:py-14 dark:bg-brand">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.07)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
+        <div className="relative">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <Reveal className="max-w-2xl">
+              <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[#ff8a83]">Find your course</p>
+              <h2 id="find-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04] text-white">Tell us who you are. <span className="text-white/60">We'll show where to start.</span></h2>
+            </Reveal>
+            <Link to="/courses" className="hidden min-h-11 items-center gap-2 font-bold text-white/85 hover:text-white sm:inline-flex">All {listed().length} courses <ArrowRight className="size-4" /></Link>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {langs.map((l) => (
-              <Link key={l.slug} to={`/courses/${l.slug}`} className="grid min-h-11 min-w-14 place-items-center rounded-xl bg-surface px-4 font-display font-bold text-ink ring-1 ring-line transition-colors hover:text-accent-text hover:ring-accent">{l.code}</Link>
+          <div role="tablist" aria-label="I am a" className="mt-8 grid grid-cols-2 gap-2 lg:grid-cols-4">
+            {FINDER.map((f) => (
+              <button
+                key={f.id} role="tab" aria-selected={who === f.id} onClick={() => setWho(f.id)}
+                className={cn('relative min-h-[4.25rem] rounded-2xl px-3 py-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-5', who === f.id ? 'text-[#0b1e4a]' : 'bg-white/[0.08] text-white ring-1 ring-white/15 hover:bg-white/[0.14]')}
+              >
+                {who === f.id && <motion.span layoutId="finder-pill" className="absolute inset-0 rounded-2xl bg-white" transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
+                <span className="relative block font-display text-[0.98rem] font-bold leading-tight sm:text-[1.05rem]">{f.label}</span>
+                <span className={cn('relative mt-0.5 block text-[0.78rem] font-semibold leading-snug', who === f.id ? 'text-[#0b1e4a]/70' : 'text-white/65')}>{f.note}</span>
+              </button>
             ))}
           </div>
+          <div role="tabpanel" aria-live="polite" className="mt-6">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.ul key={who} className={cn('grid gap-3 sm:grid-cols-2 sm:gap-4', tiles % 4 === 0 ? 'lg:grid-cols-4' : 'lg:grid-cols-3')} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.28, ease }}>
+                {list.map((c) => <li key={c.slug}><CourseCard c={c} /></li>)}
+                <li>
+                  <a href={waLink(`Hello RPC, I am a ${pick.label.toLowerCase()}. Which course is right for me?`)} target="_blank" rel="noopener" className="group flex h-full min-h-[11rem] flex-col justify-between gap-6 rounded-[1.4rem] bg-accent p-5 text-white transition-transform duration-300 hover:-translate-y-1 sm:p-6">
+                    <span className="font-display text-[1.45rem] font-extrabold leading-[1.05]">Not sure which one? <span className="block text-white/80">Ask us on WhatsApp.</span></span>
+                    <span className="flex items-center justify-between gap-3 text-sm font-bold">
+                      <span className="inline-flex items-center gap-2"><WhatsAppIcon /> {SITE.phone}</span>
+                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </a>
+                </li>
+              </motion.ul>
+            </AnimatePresence>
+          </div>
+          {single.length > 0 && (
+            <div className="mt-6 flex flex-col gap-4 rounded-[1.5rem] bg-white/[0.07] p-5 ring-1 ring-white/12 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="lg:max-w-[16rem]">
+                <p className="font-display text-xl font-bold text-white">Just one subject?</p>
+                <p className="mt-1 text-sm text-white/70">Individual courses, one subject at a time.</p>
+              </div>
+              <ul className="flex flex-wrap gap-2">
+                {single.map((l) => (
+                  <li key={l.slug}><Link to={`/courses/${l.slug}`} className="grid min-h-11 min-w-14 place-items-center rounded-xl bg-white px-4 font-display font-bold text-[#0b1e4a] transition-colors hover:bg-[#ffe1de]">{l.code}</Link></li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <Link to="/courses" className="mt-6 inline-flex min-h-12 items-center gap-2 font-bold text-white hover:text-white/80 sm:hidden">See all {listed().length} courses <ArrowRight className="size-4" /></Link>
         </div>
-      </Reveal>
-      <Link to="/courses" className="mt-6 inline-flex min-h-12 items-center gap-2 font-bold text-ink hover:text-accent-text sm:hidden">See all {listed().length} courses <ArrowRight className="size-4" /></Link>
+      </div>
     </section>
   )
 }
 
 function Story() {
+  const years = useYears()
   const steps = [
-    { year: '2000', text: `Founded in Adoni by ${SITE.founder}.` },
+    { year: String(SITE.since), text: `Founded in Adoni by ${SITE.founder}.` },
     { year: '2006', text: 'Permission from the Directorate of Employment & Training, AP Govt, and ISO certification.' },
     { year: 'Today', text: 'ISO 9001:2015 certified, MSME registered, five-time Education Excellence Award winner.' },
   ]
@@ -127,7 +145,7 @@ function Story() {
         <div>
           <Reveal>
             <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Our story</p>
-            <h2 id="story-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]">25 years of teaching computers in Adoni.</h2>
+            <h2 id="story-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]">{years} years of teaching computers in Adoni.</h2>
             <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-muted">
               RPC teaches computers from the basics to advanced programming, for children, students, homemakers and business people. It also supports education for tribal and poor families around Adoni.
             </p>
@@ -249,15 +267,15 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, OAM, Tally Prime with GST, C, C++, Java and Python at Real Point Computer Education, Adoni. ISO 9001:2015 certified, AP Govt DET permission." />
+      <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, CCA, OAM, Tally Prime with GST, Power BI, SQL, C, C++, Java and Python at Real Point Computer Education, Adoni. ISO 9001:2015 certified, AP Govt DET permission." />
       <JsonLd data={jsonLd} />
       <CinematicHero />
       <FactBand />
+      <FindCourse />
       <Batches />
       <Coverflow />
       <Story />
       <StackCards />
-      <FindCourse />
       <WhyRpc />
       <CardWall />
       <GalleryTeaser />

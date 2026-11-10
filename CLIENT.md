@@ -25,20 +25,24 @@ Source of every fact: old site rpcadoni.com (WordPress/Elementor by VL WEBS, rea
   Stage banners in the photos: "BrandsAcademy Education Excellence Awards", "Worldwide Achievers", "Contribution for National Progress".
 - Mission: quality computer education, basic to advanced, coding + non-coding, for children, students, housewives and business people; supports education for tribal and poor people around Adoni.
 - Facilities: experienced faculty (24 yrs), LED projectors, online exams, 100% study material, AC classrooms & labs, lift + generator, certification on completion, 100% practical training.
-- Timings: 8 am – 1 pm and 4 pm – 8 pm.
+- Timings: 9:00 am – 1:30 pm and 4:00 pm – 8:00 pm (client, 10 Nov 2026).
+- Years of teaching: shown as current year − 2000 (26 in 2026), updates by itself.
+- Logo: client will send a NEW logo `[NEED]`; swap it in when it arrives.
 - Address: Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. Phone/WhatsApp: +91 99596 63984. Email: rpcraghu@gmail.com. Facebook: facebook.com/rpcadoni.
 - Taglines (theirs): "Learn Today… Build a Better Tomorrow", "Skills for a Brighter Career", "Your Career… Our Commitment", "Job-oriented computer courses", "Coding + Non-coding skills".
 
-## Courses (durations as on old site: "1½ hr daily" or "3 hrs daily")
-- **OAM (Office Automation Master):** Computer Fundamentals, OS, MS Office (Word, Advanced Excel, PPT), Internet, Tally Prime with GST. 4 months (1½ h) / 2 months (3 h). Poster icons: Word, Excel, PowerPoint, Internet, E-mail, Office Tools.
-- **OAM Advanced:** OAM + SQL (poster adds Power BI, productivity tools). 5 months / 2½ months.
-- **OAM PRO (Professional & Advanced Computer Skills):** Data Analytics, Business Applications, Cloud Tools, Project Skills, Career Skills. Duration `[NEED]`.
-- **CCA:** Fundamentals, OS, MS Office, Internet. 75 days / 40 days. Age above 11 years.
-- **DCA:** Fundamentals, MS Office, OS + Internet, C. 5 months / 2½ months. For Inter students.
-- **DCP:** DCA + C++. 6 months / 3 months. For Inter students.
-- **PGDCA:** Sem I: Fundamentals, MS Office, OS + Internet, C, C++. Sem II: Java, Oracle (SQL & PL/SQL), Tally ERP with GST, Project work, Basics in Testing, Exam guidance. 1 year (1½ h) / 6 months (3 h). For Degree & B.Tech students.
-- **PGDCA Advanced:** same structure. Difference vs PGDCA `[NEED]`.
-- **Individual courses (B.Tech/Degree):** C, C++, Java, Oracle, Python.
+## Courses (client's sheet WebsiteDreamTeam.pdf, 10 Nov 2026; topics ONLY from it)
+Base (every short course): Computer Fundamentals (Typing), MS Office (Word, Advanced Excel, PPT), Operating System, Internet with AI Tools.
+- **CCA:** base. 75 days (1½ h) / 40 days (3 h). Above 11 years.
+- **DCA:** base + C. 4 months / 2 months. Inter.
+- **DCP:** base + C, C++. 6 months / 3 months. Inter.
+- **OAM:** base + Tally Prime with GST. 4 months / 2 months.
+- **OAM Advanced:** OAM + Power BI with Project. 5 months / 2½ months.
+- **OAM Pro:** OAM Advanced + SQL. 6 months / 3 months.
+- **PGDCA** (Degree & PG): Sem I base + C, C++. Sem II Java or Power BI, Oracle, SQL / PL/SQL, Tally Prime with GST or Python, Project Work, Semester Exam Guidance. 1 year / 6 months.
+- **PGDCA Advanced:** REMOVED (client, 10 Nov 2026); old URL redirects to PGDCA.
+- **Individual courses:** Advanced Excel, Tally Prime with GST, Power BI, SQL, C, C++, Java, Oracle, Python. Brief only ("Core X / Advanced X"), no detailed topics (client rule).
+- Course finder: School → CCA; Inter → DCA, DCP, OAM, OAM Advanced, OAM Pro; Degree / B.Tech → PGDCA + every language; Working / homemaker → CCA, OAM, OAM Advanced, OAM Pro.
 - Fees: not published, so the site shows "Enquire for fees".
 
 ## Not available (never invent)

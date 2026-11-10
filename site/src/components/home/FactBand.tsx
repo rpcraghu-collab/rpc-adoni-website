@@ -1,9 +1,10 @@
 import { Fragment } from 'react'
-import { listed } from '../../content/site'
+import { SITE, listed } from '../../content/site'
 import { cn } from '../../lib/cn'
+import { useYears } from '../../lib/years'
 
 /** Only true facts from the client (CLIENT.md). */
-const FACTS = ['ISO 9001:2015 certified', 'AP Govt DET permission since 2006', '5× Education Excellence Award', 'MSME registered', 'Teaching computers since 2000', '25 years in Adoni', 'Morning & evening batches']
+const facts = (years: number) => ['ISO 9001:2015 certified', 'AP Govt DET permission since 2006', '5× Education Excellence Award', 'MSME registered', `Teaching computers since ${SITE.since}`, `${years} years in Adoni`, 'Morning & evening batches']
 
 function Row({ items, rev, dur, className, star }: { items: string[]; rev?: boolean; dur: number; className?: string; star: string }) {
   const half = (dup: boolean) => (
@@ -31,6 +32,7 @@ function Row({ items, rev, dur, className, star }: { items: string[]; rev?: bool
  * the courses, then the institute's facts. Hover pauses a tape; reduced motion shows them as still, wrapped lines.
  */
 export default function FactBand() {
+  const FACTS = facts(useYears())
   const courses = listed().map((c) => c.code)
   return (
     <section aria-label="Courses and facts at a glance" className="relative z-[1] overflow-hidden py-10 sm:py-14">

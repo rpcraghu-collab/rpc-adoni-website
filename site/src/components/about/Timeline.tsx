@@ -3,6 +3,7 @@ import { motion, useScroll, useSpring } from 'motion/react'
 import { SITE } from '../../content/site'
 import { Reveal, useReduce } from '../ui'
 import { cn } from '../../lib/cn'
+import { useYears } from '../../lib/years'
 
 // Real milestones only. Entries without a known year show a label, never a made-up date.
 const STEPS = [
@@ -10,13 +11,14 @@ const STEPS = [
   { mark: '2006', year: true, title: 'Government permission', text: 'Permission from the Directorate of Employment & Training, Govt of Andhra Pradesh, and ISO certification.' },
   { mark: 'ISO 9001:2015', year: false, title: 'Certified for quality', text: 'RPC is certified to the ISO 9001:2015 standard and registered as an MSME.' },
   { mark: '5×', year: true, title: 'Five Education Excellence Awards', text: 'Honoured on national stages by V.V.S. Laxman, Abhinav Bindra, Chetan Chauhan and others.' },
-  { mark: 'Today', year: true, title: '25 years of teaching', text: 'Coding and non-coding courses, basic to advanced, in two batches every day: morning and evening.' },
+  { mark: 'Today', year: true, title: 'Years of teaching', text: 'Coding and non-coding courses, basic to advanced, in two batches every day: morning and evening.' },
 ]
 
 /** The journey on a navy panel. The red line fills as you scroll through it. */
 export default function Timeline() {
   const list = useRef<HTMLOListElement>(null)
   const reduce = useReduce()
+  const years = useYears()
   const { scrollYProgress } = useScroll({ target: list, offset: ['start 80%', 'end 55%'] })
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 })
 
@@ -29,7 +31,7 @@ export default function Timeline() {
           <Reveal className="lg:sticky lg:top-32 lg:self-start">
             <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[#ff8a83]">Our journey</p>
             <h2 id="journey-h" className="mt-4 text-balance font-display text-[clamp(2.3rem,6.4vw,4.2rem)] font-extrabold leading-[0.98] tracking-[-0.03em] text-white">
-              25 years in Adoni, one step at a time.
+              {years} years in Adoni, one step at a time.
             </h2>
             <p className="mt-5 max-w-md text-pretty text-[1.05rem] leading-relaxed text-white/75">
               From opening in {SITE.since} to an ISO 9001:2015 certified, government-approved institute with five national awards.
@@ -49,7 +51,7 @@ export default function Timeline() {
                   <p className={cn('font-display font-extrabold leading-[0.9] tracking-[-0.04em]', s.year ? 'text-[clamp(3.2rem,13vw,5.6rem)]' : 'text-[clamp(2.1rem,8vw,3.4rem)]', last ? 'text-[#ff8a83]' : 'text-white')}>
                     {s.mark}
                   </p>
-                  <h3 className="mt-3 font-display text-[1.3rem] font-bold leading-tight text-white sm:text-2xl">{s.title}</h3>
+                  <h3 className="mt-3 font-display text-[1.3rem] font-bold leading-tight text-white sm:text-2xl">{s.mark === 'Today' ? `${years} years of teaching` : s.title}</h3>
                   <p className="mt-2 max-w-lg text-pretty leading-relaxed text-white/75">{s.text}</p>
                 </Reveal>
               )

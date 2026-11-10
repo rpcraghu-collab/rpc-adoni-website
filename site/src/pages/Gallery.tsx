@@ -1,9 +1,10 @@
 import { useRef, useState, type PointerEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Expand, FolderOpen } from 'lucide-react'
 import { SITE } from '../content/site'
-import { AWARD_SHOTS, KINDS, allShots, campusShots, type Shot, type ShotKind } from '../content/gallery'
+import { useYears } from '../lib/years'
+import { AWARD_SHOTS, KINDS, albumShots, albums, allShots, campusShots, type Shot, type ShotKind } from '../content/gallery'
 import { Reveal, Seo } from '../components/ui'
 import PageHero from '../components/PageHero'
 import Lightbox from '../components/Lightbox'
@@ -155,7 +156,70 @@ function Masonry({ all, onOpen }: { all: Shot[]; onOpen: (items: Shot[], i: numb
   )
 }
 
+/** Layout 4: one section per admin folder (Independence Day, Republic Day, festivals...). Hidden when there are none. */
+function Albums({ onOpen }: { onOpen: (items: Shot[], i: number) => void }) {
+  const [more, setMore] = useState<Record<string, boolean>>({})
+  const list = albums()
+  if (!list.length) return null
+  const FIRST = 8
+  return (
+    <section className="border-t border-line py-16 lg:py-24" aria-labelledby="events-h">
+      <div className="container-x">
+        <Reveal>
+          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Events</p>
+          <h2 id="events-h" className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] font-bold leading-[1.05]">Celebrations and events at RPC.</h2>
+        </Reveal>
+        {list.length > 1 && (
+          <nav aria-label="Jump to an event" className="no-scrollbar edge-fade -mx-4 mt-6 overflow-x-auto px-4 sm:mx-0 sm:px-0 sm:[mask-image:none]">
+            <ul className="flex w-max gap-2">
+              {list.map((a) => (
+                <li key={a.id}>
+                  <a href={`#${a.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-surface px-4 text-[0.92rem] font-bold text-ink ring-1 ring-line transition-colors hover:ring-ink/30">
+                    <FolderOpen className="size-4 text-accent-text" aria-hidden />{a.name}
+                    <span className="rounded-full bg-surface-2 px-1.5 text-[0.75rem] tabular-nums text-muted">{a.photos.length}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+        {list.map((a) => {
+          const shots = albumShots(a)
+          const all = more[a.id] || shots.length <= FIRST
+          const shown = all ? shots : shots.slice(0, FIRST)
+          return (
+            <section key={a.id} id={a.id} className="mt-12 scroll-mt-24 first-of-type:mt-10" aria-labelledby={`${a.id}-h`}>
+              <Reveal className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-line pb-3">
+                <h3 id={`${a.id}-h`} className="font-display text-[clamp(1.3rem,2.6vw,1.8rem)] font-bold leading-tight">{a.name}</h3>
+                <span className="text-sm font-semibold tabular-nums text-muted">{shots.length} photo{shots.length > 1 ? 's' : ''}</span>
+              </Reveal>
+              <ul className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+                {shown.map((s, i) => (
+                  <li key={s.id}>
+                    <button type="button" onClick={() => onOpen(shots, i)} className="group relative block aspect-[4/3] w-full overflow-hidden rounded-[1.2rem] bg-surface-2 ring-1 ring-line">
+                      <span className="sr-only">Open photo: </span>
+                      <img src={s.thumb} srcSet={s.srcSet} sizes="(min-width: 1024px) 18rem, (min-width: 768px) 30vw, 46vw" width={s.w} height={s.h} alt={s.alt} loading="lazy" decoding="async" className="size-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transition-none" />
+                      {s.title !== a.name && <Caption s={{ ...s, sub: undefined }} tight />}
+                      <ViewChip />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {!all && (
+                <button type="button" onClick={() => setMore((m) => ({ ...m, [a.id]: true }))} className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-full bg-surface-2 px-5 font-bold text-ink hover:bg-line">
+                  Show all {shots.length} photos <ChevronDown className="size-4" aria-hidden />
+                </button>
+              )}
+            </section>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 export default function Gallery() {
+  const years = useYears()
   const [open, setOpen] = useState<Open>(null)
   const onOpen = (items: Shot[], i: number) => setOpen({ items, i })
   const stripItems = [...campusShots(), ...allShots().filter((s) => s.kind === 'flyers')]
@@ -163,14 +227,15 @@ export default function Gallery() {
   const extraShots = allShots().filter((s) => !shown.has(s.id))
   return (
     <>
-      <Seo path="/gallery" title="Photo gallery: RPC Computer Education, Adoni" description={`Award days with national figures, RPC's course flyers and photos from classes and events at ${SITE.name}, Babu Plaza, Adoni.`} />
+      <Seo path="/gallery" title="Photo gallery: RPC Computer Education, Adoni" description={`Award days with national figures, RPC's course flyers and photos from classes, festivals and events at ${SITE.name}, Babu Plaza, Adoni.`} />
       <PageHero
         eyebrow="Gallery"
-        title={<>Moments from <span className="text-accent-text">25 years</span> of RPC.</>}
+        title={<>Moments from <span className="text-accent-text">{years} years</span> of RPC.</>}
         text="Award days with national figures, our course flyers, and photos from classes and events. Tap any photo to see it full size."
         backdrop="/img/hero/hero-career-sm.webp"
       />
       <Bento onOpen={onOpen} />
+      <Albums onOpen={onOpen} />
       <Strip items={stripItems} onOpen={onOpen} />
       <Masonry all={extraShots} onOpen={onOpen} />
       <CtaBand title={<>Come and see<br />the institute.</>} artNode={<CoverFan slugs={['python', 'oam-advanced', 'java']} />} />

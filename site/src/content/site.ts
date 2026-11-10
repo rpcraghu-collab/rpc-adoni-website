@@ -14,7 +14,7 @@ export const SITE = {
   mapsQuery: 'Real Point Computer Education, Babu Plaza, Adoni',
   facebook: 'https://www.facebook.com/rpcadoni',
   timings: [
-    { label: 'Morning batch', time: '8:00 am – 1:00 pm' },
+    { label: 'Morning batch', time: '9:00 am – 1:30 pm' },
     { label: 'Evening batch', time: '4:00 pm – 8:00 pm' },
   ],
   url: 'https://rpcadoni.com',
@@ -46,33 +46,16 @@ export type Course = {
 
 export const GROUPS: { id: CourseGroup; label: string; blurb: string; art: string }[] = [
   { id: 'diploma', label: 'Diplomas', blurb: 'PGDCA, DCA, DCP: complete computer diplomas', art: '/img/art/diplomas.webp' },
-  { id: 'office', label: 'Office & Tally', blurb: 'MS Office, Advanced Excel, Tally Prime with GST', art: '/img/art/office.webp' },
-  { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python for Degree & B.Tech', art: '/img/art/programming.webp' },
+  { id: 'office', label: 'Office & Tally', blurb: 'CCA, OAM, Advanced Excel, Tally Prime with GST, Power BI', art: '/img/art/office.webp' },
+  { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python, SQL for Degree & B.Tech', art: '/img/art/programming.webp' },
 ]
 
-// Standard syllabus for the single-language courses (written 8 Nov 2026; RPC can edit it in /admin → Courses).
-const SYLLABUS: Record<'C' | 'C++' | 'Java' | 'Oracle' | 'Python', Course['modules']> = {
-  C: [
-    { title: 'Basics', items: ['Program structure, compiling and running', 'Data types, variables and operators', 'Input and output', 'Decision making: if, else, switch', 'Loops: for, while, do-while'] },
-    { title: 'Core C', items: ['Arrays and strings', 'Functions and recursion', 'Pointers', 'Structures and unions', 'File handling', 'Mini project'] },
-  ],
-  'C++': [
-    { title: 'Object-oriented basics', items: ['C++ program structure, input and output', 'Classes and objects', 'Constructors and destructors', 'Function and operator overloading'] },
-    { title: 'Advanced C++', items: ['Inheritance', 'Polymorphism and virtual functions', 'Templates', 'Exception handling', 'File streams', 'Mini project'] },
-  ],
-  Java: [
-    { title: 'Core Java', items: ['Java basics, JDK and JVM', 'Data types, operators and control statements', 'Classes, objects and methods', 'Inheritance, interfaces and packages', 'Strings and arrays'] },
-    { title: 'Advanced topics', items: ['Exception handling', 'Collections', 'Multithreading', 'File input and output', 'JDBC: connecting Java to a database', 'Mini project'] },
-  ],
-  Oracle: [
-    { title: 'SQL', items: ['Database and RDBMS concepts', 'DDL, DML and DCL commands', 'Constraints and keys', 'Functions, GROUP BY and HAVING', 'Joins and subqueries', 'Views, sequences and indexes'] },
-    { title: 'PL/SQL', items: ['PL/SQL blocks, variables and control structures', 'Cursors', 'Procedures and functions', 'Triggers', 'Exception handling', 'Practice project'] },
-  ],
-  Python: [
-    { title: 'Python basics', items: ['Installing Python and writing first programs', 'Data types, variables and operators', 'Conditions and loops', 'Lists, tuples, sets and dictionaries', 'Functions and modules'] },
-    { title: 'Applied Python', items: ['File handling and exception handling', 'Object-oriented Python', 'Data analysis basics with NumPy and Pandas', 'Automation scripts', 'Intro to web apps', 'Mini project'] },
-  ],
-}
+// Topics come only from RPC's course sheet (WebsiteDreamTeam.pdf, Nov 2026). RPC can edit them in /admin → Courses.
+const BASE = ['Computer Fundamentals (Typing)', 'MS Office: Word, Advanced Excel, PowerPoint', 'Operating System', 'Internet with AI Tools']
+const BASE_TOOLS = ['Typing', 'Word', 'Excel', 'PowerPoint', 'AI Tools']
+
+/** Bump when the default course list changes, so an older list saved in the admin panel is not shown. */
+export const COURSES_REV = 2
 
 export const COURSES: Course[] = [
   {
@@ -80,29 +63,15 @@ export const COURSES: Course[] = [
     code: 'PGDCA',
     name: 'Post Graduate Diploma in Computer Applications',
     group: 'diploma',
-    tagline: 'The complete one-year diploma: office skills, programming, databases and accounts.',
-    forWho: 'Degree & B.Tech students',
+    tagline: 'The complete diploma for Degree & PG students: office skills, programming, databases and accounts.',
+    forWho: 'Degree & PG students',
     duration: ['1½ hrs daily · 1 year', '3 hrs daily · 6 months'],
     modules: [
-      { title: 'Semester I', items: ['Computer Fundamentals', 'MS Office: Word, Advanced Excel, PowerPoint', 'Operating System with Internet', 'C Language', 'C++'] },
-      { title: 'Semester II', items: ['Java', 'Oracle: SQL & PL/SQL', 'Tally ERP with GST', 'Project Work', 'Basics in Testing', 'Exam Guidance'] },
+      { title: 'Semester I', items: [...BASE, 'C Language', 'C++'] },
+      { title: 'Semester II', items: ['Java or Power BI', 'Oracle', 'SQL / PL/SQL', 'Tally Prime with GST or Python', 'Project Work', 'Semester Exam Guidance'] },
     ],
-    tools: ['Word', 'Excel', 'PowerPoint', 'C', 'C++', 'Java', 'Oracle', 'Tally'],
+    tools: ['Word', 'Excel', 'C', 'C++', 'Java', 'Power BI', 'Oracle', 'SQL', 'Tally', 'Python'],
     featured: true,
-  },
-  {
-    slug: 'pgdca-advanced',
-    code: 'PGDCA Advanced',
-    name: 'PGDCA Advanced',
-    group: 'diploma',
-    tagline: 'PGDCA with a stronger programming and database track.',
-    forWho: 'Degree & B.Tech students',
-    duration: ['1½ hrs daily · 1 year', '3 hrs daily · 6 months'],
-    modules: [
-      { title: 'Semester I', items: ['Computer Fundamentals', 'MS Office: Word, Advanced Excel, PowerPoint', 'Operating System with Internet', 'C Language', 'C++'] },
-      { title: 'Semester II', items: ['Java', 'Oracle: SQL & PL/SQL', 'Tally ERP with GST', 'Project Work', 'Basics in Testing'] },
-    ],
-    tools: ['Excel', 'C', 'C++', 'Java', 'Oracle', 'Tally'],
   },
   {
     slug: 'dca',
@@ -111,9 +80,9 @@ export const COURSES: Course[] = [
     group: 'diploma',
     tagline: 'Office skills plus your first programming language.',
     forWho: 'Inter students',
-    duration: ['1½ hrs daily · 5 months', '3 hrs daily · 2½ months'],
-    modules: [{ items: ['Computer Fundamentals', 'MS Office: Word, Advanced Excel, PowerPoint', 'Operating System with Internet', 'C Language'] }],
-    tools: ['Word', 'Excel', 'PowerPoint', 'C'],
+    duration: ['1½ hrs daily · 4 months', '3 hrs daily · 2 months'],
+    modules: [{ items: [...BASE, 'C Language'] }],
+    tools: [...BASE_TOOLS, 'C'],
   },
   {
     slug: 'dcp',
@@ -123,19 +92,30 @@ export const COURSES: Course[] = [
     tagline: 'DCA plus C++: a strong start for future engineers.',
     forWho: 'Inter students',
     duration: ['1½ hrs daily · 6 months', '3 hrs daily · 3 months'],
-    modules: [{ items: ['Computer Fundamentals', 'MS Office: Word, Advanced Excel, PowerPoint', 'Operating System with Internet', 'C Language', 'C++'] }],
-    tools: ['Excel', 'C', 'C++'],
+    modules: [{ items: [...BASE, 'C Language', 'C++'] }],
+    tools: [...BASE_TOOLS, 'C', 'C++'],
+  },
+  {
+    slug: 'cca',
+    code: 'CCA',
+    name: 'Certificate in Computer Applications',
+    group: 'office',
+    tagline: 'A friendly first course: typing, MS Office, the computer and the internet with AI tools.',
+    forWho: 'Anyone above 11 years',
+    duration: ['1½ hrs daily · 75 days', '3 hrs daily · 40 days'],
+    modules: [{ items: BASE }],
+    tools: BASE_TOOLS,
   },
   {
     slug: 'oam',
     code: 'OAM',
     name: 'Office Automation Master',
     group: 'office',
-    tagline: 'Word, Excel, PowerPoint, Internet and Tally Prime with GST: office-ready in months.',
+    tagline: 'Job-oriented: MS Office, internet with AI tools and Tally Prime with GST.',
     forWho: 'Students, job seekers, homemakers, business people',
     duration: ['1½ hrs daily · 4 months', '3 hrs daily · 2 months'],
-    modules: [{ items: ['Computer Fundamentals', 'Operating System', 'MS Word', 'Advanced Excel', 'PowerPoint', 'Internet & E-mail', 'Tally Prime with GST'] }],
-    tools: ['Word', 'Excel', 'PowerPoint', 'Internet', 'E-mail', 'Tally'],
+    modules: [{ items: [...BASE, 'Tally Prime with GST'] }],
+    tools: [...BASE_TOOLS, 'Tally'],
     featured: true,
   },
   {
@@ -143,60 +123,87 @@ export const COURSES: Course[] = [
     code: 'OAM Advanced',
     name: 'Office Automation Master – Advanced',
     group: 'office',
-    tagline: 'Everything in OAM plus SQL and Power BI for data-driven office work.',
-    forWho: 'Graduates, accounts & office staff',
+    tagline: 'Everything in OAM plus Power BI with a project.',
+    forWho: 'Students, job seekers, office staff',
     duration: ['1½ hrs daily · 5 months', '3 hrs daily · 2½ months'],
-    modules: [{ items: ['Computer Fundamentals', 'Operating System', 'MS Word', 'Advanced Excel', 'PowerPoint', 'Internet Concepts', 'Tally Prime with GST', 'SQL', 'Power BI', 'Productivity Tools'] }],
-    tools: ['Advanced Excel', 'Tally', 'SQL', 'Power BI'],
+    modules: [{ items: [...BASE, 'Tally Prime with GST', 'Power BI with Project'] }],
+    tools: [...BASE_TOOLS, 'Tally', 'Power BI'],
     featured: true,
   },
   {
     slug: 'oam-pro',
-    code: 'OAM PRO',
-    name: 'Office Automation Master – PRO',
+    code: 'OAM Pro',
+    name: 'Office Automation Master – Pro',
     group: 'office',
-    tagline: 'Professional & advanced computer skills for modern workplaces.',
+    tagline: 'Everything in OAM Advanced plus SQL: the most complete office course.',
     forWho: 'Graduates & working professionals',
-    duration: [],
-    modules: [{ items: ['Data Analytics', 'Business Applications', 'Cloud Tools', 'Project Skills', 'Career Skills'] }],
-    tools: ['Data Analytics', 'Cloud Tools'],
+    duration: ['1½ hrs daily · 6 months', '3 hrs daily · 3 months'],
+    modules: [{ items: [...BASE, 'Tally Prime with GST', 'Power BI with Project', 'SQL'] }],
+    tools: [...BASE_TOOLS, 'Tally', 'Power BI', 'SQL'],
     featured: true,
   },
   {
-    slug: 'cca',
-    code: 'CCA',
-    name: 'Certificate in Computer Applications',
+    slug: 'advanced-excel',
+    code: 'Advanced Excel',
+    name: 'Advanced Excel',
     group: 'office',
-    tagline: 'A friendly first course in computers, office tools and the internet.',
-    forWho: 'Anyone above 11 years',
-    duration: ['1½ hrs daily · 75 days', '3 hrs daily · 40 days'],
-    modules: [{ items: ['Computer Fundamentals', 'Operating System', 'MS Word', 'Advanced Excel', 'PowerPoint', 'Internet Concepts'] }],
-    tools: ['Word', 'Excel', 'PowerPoint', 'Internet'],
+    tagline: 'Learn Advanced Excel on its own.',
+    forWho: 'Students & working people',
+    duration: [],
+    modules: [{ items: ['Core Excel', 'Advanced Excel'] }],
+    tools: ['Excel'],
   },
-  ...(['C', 'C++', 'Java', 'Oracle', 'Python'] as const).map((lang) => ({
+  {
+    slug: 'tally',
+    code: 'Tally',
+    name: 'Tally Prime with GST',
+    group: 'office',
+    tagline: 'Learn accounts in Tally Prime with GST on its own.',
+    forWho: 'Students & working people',
+    duration: [],
+    modules: [{ items: ['Tally Prime', 'GST'] }],
+    tools: ['Tally', 'GST'],
+  },
+  {
+    slug: 'power-bi',
+    code: 'Power BI',
+    name: 'Power BI with Project',
+    group: 'office',
+    tagline: 'Learn Power BI on its own, with a project.',
+    forWho: 'Students & working people',
+    duration: [],
+    modules: [{ items: ['Power BI', 'Project Work'] }],
+    tools: ['Power BI'],
+  },
+  ...(['C', 'C++', 'Java', 'Oracle', 'Python', 'SQL'] as const).map((lang) => ({
     slug: lang.toLowerCase().replace('++', 'pp'),
     code: lang,
-    name: lang === 'C' ? 'C Programming' : lang === 'Oracle' ? 'Oracle Database (SQL & PL/SQL)' : `${lang} Programming`,
+    name: lang === 'C' ? 'C Programming' : lang === 'Oracle' ? 'Oracle Database' : lang === 'SQL' ? 'SQL Database' : `${lang} Programming`,
     group: 'programming' as const,
     tagline: {
-      C: 'The foundation of programming: logic, problem solving and hands-on coding projects.',
-      'C++': 'Object-oriented programming to design and build complex programs.',
-      Java: 'Build robust, scalable and efficient applications with Java.',
+      C: 'The foundation of programming: logic, problem solving and hands-on coding.',
+      'C++': 'Object-oriented programming to design and build bigger programs.',
+      Java: 'Build applications with Java.',
       Oracle: 'Manage databases with Oracle SQL and PL/SQL.',
-      Python: 'Software, data analysis, automation and web apps with Python.',
+      Python: 'Write programs and automate work with Python.',
+      SQL: 'Store, query and manage data with SQL.',
     }[lang],
     forWho: 'Degree & B.Tech students',
     duration: [],
-    modules: SYLLABUS[lang],
+    // Brief only (RPC, 10 Nov 2026): no detailed topic lists for single languages.
+    modules: [{ items: lang === 'Oracle' ? ['SQL', 'PL/SQL'] : [`Core ${lang}`, `Advanced ${lang}`] }],
     tools: [lang],
   })),
 ]
 
+/** The individual (single-subject) courses, in RPC's order. */
+export const INDIVIDUAL = ['advanced-excel', 'tally', 'power-bi', 'sql', 'c', 'cpp', 'java', 'oracle', 'python']
+
 export const FINDER = [
   { id: 'school', label: 'School student', note: 'Above 11 years', slugs: ['cca'] },
-  { id: 'inter', label: 'Inter student', note: 'Start your tech journey', slugs: ['dca', 'dcp', 'oam'] },
-  { id: 'degree', label: 'Degree / B.Tech', note: 'Diplomas + programming', slugs: ['pgdca', 'pgdca-advanced', 'java', 'python'] },
-  { id: 'work', label: 'Working / homemaker', note: 'Office & accounts skills', slugs: ['oam', 'oam-advanced', 'oam-pro'] },
+  { id: 'inter', label: 'Inter student', note: 'Diplomas & office courses', slugs: ['dca', 'dcp', 'oam', 'oam-advanced', 'oam-pro'] },
+  { id: 'degree', label: 'Degree / B.Tech', note: 'PGDCA + every language', slugs: ['pgdca', 'c', 'cpp', 'java', 'oracle', 'python', 'sql'] },
+  { id: 'work', label: 'Working / homemaker', note: 'Office & accounts skills', slugs: ['cca', 'oam', 'oam-advanced', 'oam-pro'] },
 ]
 
 export const FACILITIES = [
@@ -218,14 +225,14 @@ export const AWARDS = [
   { n: 5, from: 'Sri Chetan Chauhan', role: 'Former Indian Cricketer, Ex Cabinet Minister of UP', img: 'award-5' },
 ]
 
-export const TOOLS = ['MS Word', 'Advanced Excel', 'PowerPoint', 'Tally Prime', 'GST', 'SQL', 'Power BI', 'C', 'C++', 'Java', 'Python', 'Oracle PL/SQL', 'Internet & E-mail', 'Data Analytics', 'Cloud Tools']
+export const TOOLS = ['MS Word', 'Advanced Excel', 'PowerPoint', 'Tally Prime', 'GST', 'SQL', 'Power BI', 'C', 'C++', 'Java', 'Python', 'Oracle PL/SQL', 'Internet', 'AI Tools', 'Typing']
 
 export const FAQS = [
   { q: 'What are the course fees?', a: 'Fees depend on the course and the batch you choose. Send us a WhatsApp message or call, and we will share the exact fee and any current offers.' },
-  { q: 'What are the class timings?', a: 'Classes run in two slots every day: 8:00 am – 1:00 pm and 4:00 pm – 8:00 pm. Most courses can be done at 1½ hours a day or faster at 3 hours a day.' },
+  { q: 'What are the class timings?', get a() { return `Classes run in two slots every day: ${SITE.timings.map((t) => t.time).join(' and ')}. Most courses can be done at 1½ hours a day or faster at 3 hours a day.` } },
   { q: 'Will I get a certificate?', a: 'Yes. Every course ends with a certificate from RPC, an ISO 9001:2015 certified institute with permission from the Directorate of Employment & Training, AP Govt.' },
   { q: 'I have never used a computer. Can I join?', a: 'Yes. CCA and OAM start from computer fundamentals. Anyone above 11 years can join CCA.' },
-  { q: 'Which course is best for B.Tech or Degree students?', a: 'PGDCA covers office tools, C, C++, Java, Oracle and Tally in one diploma. You can also take a single language like Java or Python on its own.' },
+  { q: 'Which course is best for B.Tech or Degree students?', a: 'PGDCA covers office tools, C, C++, Java or Power BI, Oracle, SQL / PL/SQL and Tally or Python in one diploma. You can also take a single language like Java, Python or SQL on its own.' },
   { q: 'Where is RPC?', a: 'Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. The building has a lift and generator backup.' },
 ]
 

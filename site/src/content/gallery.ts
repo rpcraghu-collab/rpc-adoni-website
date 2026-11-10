@@ -2,7 +2,7 @@
 // Real photos only: the five award days and RPC's own flyers ship with the site; photos of classes and
 // events are added by RPC in /admin → Gallery and appear under "Campus & events".
 import { AWARDS, SITE } from './site'
-import { LIVE } from '../lib/content'
+import { LIVE, type Album } from '../lib/content'
 import { cldUrl } from '../lib/cloudinary'
 
 export type ShotKind = 'awards' | 'campus' | 'flyers'
@@ -58,5 +58,19 @@ export const campusShots = (): Shot[] =>
     alt: g.caption || 'A class or event at RPC Computer Education, Adoni',
     title: g.caption || 'Life at RPC',
   }))
+
+/** One admin folder (Independence Day, Republic Day, a festival...) as shots; its name is the fallback caption. */
+export const albumShots = (a: Album): Shot[] =>
+  a.photos.map((g) => ({
+    id: `${a.id}-${g.id}`, kind: 'campus', thumb: cldUrl(g.url, 640), full: cldUrl(g.url, 1600),
+    srcSet: `${cldUrl(g.url, 480)} 480w, ${cldUrl(g.url, 960)} 960w`,
+    w: 4, h: 3,
+    alt: g.caption ? `${g.caption} (${a.name}, RPC Computer Education, Adoni)` : `${a.name} at RPC Computer Education, Adoni`,
+    title: g.caption || a.name,
+    sub: g.caption ? a.name : undefined,
+  }))
+
+/** The folders that have photos, in the admin's order. */
+export const albums = () => LIVE.albums.filter((a) => a.photos.length)
 
 export const allShots = (): Shot[] => [...AWARD_SHOTS, ...campusShots(), ...FLYERS]

@@ -35,6 +35,8 @@ const CHIP: Record<CourseGroup, string> = {
 
 /** The main course card (Home finder, Courses page). */
 export function CourseCard({ c, bare }: { c: Course; bare?: boolean }) {
+  // A one-subject course would just repeat its own name as its tool, so it shows its brief (Core X · Advanced X).
+  const line = c.tools.length > 1 ? c.tools.slice(0, 4) : c.modules.flatMap((m) => m.items).slice(0, 3)
   const arrow = (
     <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-2 text-ink transition-colors group-hover:bg-accent group-hover:text-white">
       <ArrowRight className="size-4" />
@@ -57,7 +59,7 @@ export function CourseCard({ c, bare }: { c: Course; bare?: boolean }) {
         </>
       )}
       <p className="mt-1.5 text-[0.92rem] font-semibold leading-snug text-ink-soft">{c.code === c.name ? c.tagline : c.name}</p>
-      {c.tools.length > 0 && <p className="mt-3 text-[0.85rem] leading-snug text-muted">{c.tools.slice(0, 4).join(' · ')}</p>}
+      {line.length > 0 && <p className="mt-3 text-[0.85rem] leading-snug text-muted">{line.join(' · ')}</p>}
       <span className="mt-auto block pt-5">
         <span className="flex items-start gap-2 border-t border-line pt-4 text-[0.84rem] font-semibold text-ink-soft">
           <Clock className="mt-0.5 size-4 shrink-0 text-muted" />

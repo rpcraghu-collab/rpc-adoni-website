@@ -26,7 +26,8 @@ for (const file of files) {
     ts.forEachChild(n, visit)
   }
   visit(sf)
-  text.split('\n').forEach((line, i) => {
+  // Split on \r?\n: with git autocrlf the files are CRLF, and a trailing \r stopped the comment strip below.
+  text.split(/\r?\n/).forEach((line, i) => {
     const code = line.replace(/\/\/.*$/, '')
     const m = code.match(MISSING_ON_OLD_PHONES)
     if (m) problems.push(`${file}:${i + 1}  ${m[0]} is missing on older phones; use a safe alternative`)

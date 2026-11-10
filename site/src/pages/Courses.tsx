@@ -54,7 +54,7 @@ export default function Courses() {
 
   return (
     <>
-      <Seo path="/courses" title="Computer courses in Adoni: PGDCA, DCA, OAM, Tally, Java, Python" description="All courses at RPC Adoni: PGDCA, PGDCA Advanced, DCA, DCP, OAM, OAM Advanced, OAM PRO, CCA, and C, C++, Java, Oracle, Python. Morning and evening batches." />
+      <Seo path="/courses" title="Computer courses in Adoni: PGDCA, DCA, OAM, Tally, Java, Python" description="All courses at RPC Adoni: PGDCA, DCA, DCP, CCA, OAM, OAM Advanced, OAM Pro, and Advanced Excel, Tally Prime with GST, Power BI, SQL, C, C++, Java, Oracle, Python. Morning and evening batches." />
       <CoursesHero all={all} who={who} onWho={setWho} onShow={showRecs} />
 
       <div className="sticky top-[calc(4.5rem+env(safe-area-inset-top))] z-30 mt-6 border-y border-line bg-bg/90 backdrop-blur-xl backdrop-saturate-150 lg:mt-10">

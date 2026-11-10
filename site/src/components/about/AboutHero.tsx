@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { ArrowRight, BadgeCheck } from 'lucide-react'
 import { AWARDS, SITE, waLink } from '../../content/site'
+import { useYears } from '../../lib/years'
 import { Magnetic, WhatsAppIcon, useReduce } from '../ui'
 import { enter } from '../../lib/boot'
 import AwardSeal from './AwardSeal'
@@ -14,6 +15,7 @@ const EASE = [0.22, 1, 0.36, 1] as const
  * Phones get headline → photo → text, so the first screen is never text only.
  */
 export default function AboutHero() {
+  const years = useYears()
   const ref = useRef<HTMLElement>(null)
   const reduce = useReduce()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
@@ -91,7 +93,7 @@ export default function AboutHero() {
         {/* Story line and actions */}
         <motion.div {...up(0.15)} className="mt-16 lg:mt-7 lg:self-start">
           <p className="max-w-[34rem] text-pretty text-[1.08rem] leading-relaxed text-ink-soft sm:text-lg">
-            25 years of quality computer education in Adoni, basic to advanced, coding and non-coding, for children, students, homemakers and business people.
+            {years} years of quality computer education in Adoni, basic to advanced, coding and non-coding, for children, students, homemakers and business people.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Magnetic>

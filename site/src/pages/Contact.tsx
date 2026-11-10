@@ -72,7 +72,7 @@ export default function Contact() {
 
   return (
     <>
-      <Seo path="/contact" title="Admissions open: contact RPC Adoni" description={`Join a computer course at RPC, ${SITE.address}. Call ${SITE.phone}. Morning 8 am – 1 pm and evening 4 – 8 pm batches.`} />
+      <Seo path="/contact" title="Admissions open: contact RPC Adoni" description={`Join a computer course at RPC, ${SITE.address}. Call ${SITE.phone}. ${SITE.timings.map((t) => `${t.label} ${t.time}`).join(', ')}.`} />
       <PageHero eyebrow="Admissions open" title={<>Book your seat. <span className="text-muted">We reply with the fee.</span></>} text="Four details, sent on WhatsApp. Fees and the next batch date come back in the reply. Prefer to talk? Call us." />
 
       <section className="container-x grid gap-6 pb-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">

@@ -2,18 +2,23 @@
 // The defaults in content/site.ts ship with the build; the admin's saved changes are layered on top.
 // Boot: apply the cached copy at once (no flash), then refresh in the background with one small REST call
 // (no Firebase SDK on public pages), and re-render if anything changed.
-import { COURSES, SITE, type Course } from '../content/site'
+import { COURSES, COURSES_REV, SITE, type Course } from '../content/site'
 import { firebaseConfig } from './firebase-config'
 
 export type Timing = { label: string; time: string }
 export type Batch = { id: string; course: string; starts: string; time: string; note?: string }
 export type GalleryItem = { id: string; url: string; caption: string }
+/** A named photo folder (Independence Day, Republic Day, festivals...), shown as its own section. */
+export type Album = { id: string; name: string; photos: GalleryItem[] }
 export type SiteSettings = { phone: string; email: string; address: string; facebook: string; timings: Timing[] }
 export type Overrides = {
   site?: Partial<SiteSettings>
   courses?: Course[]
+  /** COURSES_REV the saved course list was made from; an older list is ignored. */
+  coursesRev?: number
   batches?: Batch[]
   gallery?: GalleryItem[]
+  albums?: Album[]
   announcement?: string
 }
 
@@ -25,7 +30,7 @@ export const DEFAULT_SITE: SiteSettings = clone({ phone: SITE.phone, email: SITE
 export const DEFAULT_COURSES: Course[] = clone(COURSES)
 
 /** Extra live content that has no default in the build. */
-export const LIVE = { batches: [] as Batch[], gallery: [] as GalleryItem[], announcement: '' }
+export const LIVE = { batches: [] as Batch[], gallery: [] as GalleryItem[], albums: [] as Album[], announcement: '' }
 
 let current: Overrides = {}
 let version = 0
@@ -62,6 +67,17 @@ function cleanCourse(c: unknown): Course | null {
   }
 }
 
+const cleanPhotos = (v: unknown): GalleryItem[] => (Array.isArray(v) ? v : [])
+  .filter((g) => typeof g?.url === 'string' && g.url.startsWith('https://res.cloudinary.com/'))
+  .map((g) => ({ id: typeof g.id === 'string' ? g.id : g.url, url: g.url, caption: str(g.caption, 300) ?? '' }))
+
+/** The admin's saved course list, or null when there is none or it predates the current defaults (COURSES_REV). */
+export function savedCourses(o: Overrides): Course[] | null {
+  if (typeof o.coursesRev !== 'number' || o.coursesRev < COURSES_REV || !Array.isArray(o.courses)) return null
+  const valid = o.courses.map(cleanCourse).filter((c): c is Course => c !== null)
+  return valid.length ? valid : null
+}
+
 /** Apply overrides to the shared content objects (mutated in place so every page reads the live values). */
 export function applyOverrides(o: Overrides) {
   current = o ?? {}
@@ -77,11 +93,16 @@ export function applyOverrides(o: Overrides) {
   })
   // Only well-formed courses: a broken entry (bad slug, missing name, wrong types) is dropped instead of
   // crashing every page, and a slug can never become a file path outside dist/ in the prerender.
-  const valid = Array.isArray(current.courses) ? current.courses.map(cleanCourse).filter((c): c is Course => c !== null) : []
-  const courses = valid.length ? valid : DEFAULT_COURSES
+  // A list saved before the default courses last changed (COURSES_REV) is ignored, so RPC's new course sheet
+  // is not hidden by an old copy; the admin editor then starts from the new defaults.
+  const courses = savedCourses(current) ?? DEFAULT_COURSES
   COURSES.splice(0, COURSES.length, ...clone(courses))
   LIVE.batches = Array.isArray(current.batches) ? current.batches.filter((b) => typeof b?.course === 'string' && typeof b.starts === 'string' && typeof b.time === 'string') : []
-  LIVE.gallery = Array.isArray(current.gallery) ? current.gallery.filter((g) => typeof g?.url === 'string' && g.url.startsWith('https://res.cloudinary.com/')) : []
+  LIVE.gallery = cleanPhotos(current.gallery)
+  LIVE.albums = Array.isArray(current.albums)
+    ? current.albums.filter((a) => typeof a?.id === 'string' && SLUG.test(a.id) && typeof a.name === 'string' && a.name.trim())
+      .map((a) => ({ id: a.id, name: a.name.trim().slice(0, 80), photos: cleanPhotos(a.photos) }))
+    : []
   LIVE.announcement = str(current.announcement, 200)?.trim() ?? ''
   version++
   listeners.forEach((l) => l())

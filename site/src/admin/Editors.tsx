@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore'
 import { toast } from 'sonner'
-import { ArrowDown, ArrowUp, CalendarDays, ChevronDown, Eye, EyeOff, Image as ImageIcon, Loader2, Plus, RotateCcw, Save, Trash2, Upload, Users } from 'lucide-react'
-import { GROUPS, type Course, type CourseGroup } from '../content/site'
-import { clone, DEFAULT_COURSES, DEFAULT_SITE, type Batch, type GalleryItem, type Timing } from '../lib/content'
+import { ArrowDown, ArrowUp, CalendarDays, ChevronDown, Eye, EyeOff, Folder, FolderPlus, Image as ImageIcon, Loader2, Plus, RotateCcw, Save, Trash2, Upload, Users } from 'lucide-react'
+import { COURSES_REV, GROUPS, type Course, type CourseGroup } from '../content/site'
+import { clone, DEFAULT_COURSES, DEFAULT_SITE, savedCourses, type Album, type Batch, type GalleryItem, type Timing } from '../lib/content'
 import { cldUrl, uploadImage } from '../lib/cloudinary'
 import { cn } from '../lib/cn'
 import { area, Empty, Field, iconBtn, input, move, OWNER_EMAIL, Panel, smallBtn, uid, type AdminCtx } from './shared'
@@ -59,7 +59,7 @@ function textToModules(t: string): Course['modules'] {
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `course-${uid()}`
 
 export function CoursesEditor({ ctx }: { ctx: AdminCtx }) {
-  const d = useDraft<Course[]>(clone(ctx.content.courses?.length ? ctx.content.courses : DEFAULT_COURSES))
+  const d = useDraft<Course[]>(clone(savedCourses(ctx.content) ?? DEFAULT_COURSES))
   const [open, setOpen] = useState<string | null>(null)
   const list = d.draft
   const set = (i: number, patch: Partial<Course>) => d.setDraft(list.map((c, j) => (j === i ? { ...c, ...patch } : c)))
@@ -76,7 +76,7 @@ export function CoursesEditor({ ctx }: { ctx: AdminCtx }) {
   function save() {
     const bad = list.find((c) => !c.name.trim() || !c.code.trim())
     if (bad) return toast.error('Every course needs a name and a short code.')
-    d.commit((v) => ctx.save({ courses: v }))
+    d.commit((v) => ctx.save({ courses: v, coursesRev: COURSES_REV }))
   }
 
   return (
@@ -143,13 +143,14 @@ function ModulesBox({ value, onChange }: { value: Course['modules']; onChange: (
 /* ---------- Batches ---------- */
 
 const today = () => new Date().toISOString().slice(0, 10)
+const defaultBatchTime = (ctx: AdminCtx) => { const t = (ctx.content.site?.timings?.length ? ctx.content.site.timings : DEFAULT_SITE.timings)[0]; return t ? `${t.label} (${t.time})` : '' }
 
 export function BatchesEditor({ ctx }: { ctx: AdminCtx }) {
   const d = useDraft<Batch[]>(clone(ctx.content.batches ?? []))
-  const courses = (ctx.content.courses?.length ? ctx.content.courses : DEFAULT_COURSES).filter((c) => !c.hidden)
+  const courses = (savedCourses(ctx.content) ?? DEFAULT_COURSES).filter((c) => !c.hidden)
   const list = d.draft
   const set = (i: number, patch: Partial<Batch>) => d.setDraft(list.map((b, j) => (j === i ? { ...b, ...patch } : b)))
-  const add = () => d.setDraft([...list, { id: uid(), course: courses[0]?.code ?? '', starts: today(), time: 'Morning (8 am – 1 pm)' }])
+  const add = () => d.setDraft([...list, { id: uid(), course: courses[0]?.code ?? '', starts: today(), time: defaultBatchTime(ctx) }])
 
   function save() {
     if (list.some((b) => !b.course || !b.starts || !b.time.trim())) return toast.error('Every batch needs a course, a start date and a time.')
@@ -185,15 +186,48 @@ export function BatchesEditor({ ctx }: { ctx: AdminCtx }) {
 
 /* ---------- Gallery ---------- */
 
+type GalleryDraft = { gallery: GalleryItem[]; albums: Album[] }
+/** The loose photos (no folder) are edited as the first tab. */
+const GENERAL = '__general'
+
 export function GalleryEditor({ ctx }: { ctx: AdminCtx }) {
-  const d = useDraft<GalleryItem[]>(clone(ctx.content.gallery ?? []))
+  const d = useDraft<GalleryDraft>(clone({ gallery: ctx.content.gallery ?? [], albums: ctx.content.albums ?? [] }))
+  const [tab, setTab] = useState(GENERAL)
   const [uploading, setUploading] = useState(0)
+  const [confirmDel, setConfirmDel] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
-  const list = d.draft
-  const set = (i: number, patch: Partial<GalleryItem>) => d.setDraft(list.map((g, j) => (j === i ? { ...g, ...patch } : g)))
+  const { gallery, albums } = d.draft
+  const album = albums.find((a) => a.id === tab)
+  // A folder removed (or undone away) falls back to the general tab.
+  const cur = tab === GENERAL || !album ? GENERAL : tab
+  const list = cur === GENERAL ? gallery : album!.photos
+
+  const setList = (fn: (l: GalleryItem[]) => GalleryItem[]) => d.setDraft((v) => (cur === GENERAL
+    ? { ...v, gallery: fn(v.gallery) }
+    : { ...v, albums: v.albums.map((a) => (a.id === cur ? { ...a, photos: fn(a.photos) } : a)) }))
+  const setPhoto = (i: number, patch: Partial<GalleryItem>) => setList((l) => l.map((g, j) => (j === i ? { ...g, ...patch } : g)))
+  const setAlbum = (patch: Partial<Album>) => d.setDraft((v) => ({ ...v, albums: v.albums.map((a) => (a.id === cur ? { ...a, ...patch } : a)) }))
+
+  function addFolder() {
+    const id = `f-${uid()}`
+    d.setDraft((v) => ({ ...v, albums: [...v.albums, { id, name: 'New folder', photos: [] }] }))
+    setTab(id)
+    setConfirmDel(false)
+    requestAnimationFrame(() => document.getElementById('folder-name')?.focus())
+  }
+  function deleteFolder() {
+    d.setDraft((v) => ({ ...v, albums: v.albums.filter((a) => a.id !== cur) }))
+    setTab(GENERAL)
+    setConfirmDel(false)
+  }
+  function moveFolder(dir: number) {
+    const i = albums.findIndex((a) => a.id === cur)
+    d.setDraft((v) => ({ ...v, albums: move(v.albums, i, dir) }))
+  }
 
   async function onFiles(files: FileList | null) {
     if (!files?.length) return
+    const target = cur
     const ok = [...files].filter((f) => {
       if (!f.type.startsWith('image/')) { toast.error(`${f.name} is not a photo.`); return false }
       if (f.size > 10 * 1024 * 1024) { toast.error(`${f.name} is bigger than 10 MB.`); return false }
@@ -206,42 +240,96 @@ export function GalleryEditor({ ctx }: { ctx: AdminCtx }) {
     }
     if (fileRef.current) fileRef.current.value = ''
     if (added.length) {
-      d.setDraft((cur) => [...added, ...cur])
+      // Into the folder that was open when the upload started, even if RPC switched tabs meanwhile.
+      d.setDraft((v) => (target === GENERAL
+        ? { ...v, gallery: [...added, ...v.gallery] }
+        : { ...v, albums: v.albums.map((a) => (a.id === target ? { ...a, photos: [...added, ...a.photos] } : a)) }))
       toast.success(`${added.length} photo${added.length > 1 ? 's' : ''} uploaded. Add captions, then press Save.`)
     }
   }
 
+  function save() {
+    if (albums.some((a) => !a.name.trim())) { toast.error('Every folder needs a name.'); return }
+    d.commit((v) => ctx.save({ gallery: v.gallery, albums: v.albums.map((a) => ({ ...a, name: a.name.trim() })) }))
+  }
+
+  const tabs = [{ id: GENERAL, name: 'General photos', count: gallery.length }, ...albums.map((a) => ({ id: a.id, name: a.name || 'Untitled folder', count: a.photos.length }))]
+  const ai = albums.findIndex((a) => a.id === cur)
+
   return (
-    <Panel title="Photo gallery" text="Photos of classes, events and award days. They show on the Awards page." action={
-      <>
+    <Panel title="Photo gallery" text="Make a folder for each event (Independence Day, Republic Day, festivals…) and upload its photos. Each folder shows as its own section on the Gallery page." action={
+      <button onClick={addFolder} className={smallBtn}><FolderPlus className="size-4" /> New folder</button>
+    }>
+      <div className="no-scrollbar -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <ul className="flex w-max gap-2 pb-1" aria-label="Folders">
+          {tabs.map((t) => {
+            const on = t.id === cur
+            return (
+              <li key={t.id}>
+                <button onClick={() => { setTab(t.id); setConfirmDel(false) }} aria-pressed={on} className={cn('inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-bold ring-1 transition-colors', on ? 'bg-ink text-surface ring-ink' : 'bg-surface text-ink ring-line hover:ring-ink/30')}>
+                  {t.id === GENERAL ? <ImageIcon className="size-4" /> : <Folder className="size-4" />}
+                  <span className="max-w-[12rem] truncate">{t.name}</span>
+                  <span className={cn('rounded-full px-1.5 text-xs tabular-nums', on ? 'bg-surface/15' : 'bg-surface-2 text-muted')}>{t.count}</span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      <div className="card mt-4 flex flex-wrap items-end gap-3 p-4">
+        {album ? (
+          <>
+            <Field label="Folder name" hint="shown as the section title" className="min-w-[14rem] flex-1">
+              <input id="folder-name" className={input} value={album.name} maxLength={80} placeholder="Independence Day 2026" onChange={(e) => setAlbum({ name: e.target.value })} />
+            </Field>
+            <span className="flex">
+              <button onClick={() => moveFolder(-1)} disabled={ai === 0} className={iconBtn} aria-label="Move folder earlier"><ArrowUp className="size-4" /></button>
+              <button onClick={() => moveFolder(1)} disabled={ai === albums.length - 1} className={iconBtn} aria-label="Move folder later"><ArrowDown className="size-4" /></button>
+            </span>
+            {confirmDel ? (
+              <span className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-ink-soft">Delete this folder{album.photos.length ? ` and its ${album.photos.length} photo${album.photos.length > 1 ? 's' : ''}` : ''}?</span>
+                <button onClick={deleteFolder} className={cn(smallBtn, 'border-red-300 text-red-700 dark:text-red-300')}>Delete</button>
+                <button onClick={() => setConfirmDel(false)} className={smallBtn}>Keep</button>
+              </span>
+            ) : (
+              <button onClick={() => setConfirmDel(true)} className={smallBtn}><Trash2 className="size-4" /> Delete folder</button>
+            )}
+          </>
+        ) : (
+          <p className="min-w-[14rem] flex-1 text-sm text-muted">Photos without a folder. They show under “Flyers, classes and events” on the Gallery page and on the Home page.</p>
+        )}
         <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
-        <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn btn-primary min-h-10 px-5 text-sm">
+        <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn btn-primary min-h-11 px-5 text-sm">
           {uploading ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />} {uploading ? `Uploading ${uploading}…` : 'Upload photos'}
         </button>
-      </>
-    }>
-      {!list.length ? (
-        <Empty icon={<ImageIcon className="size-5" />} title="No photos yet" text="Upload photos from your phone or computer (up to 10 MB each)." />
-      ) : (
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {list.map((g, i) => (
-            <li key={g.id} className="card overflow-hidden p-0">
-              <img src={cldUrl(g.url, 480)} alt={g.caption || 'Gallery photo'} loading="lazy" className="aspect-[4/3] w-full bg-surface-2 object-cover" />
-              <div className="space-y-2 p-2.5">
-                <input className={cn(input, 'h-10 text-sm')} value={g.caption} maxLength={120} placeholder="Caption" aria-label="Caption" onChange={(e) => set(i, { caption: e.target.value })} />
-                <div className="flex items-center justify-between">
-                  <span className="flex">
-                    <button onClick={() => d.setDraft(move(list, i, -1))} disabled={i === 0} className={iconBtn} aria-label="Move earlier"><ArrowUp className="size-4 -rotate-90" /></button>
-                    <button onClick={() => d.setDraft(move(list, i, 1))} disabled={i === list.length - 1} className={iconBtn} aria-label="Move later"><ArrowDown className="size-4 -rotate-90" /></button>
-                  </span>
-                  <button onClick={() => d.setDraft(list.filter((_, j) => j !== i))} className={iconBtn} aria-label="Remove photo"><Trash2 className="size-4" /></button>
+      </div>
+
+      <div className="mt-4">
+        {!list.length ? (
+          <Empty icon={<ImageIcon className="size-5" />} title={album ? 'This folder is empty' : 'No photos yet'} text="Upload photos from your phone or computer (up to 10 MB each). An empty folder is not shown on the website." />
+        ) : (
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {list.map((g, i) => (
+              <li key={g.id} className="card overflow-hidden p-0">
+                <img src={cldUrl(g.url, 480)} alt={g.caption || 'Gallery photo'} loading="lazy" className="aspect-[4/3] w-full bg-surface-2 object-cover" />
+                <div className="space-y-2 p-2.5">
+                  <input className={cn(input, 'h-10 text-sm')} value={g.caption} maxLength={120} placeholder="Caption" aria-label="Caption" onChange={(e) => setPhoto(i, { caption: e.target.value })} />
+                  <div className="flex items-center justify-between">
+                    <span className="flex">
+                      <button onClick={() => setList((l) => move(l, i, -1))} disabled={i === 0} className={iconBtn} aria-label="Move earlier"><ArrowUp className="size-4 -rotate-90" /></button>
+                      <button onClick={() => setList((l) => move(l, i, 1))} disabled={i === list.length - 1} className={iconBtn} aria-label="Move later"><ArrowDown className="size-4 -rotate-90" /></button>
+                    </span>
+                    <button onClick={() => setList((l) => l.filter((_, j) => j !== i))} className={iconBtn} aria-label="Remove photo"><Trash2 className="size-4" /></button>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-      <SaveBar dirty={d.dirty} busy={d.busy} onSave={() => d.commit((v) => ctx.save({ gallery: v }))} onUndo={d.undo} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <SaveBar dirty={d.dirty} busy={d.busy} onSave={save} onUndo={d.undo} />
     </Panel>
   )
 }
@@ -285,7 +373,7 @@ export function SettingsEditor({ ctx }: { ctx: AdminCtx }) {
             {v.timings.map((t, i) => (
               <li key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2">
                 <input className={input} value={t.label} maxLength={40} placeholder="Morning batch" aria-label="Timing name" onChange={(e) => setT(i, { label: e.target.value })} />
-                <input className={input} value={t.time} maxLength={40} placeholder="8:00 am – 1:00 pm" aria-label="Time" onChange={(e) => setT(i, { time: e.target.value })} />
+                <input className={input} value={t.time} maxLength={40} placeholder="9:00 am – 1:30 pm" aria-label="Time" onChange={(e) => setT(i, { time: e.target.value })} />
                 <button onClick={() => set({ timings: v.timings.filter((_, j) => j !== i) })} disabled={v.timings.length < 2} className={iconBtn} aria-label="Remove timing"><Trash2 className="size-4" /></button>
               </li>
             ))}

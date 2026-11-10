@@ -15,12 +15,12 @@ export const SCENE_SIZE = { width: 1672, height: 941 }
 type Subject = { label: string; test: (s: string) => boolean }
 const re = (r: RegExp) => (s: string) => r.test(s)
 export const SUBJECTS: Subject[] = [
-  { label: 'Computer fundamentals', test: re(/fundamental/i) },
+  { label: 'Computer fundamentals & typing', test: re(/fundamental|typing/i) },
   { label: 'Operating system', test: re(/operating system/i) },
   { label: 'MS Word', test: re(/\bword\b/i) },
   { label: 'Excel / Advanced Excel', test: re(/excel/i) },
   { label: 'PowerPoint', test: re(/powerpoint/i) },
-  { label: 'Internet & e-mail', test: re(/internet|e-?mail/i) },
+  { label: 'Internet with AI tools', test: re(/internet|ai tools|e-?mail/i) },
   { label: 'Tally with GST', test: re(/tally/i) },
   { label: 'C language', test: (s) => /^c$/i.test(s.trim()) || /\bc language\b/i.test(s) },
   { label: 'C++', test: re(/c\+\+/i) },
@@ -50,11 +50,12 @@ export const SNIPPETS: Record<string, { file: string; lang: string; code: string
   cpp: { file: 'main.cpp', lang: 'C++', code: ['#include <iostream>', '', 'int main() {', '  std::cout << "Hello, Adoni!";', '  return 0;', '}'] },
   java: { file: 'Main.java', lang: 'Java', code: ['class Main {', '  public static void main(String[] a) {', '    System.out.println("Hello, Adoni!");', '  }', '}'] },
   oracle: { file: 'query.sql', lang: 'SQL', code: ['SELECT name, course', '  FROM students', ' WHERE batch = \'MORNING\'', ' ORDER BY name;'] },
+  sql: { file: 'report.sql', lang: 'SQL', code: ['SELECT course, COUNT(*) AS students', '  FROM admissions', ' GROUP BY course', ' ORDER BY students DESC;'] },
   python: { file: 'hello.py', lang: 'Python', code: ['name = "Adoni"', '', 'for n in range(3):', '    print(f"Hello, {name}!")'] },
 }
 
 export type Tok = { t: string; k?: 'kw' | 'str' | 'fn' | 'num' | 'pre' | 'type' }
-const KW = new Set(['int', 'void', 'return', 'class', 'public', 'static', 'for', 'in', 'if', 'else', 'while', 'def', 'import', 'SELECT', 'FROM', 'WHERE', 'ORDER', 'BY', 'AND', 'OR', 'INSERT', 'INTO', 'VALUES'])
+const KW = new Set(['int', 'void', 'return', 'class', 'public', 'static', 'for', 'in', 'if', 'else', 'while', 'def', 'import', 'SELECT', 'FROM', 'WHERE', 'ORDER', 'BY', 'AND', 'OR', 'INSERT', 'INTO', 'VALUES', 'GROUP', 'COUNT', 'AS', 'DESC'])
 const TYPES = new Set(['String', 'System', 'std', 'cout', 'Main'])
 const TOKEN = /("(?:[^"\\]|\\.)*"|'[^']*'|#\w+|<[\w.]+>|\b\d+\b|\b[A-Za-z_]\w*\b)/g
 

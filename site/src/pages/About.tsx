@@ -1,4 +1,5 @@
 import { SITE } from '../content/site'
+import { useYears } from '../lib/years'
 import { JsonLd, Seo } from '../components/ui'
 import { CoverFan, CtaBand } from '../components/course'
 import AboutHero from '../components/about/AboutHero'
@@ -9,6 +10,7 @@ import AwardsWall from '../components/about/AwardsWall'
 import FacilityGrid from '../components/about/FacilityGrid'
 
 export default function About() {
+  const years = useYears()
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
@@ -24,7 +26,7 @@ export default function About() {
   }
   return (
     <>
-      <Seo path="/about" title="About RPC: 25 years of computer education in Adoni" description={`Founded in ${SITE.since} by ${SITE.founder}. ISO 9001:2015 certified, AP Govt DET permission since 2006, MSME registered, 5-time Education Excellence Award winners.`} />
+      <Seo path="/about" title={`About RPC: ${years} years of computer education in Adoni`} description={`Founded in ${SITE.since} by ${SITE.founder}. ISO 9001:2015 certified, AP Govt DET permission since 2006, MSME registered, 5-time Education Excellence Award winners.`} />
       <JsonLd data={jsonLd} />
       <AboutHero />
       <Timeline />

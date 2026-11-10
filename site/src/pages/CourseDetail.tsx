@@ -76,7 +76,7 @@ export default function CourseDetail() {
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <Reveal>
             <h2 className="text-[clamp(1.7rem,3.2vw,2.4rem)] font-bold leading-tight">What you will learn</h2>
-            {topics > 0 && <p className="mt-2 font-semibold text-muted">{topics} topics{c.modules.length > 1 ? ` in ${c.modules.length} ${c.modules.every((m) => m.title?.startsWith('Semester')) ? 'semesters' : 'parts'}` : ''}</p>}
+            {topics > 3 && <p className="mt-2 font-semibold text-muted">{topics} topics{c.modules.length > 1 ? ` in ${c.modules.length} ${c.modules.every((m) => m.title?.startsWith('Semester')) ? 'semesters' : 'parts'}` : ''}</p>}
           </Reveal>
           {topics > 0 ? (
             <div className={`mt-6 grid gap-4 ${c.modules.length > 1 ? 'md:grid-cols-2' : ''}`}>
