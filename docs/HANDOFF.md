@@ -19,7 +19,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
 1. (done 10 Nov) Deployed + live data cleaned.
 2. Deploy recipe: push to `rpcraghu-collab/rpc-adoni-website`, then a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
 3. Logo: the client will send a NEW logo `[NEED]`. Swap `site/public` logo files + favicon when it arrives.
-4. rpcadoni.com → Vercel (10 Nov): DONE in Vercel (team slug `rpc16`): rpcadoni.com = Production, www → 308 to apex, Vercel DNS on, Hostinger email records copied (MX mx1 5/mx2 10, SPF, DKIM hostingermail-a/b/c, autodiscover/autoconfig). Firebase already lists both domains. LEFT: at GoDaddy (registrar, not logged in on the RPC browser) set nameservers to ns1.vercel-dns.com + ns2.vercel-dns.com (now ns1/ns2.dns-parking.com = Hostinger). Then check SSL + mail. WordPress at 82.180.165.145 goes offline on the domain after that.
+4. rpcadoni.com → Vercel (10 Nov): user chose NO GoDaddy/DNS change, only wp-admin. DONE: WordPress plugin "Redirect Redirection" (wp-admin → Redirection, admin.php?page=irrp-redirection) rule All URLs → https://rpc-adoni.vercel.app/ (plugin forces 301 for All-URLs rules). Verified: every page on rpcadoni.com/www lands on rpc-adoni.vercel.app; wp-admin + wp-login still work. Vercel side also ready (team `rpc16`: rpcadoni.com Production, www 308, Vercel DNS zone with Hostinger email records) in case nameservers are moved later. Caveat: site canonicals say https://rpcadoni.com, which now redirects to vercel.app (SEO: proper fix = nameservers ns1/ns2.vercel-dns.com at GoDaddy, then delete the WP rule).
 5. No client update messages (founder 8 Nov); ask the client only for must-have info.
 
 ## Gotchas
