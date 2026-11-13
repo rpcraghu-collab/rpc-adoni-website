@@ -26,7 +26,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - Emails support@rpcadoni.com + rpcraghu@rpcadoni.com (`lib/content.ts` ignores the old saved Gmail). `COURSES_REV` 2 → 3 (live has no fees/hidden courses to lose).
 
 ## Next steps
-0. (done 13 Nov) Round 3 deployed. Wait for client feedback.
+0. (done 13 Nov) Round 3 deployed; update sent to the client's WhatsApp 2:48 pm (DREAM TEAM SERVICES WhatsApp, English + Telugu). Wait for client feedback.
 0b. Gallery needs the client's event/function/festival photos.
 1. (done 10 Nov) Deployed + live data cleaned.
 2. Deploy recipe: push to `rpcraghu-collab/rpc-adoni-website`, then a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
