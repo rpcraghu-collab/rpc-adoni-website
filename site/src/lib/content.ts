@@ -10,6 +10,8 @@ export type Batch = { id: string; course: string; starts: string; time: string; 
 export type GalleryItem = { id: string; url: string; caption: string }
 /** A named photo folder (Independence Day, Republic Day, festivals...), shown as its own section. */
 export type Album = { id: string; name: string; photos: GalleryItem[] }
+/** Batch poster shown as a popup when the website opens (RPC 13 Nov 2026). `id` changes on each new upload. */
+export type Popup = { id: string; url: string; on: boolean }
 export type SiteSettings = { phone: string; email: string; address: string; facebook: string; timings: Timing[] }
 export type Overrides = {
   site?: Partial<SiteSettings>
@@ -20,6 +22,7 @@ export type Overrides = {
   gallery?: GalleryItem[]
   albums?: Album[]
   announcement?: string
+  popup?: Popup
 }
 
 // JSON copy, not structuredClone: that is missing on iOS < 15.4 and older Android WebViews, and failing
@@ -30,7 +33,7 @@ export const DEFAULT_SITE: SiteSettings = clone({ phone: SITE.phone, email: SITE
 export const DEFAULT_COURSES: Course[] = clone(COURSES)
 
 /** Extra live content that has no default in the build. */
-export const LIVE = { batches: [] as Batch[], gallery: [] as GalleryItem[], albums: [] as Album[], announcement: '' }
+export const LIVE = { batches: [] as Batch[], gallery: [] as GalleryItem[], albums: [] as Album[], announcement: '', popup: null as Popup | null }
 
 let current: Overrides = {}
 let version = 0
@@ -105,6 +108,10 @@ export function applyOverrides(o: Overrides) {
       .map((a) => ({ id: a.id, name: a.name.trim().slice(0, 80), photos: cleanPhotos(a.photos) }))
     : []
   LIVE.announcement = str(current.announcement, 200)?.trim() ?? ''
+  const pop = current.popup
+  LIVE.popup = pop && pop.on === true && typeof pop.url === 'string' && pop.url.startsWith('https://res.cloudinary.com/')
+    ? { id: str(pop.id, 80) || pop.url, url: pop.url, on: true }
+    : null
   version++
   listeners.forEach((l) => l())
 }

@@ -65,7 +65,7 @@ export default function CoursesHero({ all, who, onWho, onShow }: { all: Course[]
               lines={[<><span className="text-[#ff7a72]">{all.length}</span> courses.</>, <span className="text-white/70">One for every stage.</span>]}
             />
             <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-white/85 sm:text-[1.1rem]">
-              Diplomas, office and Tally skills, or a single programming language. Every course is 100% practical and ends with a certificate.
+              Diplomas, office and Tally Prime skills, or a single programming language. Every course is 100% practical and ends with a certificate.
             </p>
           </div>
 

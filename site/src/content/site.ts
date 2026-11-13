@@ -2,21 +2,25 @@
 // Firestore (admin panel) overrides these at runtime; never add invented numbers or reviews.
 
 export const SITE = {
-  name: 'Real Point Computer Education',
+  name: 'REAL POINT Computer Education',
   short: 'RPC',
   since: 2000,
   founder: 'Mr. A.G. Raghavendra',
   phone: '+91 99596 63984',
   phoneRaw: '919959663984',
+  /** Second number (RPC 13 Nov 2026): footer + contact. */
+  phone2: '+91 99632 71883',
+  phone2Raw: '919963271883',
   email: 'support@rpcadoni.com',
   /** Second domain email (RPC, 13 Nov 2026). */
   email2: 'rpcraghu@rpcadoni.com',
   /** Google Maps listing, opened on its reviews tab (the menu's Reviews link). */
-  reviews: 'https://www.google.com/maps/place/REAL+POINT+COMPUTER+EDUCATION/@15.6234107,77.2699322,17z/data=!4m8!3m7!1s0x3bb64dc3855eaae3:0xf36a161e79d29ec1!8m2!3d15.6234055!4d77.2725071!9m1!1b1!16s%2Fg%2F1hf9324nn',
+  // Google reviews panel opens directly (RPC 13 Nov 2026).
+  reviews: 'https://www.google.com/search?q=REAL+POINT+COMPUTER+EDUCATION+reviews#lrd=0x3bb64dc3855eaae3:0xf36a161e79d29ec1,3,,,,',
   deputy: 'Smt. S. Nagaveni',
   address: 'Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh',
   addressShort: 'Babu Plaza, Adoni',
-  mapsQuery: 'Real Point Computer Education, Babu Plaza, Adoni',
+  mapsQuery: 'REAL POINT Computer Education, Babu Plaza, Adoni',
   facebook: 'https://www.facebook.com/rpcadoni',
   timings: [
     { label: 'Morning batch', time: '9:00 am – 1:30 pm' },
@@ -49,7 +53,7 @@ export type Course = {
 
 export const GROUPS: { id: CourseGroup; label: string; blurb: string; art: string }[] = [
   { id: 'diploma', label: 'Diplomas', blurb: 'PGDCA, DCA, DCP: complete computer diplomas', art: '/img/art/diplomas.webp' },
-  { id: 'office', label: 'Office & Tally', blurb: 'CCA, OAM, Advanced Excel, Tally Prime with GST, Power BI', art: '/img/art/office.webp' },
+  { id: 'office', label: 'Office & Tally Prime', blurb: 'CCA, OAM, Advanced Excel, Tally Prime with GST, Power BI', art: '/img/art/office.webp' },
   { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python, SQL for Degree & B.Tech', art: '/img/art/programming.webp' },
 ]
 
@@ -60,6 +64,9 @@ const BASE_TOOLS = ['Typing', 'Word', 'Excel', 'PowerPoint', 'AI Tools']
 
 /** Bump when the default course list changes, so an older list saved in the admin panel is not shown. */
 export const COURSES_REV = 3
+
+/** Single-language course lengths from RPC's sheet (13 Nov 2026); SQL has none yet. */
+const dur: Record<string, string[]> = { C: ['35 days'], 'C++': ['30 days'], Java: ['45 days'], Oracle: ['45 days'], Python: ['45 days'], SQL: [] }
 
 export const COURSES: Course[] = [
   {
@@ -74,7 +81,7 @@ export const COURSES: Course[] = [
       { title: 'Semester I', items: [...BASE, 'C Language', 'C++'] },
       { title: 'Semester II', items: ['Java or Power BI', 'Oracle: SQL, PL/SQL', 'Tally Prime with GST or Python', 'Project Work', 'Semester Exam Guidance'] },
     ],
-    tools: ['Word', 'Excel', 'C', 'C++', 'Java', 'Power BI', 'Oracle', 'SQL', 'Tally', 'Python'],
+    tools: ['Word', 'Excel', 'C', 'C++', 'Java', 'Power BI', 'Oracle', 'SQL', 'Tally Prime', 'Python'],
     featured: true,
   },
   {
@@ -119,7 +126,7 @@ export const COURSES: Course[] = [
     forWho: 'Students, job seekers, homemakers, business people',
     duration: ['1½ hrs daily · 4 months', '3 hrs daily · 2 months'],
     modules: [{ items: [...BASE, 'Tally Prime with GST'] }],
-    tools: [...BASE_TOOLS, 'Tally'],
+    tools: [...BASE_TOOLS, 'Tally Prime'],
     featured: true,
   },
   {
@@ -131,7 +138,7 @@ export const COURSES: Course[] = [
     forWho: 'Students, job seekers, office staff',
     duration: ['1½ hrs daily · 5 months', '3 hrs daily · 2½ months'],
     modules: [{ items: [...BASE, 'Tally Prime with GST', 'Power BI with Project'] }],
-    tools: [...BASE_TOOLS, 'Tally', 'Power BI'],
+    tools: [...BASE_TOOLS, 'Tally Prime', 'Power BI'],
     featured: true,
   },
   {
@@ -143,7 +150,7 @@ export const COURSES: Course[] = [
     forWho: 'Graduates & working professionals',
     duration: ['1½ hrs daily · 6 months', '3 hrs daily · 3 months'],
     modules: [{ items: [...BASE, 'Tally Prime with GST', 'Power BI with Project', 'SQL'] }],
-    tools: [...BASE_TOOLS, 'Tally', 'Power BI', 'SQL'],
+    tools: [...BASE_TOOLS, 'Tally Prime', 'Power BI', 'SQL'],
     featured: true,
   },
   {
@@ -159,14 +166,14 @@ export const COURSES: Course[] = [
   },
   {
     slug: 'tally',
-    code: 'Tally',
+    code: 'Tally Prime',
     name: 'Tally Prime with GST',
     group: 'office',
     tagline: 'Learn accounts in Tally Prime with GST on its own.',
     forWho: 'Students & working people',
     duration: ['50 days'],
     modules: [{ items: ['Tally Prime with GST'] }],
-    tools: ['Tally', 'GST'],
+    tools: ['Tally Prime', 'GST'],
   },
   {
     slug: 'power-bi',
@@ -194,9 +201,10 @@ export const COURSES: Course[] = [
     }[lang],
     forWho: 'Degree & B.Tech students',
     // Days from RPC's course sheet (13 Nov 2026); SQL has no length on the sheet.
-    duration: ({ C: ['35 days'], 'C++': ['30 days'], Java: ['45 days'], Oracle: ['45 days'], Python: ['45 days'], SQL: [] } as Record<string, string[]>)[lang],
+    duration: dur[lang],
     // Brief only (RPC, 10 Nov 2026): no detailed topic lists for single languages.
-    modules: [{ items: [lang === 'Oracle' ? 'Oracle: SQL, PL/SQL' : `${lang === 'C' ? 'C Language' : lang}: Core & Advanced`] }],
+    // "Core & Advanced" dropped, duration shown instead (RPC 13 Nov 2026).
+    modules: [{ items: [lang === 'Oracle' ? 'Oracle: SQL, PL/SQL' : `${lang === 'C' ? 'C Language' : lang}${dur[lang]?.[0] ? `: ${dur[lang][0]}` : ''}`] }],
     tools: [lang],
   })),
 ]
@@ -237,7 +245,7 @@ export const FAQS = [
   { q: 'What are the class timings?', get a() { return `Classes run in two slots every day: ${SITE.timings.map((t) => t.time).join(' and ')}. Most courses can be done at 1½ hours a day or faster at 3 hours a day.` } },
   { q: 'Will I get a certificate?', a: 'Yes. Every course ends with a certificate from RPC, an ISO 9001:2015 certified institute in Adoni.' },
   { q: 'I have never used a computer. Can I join?', a: 'Yes. CCA and OAM start from computer fundamentals. Anyone above 11 years can join CCA.' },
-  { q: 'Which course is best for B.Tech or Degree students?', a: 'PGDCA covers office tools, C, C++, Java or Power BI, Oracle (SQL, PL/SQL) and Tally or Python in one diploma. You can also take a single language like Java, Python or SQL on its own.' },
+  { q: 'Which course is best for B.Tech or Degree students?', a: 'PGDCA covers office tools, C, C++, Java or Power BI, Oracle (SQL, PL/SQL) and Tally Prime or Python in one diploma. You can also take a single language like Java, Python or SQL on its own.' },
   { q: 'Where is RPC?', a: 'Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. The building has a lift and generator backup.' },
 ]
 

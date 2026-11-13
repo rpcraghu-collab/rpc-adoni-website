@@ -3,7 +3,7 @@ import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 
 import { toast } from 'sonner'
 import { ArrowDown, ArrowUp, CalendarDays, ChevronDown, Eye, EyeOff, Folder, FolderPlus, Image as ImageIcon, Loader2, Plus, RotateCcw, Save, Trash2, Upload, Users } from 'lucide-react'
 import { COURSES_REV, GROUPS, type Course, type CourseGroup } from '../content/site'
-import { clone, DEFAULT_COURSES, DEFAULT_SITE, savedCourses, type Album, type Batch, type GalleryItem, type Timing } from '../lib/content'
+import { clone, DEFAULT_COURSES, DEFAULT_SITE, savedCourses, type Album, type Batch, type GalleryItem, type Popup, type Timing } from '../lib/content'
 import { cldUrl, uploadImage } from '../lib/cloudinary'
 import { cn } from '../lib/cn'
 import { area, Empty, Field, iconBtn, input, move, OWNER_EMAIL, Panel, smallBtn, uid, type AdminCtx } from './shared'
@@ -159,6 +159,7 @@ export function BatchesEditor({ ctx }: { ctx: AdminCtx }) {
 
   return (
     <Panel title="New batches" text="Upcoming batches show on the home page. A batch hides by itself after its start date." action={<button onClick={add} className={smallBtn}><Plus className="size-4" /> Add batch</button>}>
+      <PosterBox ctx={ctx} />
       {!list.length ? (
         <Empty icon={<CalendarDays className="size-5" />} title="No upcoming batches" text="Add a batch to show its start date on the home page." />
       ) : (
@@ -181,6 +182,57 @@ export function BatchesEditor({ ctx }: { ctx: AdminCtx }) {
       )}
       <SaveBar dirty={d.dirty} busy={d.busy} onSave={save} onUndo={d.undo} />
     </Panel>
+  )
+}
+
+/* ---------- Batch poster popup ---------- */
+
+/** One batch poster that pops up when the website opens (RPC 13 Nov 2026). Each action saves at once. */
+function PosterBox({ ctx }: { ctx: AdminCtx }) {
+  const cur: Popup | undefined = ctx.content.popup?.url ? ctx.content.popup : undefined
+  const [busy, setBusy] = useState(false)
+  const file = useRef<HTMLInputElement>(null)
+
+  async function run(fn: () => Promise<void>) {
+    setBusy(true)
+    try { await fn() } catch { /* toast shown by save */ } finally { setBusy(false) }
+  }
+  async function upload(f: File | undefined) {
+    if (!f) return
+    if (!f.type.startsWith('image/')) return toast.error('Choose a picture (JPG or PNG).')
+    await run(async () => {
+      let url: string
+      try { url = await uploadImage(f) } catch { toast.error('The poster did not upload. Try again.'); return }
+      await ctx.save({ popup: { id: uid(), url, on: true } })
+    })
+    if (file.current) file.current.value = ''
+  }
+
+  return (
+    <section className="card mb-6 p-5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h3 className="font-display text-lg font-bold text-ink">Batch poster popup</h3>
+          <p className="mt-1 max-w-md text-sm text-ink-soft">The poster opens in a popup when someone visits the website. They see it once, then close it to continue.</p>
+        </div>
+        {cur && <span className={cn('rounded-full px-3 py-1 text-xs font-bold', cur.on ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-surface-2 text-muted')}>{cur.on ? 'Showing on website' : 'Hidden'}</span>}
+      </div>
+      <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
+        {cur ? (
+          <img src={cldUrl(cur.url, 600)} alt="Current batch poster" className={cn('max-h-72 w-auto max-w-full self-start rounded-xl object-contain ring-1 ring-line', !cur.on && 'opacity-50')} />
+        ) : (
+          <button onClick={() => file.current?.click()} disabled={busy} className="grid h-44 w-full place-items-center rounded-xl border-2 border-dashed border-line text-sm font-semibold text-muted hover:border-accent hover:text-accent-text sm:w-64">
+            <span className="grid justify-items-center gap-2">{busy ? <Loader2 className="size-6 animate-spin" /> : <Upload className="size-6" />}{busy ? 'Uploading…' : 'Upload batch poster'}</span>
+          </button>
+        )}
+        <div className="flex flex-wrap gap-2 sm:flex-col">
+          <input ref={file} type="file" accept="image/*" className="sr-only" tabIndex={-1} aria-hidden onChange={(e) => upload(e.target.files?.[0])} />
+          {cur && <button onClick={() => file.current?.click()} disabled={busy} className={smallBtn}>{busy ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />} Change poster</button>}
+          {cur && <button onClick={() => run(() => ctx.save({ popup: { ...cur, on: !cur.on } }))} disabled={busy} className={smallBtn}>{cur.on ? <EyeOff className="size-4" /> : <Eye className="size-4" />} {cur.on ? 'Hide popup' : 'Show popup'}</button>}
+          {cur && <button onClick={() => { if (confirm('Remove the batch poster from the website?')) run(() => ctx.save({ popup: undefined })) }} disabled={busy} className={smallBtn}><Trash2 className="size-4" /> Remove</button>}
+        </div>
+      </div>
+    </section>
   )
 }
 

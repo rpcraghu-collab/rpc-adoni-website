@@ -7,10 +7,10 @@ import { useYears } from '../../lib/years'
 
 // Real milestones only. Entries without a known year show a label, never a made-up date.
 const STEPS = [
-  { mark: String(SITE.since), year: true, title: 'RPC opens in Adoni', text: `${SITE.founder} starts Real Point Computer Education: quality computer education for everyone in Adoni.` },
+  { mark: String(SITE.since), year: true, title: 'RPC opens in Adoni', text: `${SITE.founder} starts REAL POINT Computer Education: quality computer education for everyone in Adoni.` },
   { mark: 'ISO 9001:2015', year: false, title: 'Certified for quality', text: 'RPC is certified to the ISO 9001:2015 standard.' },
   { mark: '5×', year: true, title: 'Five Education Excellence Awards', text: 'Honoured on national stages by V.V.S. Laxman, Abhinav Bindra, Chetan Chauhan and others.' },
-  { mark: '2025', year: true, title: 'A new Deputy Director', text: `On 2nd November 2025, ${SITE.deputy} was appointed Deputy Director of RPC.` },
+  { mark: '2025', year: true, title: 'A new Deputy Director', text: <>On 2nd November 2025, <span className="whitespace-nowrap">{SITE.deputy}</span> was appointed <span className="whitespace-nowrap">Deputy Director of RPC.</span></> },
   { mark: 'Today', year: true, title: 'Years of teaching', text: 'Coding and non-coding courses, basic to advanced, in two sessions every day: morning and evening.' },
 ]
 

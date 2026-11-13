@@ -9,6 +9,7 @@ import { cn } from '../lib/cn'
 import { useYear } from '../lib/years'
 import { Logo, WhatsAppIcon } from './ui'
 import { MobileMenu, type NavItem } from './MobileMenu'
+import BatchPopup from './BatchPopup'
 
 // RPC, 13 Nov 2026: Gallery is called Events; Admissions made way for Reviews (Google reviews, new tab),
 // because the "Enquire now" button already opens the enquiry page.
@@ -99,7 +100,7 @@ function Header() {
         <nav className="container-x flex h-[4.5rem] items-center justify-between gap-4" aria-label="Main">
           <Link to="/" className="flex items-center gap-3">
             <Logo />
-            <span className="hidden text-[0.8rem] font-bold leading-tight text-ink-soft sm:block lg:hidden xl:block">Real Point<br />Computer Education</span>
+            <span className="hidden text-[0.8rem] font-bold leading-tight text-ink-soft sm:block lg:hidden xl:block">REAL POINT<br />Computer Education</span>
             <span className="sr-only"> (home)</span>
           </Link>
 
@@ -187,7 +188,7 @@ function Footer() {
       <div className="container-x relative z-10 grid grid-cols-2 gap-x-6 gap-y-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1.2fr] md:gap-12 md:py-16">
         <div className="col-span-2 md:col-span-1">
           <Link to="/about" aria-label="About RPC" className="inline-block rounded-md"><Logo invert /></Link>
-          <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-white/70">Real Point Computer Education. Job-oriented computer courses in Adoni since 2000. ISO 9001:2015 certified.</p>
+          <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-white/70">REAL POINT Computer Education. Job-oriented computer courses in Adoni since 2000. ISO 9001:2015 certified.</p>
           <p className="mt-5 font-display text-lg font-semibold text-white/90">Learn Today… Build a Better Tomorrow.</p>
         </div>
         <div>
@@ -209,17 +210,18 @@ function Footer() {
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-white/60">Visit or call</p>
           <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`} target="_blank" rel="noopener" className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><MapPin className="mt-0.5 size-4 shrink-0" />{SITE.address}</a>
           <a href={telLink()} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone}</a>
+          <a href={`tel:+${SITE.phone2Raw}`} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone2}</a>
           <a href={`mailto:${SITE.email}`} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email}</a>
           {SITE.email2 && SITE.email2 !== SITE.email && <a href={`mailto:${SITE.email2}`} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email2}</a>}
-          <p className="flex gap-3 py-2.5 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" /><span>{SITE.timings.map((t) => <span key={t.label} className="block">{t.label}: {t.time}</span>)}</span></p>
+          <p className="flex gap-3 py-2.5 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" /><span>{SITE.timings.map((t) => <span key={t.label} className="block whitespace-nowrap">{t.label}: {t.time}</span>)}</span></p>
           <a href={SITE.facebook} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1 font-bold text-white hover:underline">Facebook: rpcadoni <ArrowUpRight className="size-4" /></a>
         </div>
       </div>
       <div className="relative z-10 border-t border-white/10">
         <div className="container-x flex flex-col gap-2 py-6 pb-28 text-sm text-white/60 lg:flex-row lg:items-center lg:justify-between lg:pb-6">
           <div className="space-y-1">
-            <p>© {year} Real Point Computer Education, Adoni.</p>
-            <p>ISO 9001:2015 certified · Your Career… Our Commitment…</p>
+            <p>© {year} REAL POINT Computer Education, Adoni.</p>
+            <p>ISO 9001:2015 certified · <span className="whitespace-nowrap">Your Career…</span> <span className="whitespace-nowrap">Our Commitment…</span></p>
           </div>
           <p className="mt-2 lg:mt-0">
             Designed and developed by{' '}
@@ -248,6 +250,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Footer />
       <BottomBar />
       <WhatsAppFab />
+      <BatchPopup />
     </>
   )
 }

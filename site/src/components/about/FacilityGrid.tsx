@@ -26,14 +26,14 @@ export default function FacilityGrid() {
       <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-14 lg:grid-cols-4 lg:gap-5">
         <Reveal as="li" className="col-span-2 lg:row-span-2">
           <div className="relative flex h-full flex-col overflow-hidden rounded-[1.6rem] bg-surface p-6 ring-1 ring-line sm:p-8 lg:rounded-[2rem] lg:p-10">
-            <div aria-hidden className="absolute -bottom-24 -right-24 size-80 rounded-full bg-[#fbf0d9] dark:bg-[#2a2112]" />
+            <div aria-hidden className="absolute -right-16 -top-16 size-56 rounded-full bg-[#fbf0d9] sm:size-72 dark:bg-[#2a2112]" />
             <span className="relative grid size-12 place-items-center rounded-2xl bg-[#0b1e4a] text-white dark:bg-white dark:text-[#0b1e4a]"><Clock3 className="size-6" aria-hidden /></span>
             <p className="relative mt-6 font-display text-[clamp(1.8rem,4.6vw,2.8rem)] font-extrabold leading-[1] tracking-[-0.03em] text-ink">Two batches,<br />every day.</p>
             <dl className="relative mt-6 grid max-w-sm gap-3">
               {SITE.timings.map((t) => (
                 <div key={t.label} className="flex items-baseline justify-between gap-4 border-b border-line pb-3">
-                  <dt className="text-sm font-semibold text-muted">{t.label}</dt>
-                  <dd className="font-display text-lg font-bold tabular-nums text-ink">{t.time}</dd>
+                  <dt className="whitespace-nowrap text-sm font-semibold text-muted">{t.label}</dt>
+                  <dd className="whitespace-nowrap font-display text-lg font-bold tabular-nums text-ink">{t.time}</dd>
                 </div>
               ))}
             </dl>
@@ -43,7 +43,7 @@ export default function FacilityGrid() {
             <a href={waLink('Hello RPC, which batch timings are open now?')} target="_blank" rel="noopener" className="relative mt-6 inline-flex min-h-12 w-fit items-center gap-2 font-bold text-accent-text underline-offset-4 hover:underline">
               Ask which batch is open
             </a>
-            <img src={ART} srcSet={artSet(ART)} sizes="(min-width:1024px) 240px, 160px" width={ART_SIZE[ART]?.[0] ?? 800} height={ART_SIZE[ART]?.[1] ?? 787} alt="" loading="lazy" decoding="async" className="float pointer-events-none absolute -bottom-2 right-2 w-32 drop-shadow-[0_24px_30px_rgb(11_30_74/0.3)] sm:w-44 lg:bottom-4 lg:right-4 lg:w-60" />
+            <img src={ART} srcSet={artSet(ART)} sizes="(min-width:640px) 176px, 96px" width={ART_SIZE[ART]?.[0] ?? 800} height={ART_SIZE[ART]?.[1] ?? 787} alt="" loading="lazy" decoding="async" className="float pointer-events-none absolute right-3 top-4 w-24 drop-shadow-[0_24px_30px_rgb(11_30_74/0.3)] sm:right-6 sm:top-6 sm:w-40 lg:w-44" />
           </div>
         </Reveal>
 

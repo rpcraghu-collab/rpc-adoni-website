@@ -66,6 +66,7 @@ export default function Contact() {
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`
   const info = [
     { icon: Phone, label: 'Call', value: SITE.phone, href: telLink() },
+    { icon: Phone, label: 'Call (second number)', value: SITE.phone2, href: `tel:+${SITE.phone2Raw}` },
     { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
     ...(SITE.email2 && SITE.email2 !== SITE.email ? [{ icon: Mail, label: 'Email (founder)', value: SITE.email2, href: `mailto:${SITE.email2}` }] : []),
     { icon: MapPin, label: 'Visit', value: SITE.address, href: maps, ext: true },
@@ -167,7 +168,7 @@ export default function Contact() {
                 <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-text"><Clock className="size-[1.1rem]" /></span>
                 <span>
                   <span className="block text-xs font-bold uppercase tracking-[0.12em] text-muted">Class timings</span>
-                  {SITE.timings.map((t) => <span key={t.label} className="mt-0.5 block font-semibold text-ink">{t.label}: {t.time}</span>)}
+                  {SITE.timings.map((t) => <span key={t.label} className="mt-0.5 block whitespace-nowrap font-semibold text-ink">{t.label}: {t.time}</span>)}
                 </span>
               </li>
             </ul>
@@ -178,7 +179,7 @@ export default function Contact() {
             </ul>
             <span className="min-w-0 flex-1">
               <b className="block font-display text-lg leading-tight text-ink">5× Education Excellence Award</b>
-              <span className="mt-0.5 block text-sm text-muted">ISO 9001:2015 certified · Your Career… Our Commitment…</span>
+              <span className="mt-0.5 block text-sm text-muted">ISO 9001:2015 certified · <span className="whitespace-nowrap">Your Career…</span> <span className="whitespace-nowrap">Our Commitment…</span></span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-ink transition-transform group-hover:translate-x-0.5" />
           </Link>

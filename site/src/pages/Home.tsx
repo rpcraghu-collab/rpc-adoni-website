@@ -196,7 +196,7 @@ function WhyRpc() {
               {SITE.timings.map((t) => (
                 <div key={t.label} className="rounded-2xl bg-white/10 px-4 py-3">
                   <p className="text-xs font-bold uppercase tracking-[0.12em] text-white/70">{t.label}</p>
-                  <p className="mt-1 font-display text-xl font-bold">{t.time}</p>
+                  <p className="mt-1 whitespace-nowrap font-display text-xl font-bold">{t.time}</p>
                 </div>
               ))}
             </div>
@@ -285,7 +285,7 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, CCA, OAM, Tally Prime with GST, Power BI, SQL, C, C++, Java and Python at Real Point Computer Education, Adoni. ISO 9001:2015 certified." />
+      <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, CCA, OAM, Tally Prime with GST, Power BI, SQL, C, C++, Java and Python at REAL POINT Computer Education, Adoni. ISO 9001:2015 certified." />
       <JsonLd data={jsonLd} />
       <CinematicHero />
       <FactBand />

@@ -53,7 +53,7 @@ export default function Founder() {
 
           <Reveal delay={0.08} className="mt-10 border-l-[3px] border-accent pl-5 sm:pl-7">
             <p className="font-display text-[clamp(1.9rem,5vw,2.9rem)] font-bold leading-[1.02] tracking-[-0.025em] text-ink">
-              Your Career… <span className="text-accent-text">Our Commitment…</span>
+              <span className="block">Your Career…</span> <span className="block text-accent-text">Our Commitment…</span>
             </p>
             <p className="mt-3 text-sm font-bold uppercase tracking-[0.14em] text-muted">The RPC promise</p>
           </Reveal>

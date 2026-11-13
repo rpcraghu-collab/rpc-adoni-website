@@ -61,7 +61,7 @@ export default function CourseDetail() {
               <Fact icon={Clock} label="Duration">
                 {paces.length ? paces.map((p) => <span key={p.pace} className="block">{p.pace}: <b className="font-extrabold">{p.length}</b></span>) : 'Shared on enquiry'}
               </Fact>
-              <Fact icon={CalendarDays} label="Class timings">{SITE.timings.map((t) => <span key={t.label} className="block">{t.time}</span>)}</Fact>
+              <Fact icon={CalendarDays} label="Class timings">{SITE.timings.map((t) => <span key={t.label} className="block whitespace-nowrap">{t.time}</span>)}</Fact>
               <Fact icon={IndianRupee} label="Fees">{c.fee || 'Shared on enquiry'}</Fact>
               <Fact icon={Award} label="Certificate">On completion, from an ISO 9001:2015 certified institute</Fact>
             </dl>
