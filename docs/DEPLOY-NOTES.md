@@ -25,3 +25,6 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
  10 Nov client changes: original logo, awards/gallery split, hero fade, auto decks, FAQ hover, WhatsApp button, compact compare + old WP URL redirects.
 
  10 Nov redirect patterns fixed (plain paths).
+
+ 13 Nov client round 3: topic sub-bullets, Events + Reviews menu, no DET/MSME, durations, Deputy Director, domain emails.
+ 
