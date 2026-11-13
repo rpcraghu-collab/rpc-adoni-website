@@ -218,9 +218,9 @@ export default function Gallery() {
   const hasEvents = albums().length > 0 || campusShots().length > 0
   return (
     <>
-      <Seo path="/gallery" title="Photo gallery: RPC Computer Education, Adoni" description={`Photos from functions, festivals, celebrations and classes at ${SITE.name}, Babu Plaza, Adoni.`} />
+      <Seo path="/gallery" title="Events: RPC Computer Education, Adoni" description={`Photos from functions, festivals, celebrations and classes at ${SITE.name}, Babu Plaza, Adoni.`} />
       <PageHero
-        eyebrow="Gallery"
+        eyebrow="Events"
         title={<>Moments from <span className="text-accent-text">{years} years</span> of RPC.</>}
         text="Functions, festivals, celebrations and everyday classes at RPC. Tap any photo to see it full size."
         backdrop="/img/hero/hero-career-sm.webp"

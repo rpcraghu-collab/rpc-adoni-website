@@ -4,7 +4,7 @@ import { cn } from '../../lib/cn'
 import { useYears } from '../../lib/years'
 
 /** Only true facts from the client (CLIENT.md). */
-const facts = (years: number) => ['ISO 9001:2015 certified', 'AP Govt DET permission since 2006', '5× Education Excellence Award', 'MSME registered', `Teaching computers since ${SITE.since}`, `${years} years in Adoni`, 'Morning & evening batches']
+const facts = (years: number) => ['ISO 9001:2015 certified', '5× Education Excellence Award', `Teaching computers since ${SITE.since}`, `${years} years in Adoni`, 'Morning & evening batches']
 
 function Row({ items, rev, dur, className, star }: { items: string[]; rev?: boolean; dur: number; className?: string; star: string }) {
   const half = (dup: boolean) => (

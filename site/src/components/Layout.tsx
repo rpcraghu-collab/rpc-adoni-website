@@ -8,15 +8,17 @@ import { useTheme } from '../lib/theme'
 import { cn } from '../lib/cn'
 import { useYear } from '../lib/years'
 import { Logo, WhatsAppIcon } from './ui'
-import { MobileMenu } from './MobileMenu'
+import { MobileMenu, type NavItem } from './MobileMenu'
 
-const NAV = [
+// RPC, 13 Nov 2026: Gallery is called Events; Admissions made way for Reviews (Google reviews, new tab),
+// because the "Enquire now" button already opens the enquiry page.
+const NAV: NavItem[] = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About RPC' },
   { to: '/courses', label: 'Courses' },
   { to: '/awards', label: 'Awards' },
-  { to: '/gallery', label: 'Gallery' },
-  { to: '/contact', label: 'Admissions' },
+  { to: '/gallery', label: 'Events' },
+  { to: SITE.reviews, label: 'Reviews', external: true },
 ]
 
 function ThemeToggle({ className }: { className?: string }) {
@@ -113,6 +115,12 @@ function Header() {
                   </button>
                   <AnimatePresence>{mega && <MegaMenu onClose={() => setMega(false)} />}</AnimatePresence>
                 </li>
+              ) : n.external ? (
+                <li key={n.to}>
+                  <a href={n.to} target="_blank" rel="noopener" className="inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2.5 text-[0.95rem] font-semibold text-ink transition-colors hover:bg-surface-2 xl:px-4">
+                    {n.label}<ArrowUpRight className="size-3.5 opacity-60" aria-hidden /><span className="sr-only"> (Google, opens in a new tab)</span>
+                  </a>
+                </li>
               ) : (
                 <li key={n.to}>
                   <NavLink to={n.to} end className={({ isActive }) => cn('whitespace-nowrap rounded-full px-3 py-2.5 text-[0.95rem] font-semibold transition-colors xl:px-4 hover:bg-surface-2', isActive ? 'text-accent-text' : 'text-ink')}>
@@ -185,7 +193,9 @@ function Footer() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/60">Explore</p>
           <ul className="mt-2 text-[0.95rem]">
-            {NAV.map((n) => <li key={n.to}><Link to={n.to} className="inline-flex min-h-11 items-center text-white/80 hover:text-white">{n.label}</Link></li>)}
+            {NAV.map((n) => <li key={n.to}>{n.external
+              ? <a href={n.to} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1 text-white/80 hover:text-white">{n.label} <ArrowUpRight className="size-3.5" aria-hidden /></a>
+              : <Link to={n.to} className="inline-flex min-h-11 items-center text-white/80 hover:text-white">{n.label}</Link>}</li>)}
           </ul>
         </div>
         <div>
@@ -200,6 +210,7 @@ function Footer() {
           <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`} target="_blank" rel="noopener" className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><MapPin className="mt-0.5 size-4 shrink-0" />{SITE.address}</a>
           <a href={telLink()} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Phone className="mt-0.5 size-4 shrink-0" />{SITE.phone}</a>
           <a href={`mailto:${SITE.email}`} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email}</a>
+          {SITE.email2 && SITE.email2 !== SITE.email && <a href={`mailto:${SITE.email2}`} className="flex min-h-11 items-start gap-3 py-2.5 text-white/80 hover:text-white"><Mail className="mt-0.5 size-4 shrink-0" />{SITE.email2}</a>}
           <p className="flex gap-3 py-2.5 text-white/80"><Clock className="mt-0.5 size-4 shrink-0" /><span>{SITE.timings.map((t) => <span key={t.label} className="block">{t.label}: {t.time}</span>)}</span></p>
           <a href={SITE.facebook} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1 font-bold text-white hover:underline">Facebook: rpcadoni <ArrowUpRight className="size-4" /></a>
         </div>
@@ -208,7 +219,7 @@ function Footer() {
         <div className="container-x flex flex-col gap-2 py-6 pb-28 text-sm text-white/60 lg:flex-row lg:items-center lg:justify-between lg:pb-6">
           <div className="space-y-1">
             <p>© {year} Real Point Computer Education, Adoni.</p>
-            <p>ISO 9001:2015 · AP Govt DET permission · MSME registered</p>
+            <p>ISO 9001:2015 certified · Your Career… Our Commitment…</p>
           </div>
           <p className="mt-2 lg:mt-0">
             Designed and developed by{' '}

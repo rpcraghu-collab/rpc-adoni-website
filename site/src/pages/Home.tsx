@@ -126,8 +126,8 @@ function Story() {
   const years = useYears()
   const steps = [
     { year: String(SITE.since), text: `Founded in Adoni by ${SITE.founder}.` },
-    { year: '2006', text: 'Permission from the Directorate of Employment & Training, AP Govt, and ISO certification.' },
-    { year: 'Today', text: 'ISO 9001:2015 certified, MSME registered, five-time Education Excellence Award winner.' },
+    { year: '2025', text: `${SITE.deputy} appointed Deputy Director on 2nd November 2025.` },
+    { year: 'Today', text: 'ISO 9001:2015 certified, five-time Education Excellence Award winner.' },
   ]
   return (
     <section className="border-y border-line bg-surface py-16 lg:py-24" aria-labelledby="story-h">
@@ -285,7 +285,7 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, CCA, OAM, Tally Prime with GST, Power BI, SQL, C, C++, Java and Python at Real Point Computer Education, Adoni. ISO 9001:2015 certified, AP Govt DET permission." />
+      <Seo title="Computer courses in Adoni since 2000" description="PGDCA, DCA, DCP, CCA, OAM, Tally Prime with GST, Power BI, SQL, C, C++, Java and Python at Real Point Computer Education, Adoni. ISO 9001:2015 certified." />
       <JsonLd data={jsonLd} />
       <CinematicHero />
       <FactBand />

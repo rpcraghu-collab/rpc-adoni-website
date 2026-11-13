@@ -27,7 +27,7 @@ const TABS = [
   { to: 'enquiries', label: 'Enquiries', icon: Inbox },
   { to: 'courses', label: 'Courses', icon: BookOpen },
   { to: 'batches', label: 'Batches', icon: CalendarDays },
-  { to: 'gallery', label: 'Gallery', icon: Image },
+  { to: 'gallery', label: 'Events', icon: Image },
   { to: 'settings', label: 'Settings', icon: Settings },
   { to: 'admins', label: 'Admins', icon: Users, owner: true },
 ]

@@ -1,8 +1,8 @@
-import { BadgeCheck, Building2, Landmark, Trophy } from 'lucide-react'
+import { BadgeCheck, Trophy } from 'lucide-react'
 import { CREDENTIALS } from '../../content/site'
 import { Reveal, Tilt } from '../ui'
 
-const ICONS = [BadgeCheck, Landmark, Building2, Trophy]
+const ICONS = [BadgeCheck, Trophy]
 
 /** Certificates as solid, stamped tiles. Content comes from CREDENTIALS, so the admin panel can change it. */
 export default function ProofStrip() {
@@ -10,14 +10,14 @@ export default function ProofStrip() {
     <section className="container-x pb-20 lg:pb-32" aria-labelledby="proof-h">
       <Reveal className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Certified and registered</p>
+          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Certified and awarded</p>
           <h2 id="proof-h" className="mt-3 max-w-xl text-balance font-display text-[clamp(1.9rem,4.6vw,3.2rem)] font-extrabold leading-[1] tracking-[-0.03em] text-ink">
-            Approved by the government. Certified for quality.
+            Certified for quality. Honoured for excellence.
           </h2>
         </div>
       </Reveal>
 
-      <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+      <ul className="mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:gap-5">
         {CREDENTIALS.map((c, i) => {
           const Icon = ICONS[i] ?? BadgeCheck
           return (

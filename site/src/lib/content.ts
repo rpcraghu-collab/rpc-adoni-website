@@ -86,7 +86,8 @@ export function applyOverrides(o: Overrides) {
   Object.assign(SITE, {
     phone,
     phoneRaw: phoneToRaw(phone),
-    email: str(s.email, 120)?.trim() || DEFAULT_SITE.email,
+    // The old Gmail saved in the admin settings gives way to the new domain email (RPC, 13 Nov 2026).
+    email: (str(s.email, 120)?.trim().toLowerCase() !== 'rpcraghu@gmail.com' && str(s.email, 120)?.trim()) || DEFAULT_SITE.email,
     address: str(s.address)?.trim() || DEFAULT_SITE.address,
     facebook: (str(s.facebook, 200)?.trim().startsWith('https://') && str(s.facebook, 200)?.trim()) || DEFAULT_SITE.facebook,
     timings: Array.isArray(s.timings) && s.timings.length ? s.timings.filter((t) => typeof t?.label === 'string' && typeof t.time === 'string' && t.label && t.time) : DEFAULT_SITE.timings,

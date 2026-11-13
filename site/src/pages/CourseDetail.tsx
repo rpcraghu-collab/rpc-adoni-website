@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight, Award, CalendarDays, Clock, IndianRupee, ListChecks, Users, type LucideIcon } from 'lucide-react'
-import { COURSES, SITE, listed, waLink } from '../content/site'
+import { COURSES, SITE, listed, splitTopic, waLink } from '../content/site'
 import { JsonLd, Reveal, Seo, WhatsAppIcon } from '../components/ui'
 import PageHero from '../components/PageHero'
 import { CoverFan, CtaBand, FacilityList, MiniCourseCard, groupOf } from '../components/course'
@@ -84,12 +84,18 @@ export default function CourseDetail() {
                   <div className="h-full rounded-[1.5rem] bg-surface p-5 ring-1 ring-line sm:p-6">
                     {m.title && <p className="mb-2 inline-flex rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-bg">{m.title}</p>}
                     <ul className={c.modules.length === 1 ? 'sm:columns-2 sm:gap-8' : ''}>
-                      {m.items.map((it) => (
-                        <li key={it} className="flex break-inside-avoid items-start gap-3 border-b border-line py-3 last:border-0">
-                          <span aria-hidden className="mt-[0.55rem] size-2 shrink-0 rounded-full bg-accent" />
-                          <span className="font-semibold text-ink">{it}</span>
-                        </li>
-                      ))}
+                      {m.items.map((it) => {
+                        const t = splitTopic(it)
+                        return (
+                          <li key={it} className="flex break-inside-avoid items-start gap-3 border-b border-line py-3 last:border-0">
+                            <span aria-hidden className="mt-[0.55rem] size-2 shrink-0 rounded-full bg-accent" />
+                            <span className="min-w-0">
+                              <span className="block font-semibold text-ink">{t.head}</span>
+                              {t.sub && <span className="mt-1 flex items-start gap-2 text-[0.95rem] font-medium text-ink-soft"><span aria-hidden className="mt-[0.6rem] h-px w-3 shrink-0 bg-current opacity-60" />{t.sub}</span>}
+                            </span>
+                          </li>
+                        )
+                      })}
                     </ul>
                   </div>
                 </Reveal>

@@ -8,10 +8,10 @@ import { useYears } from '../../lib/years'
 // Real milestones only. Entries without a known year show a label, never a made-up date.
 const STEPS = [
   { mark: String(SITE.since), year: true, title: 'RPC opens in Adoni', text: `${SITE.founder} starts Real Point Computer Education: quality computer education for everyone in Adoni.` },
-  { mark: '2006', year: true, title: 'Government permission', text: 'Permission from the Directorate of Employment & Training, Govt of Andhra Pradesh, and ISO certification.' },
-  { mark: 'ISO 9001:2015', year: false, title: 'Certified for quality', text: 'RPC is certified to the ISO 9001:2015 standard and registered as an MSME.' },
+  { mark: 'ISO 9001:2015', year: false, title: 'Certified for quality', text: 'RPC is certified to the ISO 9001:2015 standard.' },
   { mark: '5×', year: true, title: 'Five Education Excellence Awards', text: 'Honoured on national stages by V.V.S. Laxman, Abhinav Bindra, Chetan Chauhan and others.' },
-  { mark: 'Today', year: true, title: 'Years of teaching', text: 'Coding and non-coding courses, basic to advanced, in two batches every day: morning and evening.' },
+  { mark: '2025', year: true, title: 'A new Deputy Director', text: `On 2nd November 2025, ${SITE.deputy} was appointed Deputy Director of RPC.` },
+  { mark: 'Today', year: true, title: 'Years of teaching', text: 'Coding and non-coding courses, basic to advanced, in two sessions every day: morning and evening.' },
 ]
 
 /** The journey on a navy panel. The red line fills as you scroll through it. */
@@ -34,7 +34,7 @@ export default function Timeline() {
               {years} years in Adoni, one step at a time.
             </h2>
             <p className="mt-5 max-w-md text-pretty text-[1.05rem] leading-relaxed text-white/75">
-              From opening in {SITE.since} to an ISO 9001:2015 certified, government-approved institute with five national awards.
+              From opening in {SITE.since} to an ISO 9001:2015 certified institute with five national awards.
             </p>
           </Reveal>
 

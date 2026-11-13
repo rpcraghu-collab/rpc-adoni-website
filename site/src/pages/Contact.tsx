@@ -67,6 +67,7 @@ export default function Contact() {
   const info = [
     { icon: Phone, label: 'Call', value: SITE.phone, href: telLink() },
     { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+    ...(SITE.email2 && SITE.email2 !== SITE.email ? [{ icon: Mail, label: 'Email (founder)', value: SITE.email2, href: `mailto:${SITE.email2}` }] : []),
     { icon: MapPin, label: 'Visit', value: SITE.address, href: maps, ext: true },
   ]
 
@@ -177,7 +178,7 @@ export default function Contact() {
             </ul>
             <span className="min-w-0 flex-1">
               <b className="block font-display text-lg leading-tight text-ink">5× Education Excellence Award</b>
-              <span className="mt-0.5 block text-sm text-muted">ISO 9001:2015 certified · AP Govt DET permission since 2006</span>
+              <span className="mt-0.5 block text-sm text-muted">ISO 9001:2015 certified · Your Career… Our Commitment…</span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-ink transition-transform group-hover:translate-x-0.5" />
           </Link>

@@ -19,7 +19,7 @@ export const SUBJECTS: Subject[] = [
   { label: 'Operating system', test: re(/operating system/i) },
   { label: 'MS Word', test: re(/\bword\b/i) },
   { label: 'Excel / Advanced Excel', test: re(/excel/i) },
-  { label: 'PowerPoint', test: re(/powerpoint/i) },
+  { label: 'PowerPoint', test: re(/powerpoint|\bppt\b/i) },
   { label: 'Internet with AI tools', test: re(/internet|ai tools|e-?mail/i) },
   { label: 'Tally with GST', test: re(/tally/i) },
   { label: 'C language', test: (s) => /^c$/i.test(s.trim()) || /\bc language\b/i.test(s) },

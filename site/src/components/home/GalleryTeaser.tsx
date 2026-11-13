@@ -24,11 +24,11 @@ export default function GalleryTeaser() {
     <section className="container-x py-16 lg:py-24" aria-labelledby="gt-h">
       <Reveal className="flex flex-wrap items-end justify-between gap-6">
         <div className="max-w-2xl">
-          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />{useEvents ? 'Gallery' : 'Awards'}</p>
+          <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />{useEvents ? 'Events' : 'Awards'}</p>
           <MaskLines id="gt-h" className="mt-3 text-[clamp(1.9rem,4.2vw,3.1rem)] font-bold leading-[1.04]" lines={useEvents ? ['Functions, festivals', <span className="text-muted">and moments at RPC.</span>] : ['Award days with', <span className="text-muted">national figures.</span>]} />
         </div>
         <Link to={to} className="btn-ghost">
-          {useEvents ? 'Open gallery' : 'See the awards'}
+          {useEvents ? 'See all events' : 'See the awards'}
           <span className="-mr-3 grid size-8 place-items-center rounded-full bg-ink text-surface"><ArrowRight className="size-4" aria-hidden /></span>
         </Link>
       </Reveal>

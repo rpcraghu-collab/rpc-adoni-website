@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, Clock, FileCheck2, Laptop, MapPin, MonitorCheck, Projector, Snowflake, Users, Zap } from 'lucide-react'
-import { FACILITIES, GROUPS, SITE, waLink, type Course, type CourseGroup } from '../content/site'
+import { FACILITIES, GROUPS, SITE, splitTopic, waLink, type Course, type CourseGroup } from '../content/site'
 import { Magnetic, Reveal, WhatsAppIcon, useReduce } from './ui'
 import { cn } from '../lib/cn'
 import { CourseArt } from './CourseArt'
@@ -37,7 +37,7 @@ const CHIP: Record<CourseGroup, string> = {
 /** The main course card (Home finder, Courses page). */
 export function CourseCard({ c, bare }: { c: Course; bare?: boolean }) {
   // A one-subject course would just repeat its own name as its tool, so it shows its brief (Core X · Advanced X).
-  const line = c.tools.length > 1 ? c.tools.slice(0, 4) : c.modules.flatMap((m) => m.items).slice(0, 3)
+  const line = c.tools.length > 1 ? c.tools.slice(0, 4) : c.modules.flatMap((m) => m.items).map((t) => splitTopic(t).sub || t).slice(0, 3)
   const arrow = (
     <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-2 text-ink transition-colors group-hover:bg-accent group-hover:text-white">
       <ArrowRight className="size-4" />

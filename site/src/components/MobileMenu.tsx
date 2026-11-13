@@ -7,7 +7,8 @@ import { COURSES, SITE, telLink, waLink } from '../content/site'
 import { cn } from '../lib/cn'
 import { Logo } from './ui'
 
-export type NavItem = { to: string; label: string }
+/** `external`: `to` is a full URL opened in a new tab (the Google reviews link). */
+export type NavItem = { to: string; label: string; external?: boolean }
 
 const EASE = [0.22, 1, 0.36, 1] as const
 const IN_OUT = [0.76, 0, 0.24, 1] as const
@@ -121,13 +122,9 @@ export function MobileMenu({ nav, onClose, themeToggle }: { nav: NavItem[]; onCl
             {status.text}
           </motion.p>
           <ul>
-            {nav.map((n, i) => (
-              <li key={n.to}>
-                <NavLink
-                  to={n.to} end={n.to === '/'} onClick={onClose}
-                  className="group flex items-baseline justify-between gap-4 py-[0.55rem] outline-none focus-visible:[&_.lbl]:underline"
-                >
-                  {({ isActive }) => (
+            {nav.map((n, i) => {
+              const row = 'group flex items-baseline justify-between gap-4 py-[0.55rem] outline-none focus-visible:[&_.lbl]:underline'
+              const inner = ({ isActive }: { isActive: boolean }) => (
                     <>
                       <span className="block overflow-hidden pb-[0.12em]">
                         <motion.span {...rise(i)} className="flex items-center gap-3">
@@ -142,6 +139,7 @@ export function MobileMenu({ nav, onClose, themeToggle }: { nav: NavItem[]; onCl
                             )}
                           >
                             {n.label}
+                            {n.external && <ArrowUpRight className="ml-1 inline size-[0.5em] align-middle opacity-60" aria-hidden />}
                             {n.to === '/courses' && (
                               <sup className="ml-1.5 align-super font-mono text-[0.75rem] font-normal tracking-normal text-accent-text">{COURSES.length}</sup>
                             )}
@@ -157,10 +155,20 @@ export function MobileMenu({ nav, onClose, themeToggle }: { nav: NavItem[]; onCl
                       </motion.span>
                       {isActive && <span className="sr-only">(current page)</span>}
                     </>
+                  )
+              return (
+                <li key={n.to}>
+                  {n.external ? (
+                    <a href={n.to} target="_blank" rel="noopener" onClick={onClose} className={row}>
+                      {inner({ isActive: false })}
+                      <span className="sr-only"> (Google, opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    <NavLink to={n.to} end={n.to === '/'} onClick={onClose} className={row}>{inner}</NavLink>
                   )}
-                </NavLink>
-              </li>
-            ))}
+                </li>
+              )
+            })}
           </ul>
         </nav>
 

@@ -2,7 +2,7 @@ import { HeartHandshake } from 'lucide-react'
 import { AWARDS, SITE } from '../../content/site'
 import { Reveal, Tilt } from '../ui'
 
-/** Founder: a real award photo, his name set large, and the RPC promise in the client's own words. */
+/** Founder and Deputy Director (each name on one line, RPC 13 Nov 2026), a real award photo and the RPC promise. */
 export default function Founder() {
   const a = AWARDS[3]
   return (
@@ -37,7 +37,7 @@ export default function Founder() {
         <div>
           <Reveal>
             <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Our founder</p>
-            <h2 id="founder-h" className="mt-4 text-balance font-display text-[clamp(2.5rem,7vw,4.6rem)] font-extrabold leading-[0.95] tracking-[-0.035em] text-ink">
+            <h2 id="founder-h" className="mt-4 whitespace-nowrap font-display text-[clamp(1.75rem,7.4vw,3.4rem)] font-extrabold leading-[1] tracking-[-0.035em] text-ink lg:text-[clamp(2rem,3.6vw,3.4rem)]">
               {SITE.founder}
             </h2>
             <p className="mt-6 max-w-xl text-pretty text-[1.08rem] leading-relaxed text-ink-soft">
@@ -45,9 +45,15 @@ export default function Founder() {
             </p>
           </Reveal>
 
+          <Reveal delay={0.05} className="mt-10 border-t border-line pt-8">
+            <p className="eyebrow"><span className="h-px w-6 bg-current" aria-hidden />Our Deputy Director</p>
+            <h3 className="mt-4 whitespace-nowrap font-display text-[clamp(1.75rem,7.4vw,3.4rem)] font-extrabold leading-[1] tracking-[-0.035em] text-ink lg:text-[clamp(2rem,3.6vw,3.4rem)]">{SITE.deputy}</h3>
+            <p className="mt-4 max-w-xl text-pretty text-[1.08rem] leading-relaxed text-ink-soft">Appointed Deputy Director of RPC on 2nd November 2025.</p>
+          </Reveal>
+
           <Reveal delay={0.08} className="mt-10 border-l-[3px] border-accent pl-5 sm:pl-7">
             <p className="font-display text-[clamp(1.9rem,5vw,2.9rem)] font-bold leading-[1.02] tracking-[-0.025em] text-ink">
-              Your career… <span className="text-accent-text">our commitment.</span>
+              Your Career… <span className="text-accent-text">Our Commitment…</span>
             </p>
             <p className="mt-3 text-sm font-bold uppercase tracking-[0.14em] text-muted">The RPC promise</p>
           </Reveal>

@@ -8,7 +8,12 @@ export const SITE = {
   founder: 'Mr. A.G. Raghavendra',
   phone: '+91 99596 63984',
   phoneRaw: '919959663984',
-  email: 'rpcraghu@gmail.com',
+  email: 'support@rpcadoni.com',
+  /** Second domain email (RPC, 13 Nov 2026). */
+  email2: 'rpcraghu@rpcadoni.com',
+  /** Google Maps listing, opened on its reviews tab (the menu's Reviews link). */
+  reviews: 'https://www.google.com/maps/place/REAL+POINT+COMPUTER+EDUCATION/@15.6234107,77.2699322,17z/data=!4m8!3m7!1s0x3bb64dc3855eaae3:0xf36a161e79d29ec1!8m2!3d15.6234055!4d77.2725071!9m1!1b1!16s%2Fg%2F1hf9324nn',
+  deputy: 'Smt. S. Nagaveni',
   address: 'Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh',
   addressShort: 'Babu Plaza, Adoni',
   mapsQuery: 'Real Point Computer Education, Babu Plaza, Adoni',
@@ -22,8 +27,6 @@ export const SITE = {
 
 export const CREDENTIALS = [
   { title: 'ISO 9001:2015', text: 'Certified institute' },
-  { title: 'AP Govt DET', text: 'Permission since 2006' },
-  { title: 'MSME', text: 'Registered' },
   { title: '5× Award', text: 'Education Excellence' },
 ]
 
@@ -50,12 +53,13 @@ export const GROUPS: { id: CourseGroup; label: string; blurb: string; art: strin
   { id: 'programming', label: 'Programming', blurb: 'C, C++, Java, Oracle, Python, SQL for Degree & B.Tech', art: '/img/art/programming.webp' },
 ]
 
+// A topic written 'Parent: sub-items' shows as a bullet with its sub-items under it (RPC, 13 Nov 2026).
 // Topics come only from RPC's course sheet (WebsiteDreamTeam.pdf, Nov 2026). RPC can edit them in /admin → Courses.
-const BASE = ['Computer Fundamentals (Typing)', 'MS Office: Word, Advanced Excel, PowerPoint', 'Operating System', 'Internet with AI Tools']
+const BASE = ['Computer Fundamentals (Typing)', 'Microsoft Office: Word, Advanced Excel, PPT', 'Operating System', 'Internet with AI Tools']
 const BASE_TOOLS = ['Typing', 'Word', 'Excel', 'PowerPoint', 'AI Tools']
 
 /** Bump when the default course list changes, so an older list saved in the admin panel is not shown. */
-export const COURSES_REV = 2
+export const COURSES_REV = 3
 
 export const COURSES: Course[] = [
   {
@@ -68,7 +72,7 @@ export const COURSES: Course[] = [
     duration: ['1½ hrs daily · 1 year', '3 hrs daily · 6 months'],
     modules: [
       { title: 'Semester I', items: [...BASE, 'C Language', 'C++'] },
-      { title: 'Semester II', items: ['Java or Power BI', 'Oracle', 'SQL / PL/SQL', 'Tally Prime with GST or Python', 'Project Work', 'Semester Exam Guidance'] },
+      { title: 'Semester II', items: ['Java or Power BI', 'Oracle: SQL, PL/SQL', 'Tally Prime with GST or Python', 'Project Work', 'Semester Exam Guidance'] },
     ],
     tools: ['Word', 'Excel', 'C', 'C++', 'Java', 'Power BI', 'Oracle', 'SQL', 'Tally', 'Python'],
     featured: true,
@@ -149,8 +153,8 @@ export const COURSES: Course[] = [
     group: 'office',
     tagline: 'Learn Advanced Excel on its own.',
     forWho: 'Students & working people',
-    duration: [],
-    modules: [{ items: ['Core Excel', 'Advanced Excel'] }],
+    duration: ['25 days'],
+    modules: [{ items: ['Excel: Core & Advanced'] }],
     tools: ['Excel'],
   },
   {
@@ -160,8 +164,8 @@ export const COURSES: Course[] = [
     group: 'office',
     tagline: 'Learn accounts in Tally Prime with GST on its own.',
     forWho: 'Students & working people',
-    duration: [],
-    modules: [{ items: ['Tally Prime', 'GST'] }],
+    duration: ['50 days'],
+    modules: [{ items: ['Tally Prime with GST'] }],
     tools: ['Tally', 'GST'],
   },
   {
@@ -171,7 +175,7 @@ export const COURSES: Course[] = [
     group: 'office',
     tagline: 'Learn Power BI on its own, with a project.',
     forWho: 'Students & working people',
-    duration: [],
+    duration: ['30 days'],
     modules: [{ items: ['Power BI', 'Project Work'] }],
     tools: ['Power BI'],
   },
@@ -189,9 +193,10 @@ export const COURSES: Course[] = [
       SQL: 'Store, query and manage data with SQL.',
     }[lang],
     forWho: 'Degree & B.Tech students',
-    duration: [],
+    // Days from RPC's course sheet (13 Nov 2026); SQL has no length on the sheet.
+    duration: ({ C: ['35 days'], 'C++': ['30 days'], Java: ['45 days'], Oracle: ['45 days'], Python: ['45 days'], SQL: [] } as Record<string, string[]>)[lang],
     // Brief only (RPC, 10 Nov 2026): no detailed topic lists for single languages.
-    modules: [{ items: lang === 'Oracle' ? ['SQL', 'PL/SQL'] : [`Core ${lang}`, `Advanced ${lang}`] }],
+    modules: [{ items: [lang === 'Oracle' ? 'Oracle: SQL, PL/SQL' : `${lang === 'C' ? 'C Language' : lang}: Core & Advanced`] }],
     tools: [lang],
   })),
 ]
@@ -230,9 +235,9 @@ export const TOOLS = ['MS Word', 'Advanced Excel', 'PowerPoint', 'Tally Prime', 
 export const FAQS = [
   { q: 'What are the course fees?', a: 'Fees depend on the course and the batch you choose. Send us a WhatsApp message or call, and we will share the exact fee and any current offers.' },
   { q: 'What are the class timings?', get a() { return `Classes run in two slots every day: ${SITE.timings.map((t) => t.time).join(' and ')}. Most courses can be done at 1½ hours a day or faster at 3 hours a day.` } },
-  { q: 'Will I get a certificate?', a: 'Yes. Every course ends with a certificate from RPC, an ISO 9001:2015 certified institute with permission from the Directorate of Employment & Training, AP Govt.' },
+  { q: 'Will I get a certificate?', a: 'Yes. Every course ends with a certificate from RPC, an ISO 9001:2015 certified institute in Adoni.' },
   { q: 'I have never used a computer. Can I join?', a: 'Yes. CCA and OAM start from computer fundamentals. Anyone above 11 years can join CCA.' },
-  { q: 'Which course is best for B.Tech or Degree students?', a: 'PGDCA covers office tools, C, C++, Java or Power BI, Oracle, SQL / PL/SQL and Tally or Python in one diploma. You can also take a single language like Java, Python or SQL on its own.' },
+  { q: 'Which course is best for B.Tech or Degree students?', a: 'PGDCA covers office tools, C, C++, Java or Power BI, Oracle (SQL, PL/SQL) and Tally or Python in one diploma. You can also take a single language like Java, Python or SQL on its own.' },
   { q: 'Where is RPC?', a: 'Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. The building has a lift and generator backup.' },
 ]
 
@@ -241,3 +246,8 @@ export const waLink = (text = 'Hello RPC, I want details about your computer cou
 export const telLink = () => `tel:${SITE.phone.replace(/\s/g, '')}`
 /** Courses shown in lists, menus and the enquiry form (hidden ones are left out). */
 export const listed = () => COURSES.filter((c) => !c.hidden)
+/** 'Microsoft Office: Word, Advanced Excel, PPT' → { head: 'Microsoft Office', sub: 'Word, Advanced Excel, PPT' }. */
+export const splitTopic = (t: string) => {
+  const m = /^([^:]{1,40}):\s+(.+)$/.exec(t)
+  return m ? { head: m[1].trim(), sub: m[2].trim() } : { head: t, sub: '' }
+}

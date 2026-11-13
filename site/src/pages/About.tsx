@@ -26,7 +26,7 @@ export default function About() {
   }
   return (
     <>
-      <Seo path="/about" title={`About RPC: ${years} years of computer education in Adoni`} description={`Founded in ${SITE.since} by ${SITE.founder}. ISO 9001:2015 certified, AP Govt DET permission since 2006, MSME registered, 5-time Education Excellence Award winners.`} />
+      <Seo path="/about" title={`About RPC: ${years} years of computer education in Adoni`} description={`Founded in ${SITE.since} by ${SITE.founder}. ISO 9001:2015 certified, 5-time Education Excellence Award winners.`} />
       <JsonLd data={jsonLd} />
       <AboutHero />
       <Timeline />

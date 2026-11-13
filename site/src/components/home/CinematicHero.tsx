@@ -116,11 +116,11 @@ function Deck({ active, from, dir, compact, still, className, px, py }: {
   )
 }
 
-/** Real proof only: the award photos and two credentials from site.ts. */
+/** Real proof only: the award photos and the ISO credential from site.ts. */
 function Proof({ className }: { className?: string }) {
   const by = (t: string) => CREDENTIALS.find((c) => c.title.startsWith(t))
   const award = by('5×')
-  const creds = [by('ISO'), by('AP Govt')].filter((c): c is (typeof CREDENTIALS)[number] => !!c)
+  const creds = [by('ISO')].filter((c): c is (typeof CREDENTIALS)[number] => !!c)
   const short = (c: (typeof CREDENTIALS)[number]) => c.text.replace(/^Permission since/, 'since').replace(/ institute$/, '').toLowerCase()
   return (
     <ul className={cn('flex items-center text-white', className)}>

@@ -2,7 +2,7 @@
 
 > Computer education institute in Adoni, Andhra Pradesh, teaching since 2000. Job-oriented computer courses: PGDCA, DCA, DCP, CCA, Office Automation (OAM, OAM Advanced, OAM Pro), Advanced Excel, Tally Prime with GST, Power BI and programming (C, C++, Java, Oracle, Python, SQL). Classes run 9:00 am – 1:30 pm and 4:00 pm – 8:00 pm.
 
-Address: Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. Phone / WhatsApp: +91 99596 63984. Email: rpcraghu@gmail.com.
+Address: Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. Phone / WhatsApp: +91 99596 63984. Email: support@rpcadoni.com, rpcraghu@rpcadoni.com.
 
 ## Pages
 
@@ -10,7 +10,7 @@ Address: Babu Plaza, 2nd Floor, Adoni, Andhra Pradesh. Phone / WhatsApp: +91 995
 - [About RPC](https://rpcadoni.com/about): history since 2000
 - [Courses](https://rpcadoni.com/courses): all courses with duration and modules
 - [Awards](https://rpcadoni.com/awards): awards and achievements
-- [Gallery](https://rpcadoni.com/gallery): award days, flyers, festival and event photos
+- [Events](https://rpcadoni.com/gallery): functions, festivals and event photos
 - [Admissions and contact](https://rpcadoni.com/contact): enquiry form, address, phone
 
 ## Courses
