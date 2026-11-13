@@ -17,7 +17,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
 
 - **10 Nov client round 2: LIVE (version 20261110134405, 7:14 pm), update sent to the client's WhatsApp 7:16 pm:** original logo, Awards page = awards only + Gallery = events (empty state until photos), no module numbers, hero crossfade, auto-turning course coverflow, FAQ opens on hover, rotating CTA card fans (Home/About), round WhatsApp button, batches card art beside the times, compact Compare table (fits one screen).
 
-- **13 Nov client round 3 (Data2.pdf): done + committed locally, NOT deployed yet.** Build passes; Playwright 390/1440 light+dark, 0 console errors, no overflow.
+- **13 Nov client round 3 (Data2.pdf): LIVE 13 Nov** (3f1775a + web commit; live-checked on vercel.app and rpcadoni.com: Events/Reviews menu, no DET/MSME, PL/SQL, 45 days, both emails). Build passes; Playwright 390/1440 light+dark, 0 console errors, no overflow.
   - Topic sub-bullets: `'Parent: subs'` → bullet + sub-line (`splitTopic` in site.ts): "Microsoft Office: Word, Advanced Excel, PPT", "Oracle: SQL, PL/SQL".
   - Menu: Gallery → **Events** (page /gallery kept); Admissions → **Reviews** (Google Maps reviews, new tab; `SITE.reviews`). Enquire now button unchanged.
   - AP Govt DET + MSME removed everywhere (credentials, hero, fact band, proof strip, timeline, footer, contact, SEO, llms.txt).
@@ -26,7 +26,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - Emails support@rpcadoni.com + rpcraghu@rpcadoni.com (`lib/content.ts` ignores the old saved Gmail). `COURSES_REV` 2 → 3 (live has no fees/hidden courses to lose).
 
 ## Next steps
-0. Deploy round 3 (needs the user's OK): deploy recipe in step 2. Then live-check menu, a course page, About.
+0. (done 13 Nov) Round 3 deployed. Wait for client feedback.
 0b. Gallery needs the client's event/function/festival photos.
 1. (done 10 Nov) Deployed + live data cleaned.
 2. Deploy recipe: push to `rpcraghu-collab/rpc-adoni-website`, then a small commit in the GitHub web UI in the RPC Chrome (Vercel builds only rpcraghu-collab commits). See `docs/DEPLOY-NOTES.md`.
