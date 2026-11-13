@@ -25,7 +25,12 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - About: Deputy Director Smt. S. Nagaveni (appointed 2 Nov 2025) in Founder block + Timeline + Home story; names one line; "two sessions every day"; tagline "Your Career… Our Commitment…".
   - Emails support@rpcadoni.com + rpcraghu@rpcadoni.com (`lib/content.ts` ignores the old saved Gmail). `COURSES_REV` 2 → 3 (live has no fees/hidden courses to lose).
 
+- **13 Nov client round 4: LIVE** (e182e63 + web commit 6dfff46), update sent to the client's WhatsApp ~6 pm. Playwright 390/1440 light+dark, 0 console errors, no overflow.
+  - Batch poster popup: admin `/admin/batches` → "Batch poster popup" box (upload / change / hide / remove, each saves at once) → `popup {id,url,on}` in content json → `LIVE.popup` → `components/BatchPopup.tsx` (opens ~1.9 s after load once the picture loads, once per visit per poster via sessionStorage, Esc/X/outside click/Continue close, WhatsApp "Join this batch").
+  - REAL POINT in capitals; Tally → Tally Prime; single-language "Core & Advanced" → duration (`dur` map in site.ts; SQL has none yet: asked the client); second phone `SITE.phone2` (footer + Contact); Reviews = Google search reviews panel (`#lrd=…,3`); timings `whitespace-nowrap`; tagline lines split; About timings card art moved top-right; Timeline "Deputy Director of RPC." nowrap.
+
 ## Next steps
+00. Waiting: the client's SQL course duration → add to `dur.SQL` in site.ts.
 0. (done 13 Nov) Round 3 deployed; update sent to the client's WhatsApp 2:48 pm (DREAM TEAM SERVICES WhatsApp, English + Telugu). Wait for client feedback.
 0b. Gallery needs the client's event/function/festival photos.
 1. (done 10 Nov) Deployed + live data cleaned.
