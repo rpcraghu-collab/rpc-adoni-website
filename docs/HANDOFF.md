@@ -29,7 +29,10 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - Batch poster popup: admin `/admin/batches` → "Batch poster popup" box (upload / change / hide / remove, each saves at once) → `popup {id,url,on}` in content json → `LIVE.popup` → `components/BatchPopup.tsx` (opens ~1.9 s after load once the picture loads, once per visit per poster via sessionStorage, Esc/X/outside click/Continue close, WhatsApp "Join this batch").
   - REAL POINT in capitals; Tally → Tally Prime; single-language "Core & Advanced" → duration (`dur` map in site.ts; SQL has none yet: asked the client); second phone `SITE.phone2` (footer + Contact); Reviews = Google search reviews panel (`#lrd=…,3`); timings `whitespace-nowrap`; tagline lines split; About timings card art moved top-right; Timeline "Deputy Director of RPC." nowrap.
 
+- **16 Nov visitor counter (client: "visit numbers start with 5001"): built, committed fa59ade, NOT live yet.** `lib/visits.ts` → Firestore `stats/visits {count}`, +1 once per browser session (REST commit increment, marked in sessionStorage before the request), shown in the footer bottom bar as 5000 + count ("Website visitors: 5,001"; hidden until loaded). `firestore.rules` new `/stats` block: get + exactly +1 only (emulator-tested: +1 ok; +5, set, delete, other doc refused). Build passes; footer checked at 390/1440.
+
 ## Next steps
+000. Go live with the counter: (1) publish `firestore.rules` in the Firebase console (RPC Chrome, project rpc-adoni-4953b; CLI is not logged into rpcraghu), (2) `git push origin main`, (3) trigger commit in the GitHub web UI (DEPLOY-NOTES), (4) check the footer on rpcadoni.com shows 5,001+. Until rules are live the counter just stays hidden.
 00. Waiting: the client's SQL course duration → add to `dur.SQL` in site.ts.
 0. (done 13 Nov) Round 3 deployed; update sent to the client's WhatsApp 2:48 pm (DREAM TEAM SERVICES WhatsApp, English + Telugu). Wait for client feedback.
 0b. Gallery needs the client's event/function/festival photos.
@@ -52,4 +55,4 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
 - Bash tool mangles `\n` / `\\` inside sed/python heredocs: edit such lines with the Edit tool.
 - Tailwind v4: classes used inside `@apply` must be `@utility`.
 
-Last updated: 13 Nov 2026
+Last updated: 16 Nov 2026
