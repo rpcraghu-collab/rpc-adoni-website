@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'motion/react'
-import { ArrowRight, ArrowUpRight, ChevronDown, Clock, Mail, MapPin, Menu, Moon, Phone, Sun } from "lucide-react"
+import { ArrowRight, ArrowUpRight, ChevronDown, Clock, Eye, Mail, MapPin, Menu, Moon, Phone, Sun } from "lucide-react"
 import { GROUPS, SITE, listed, telLink, waLink } from '../content/site'
 import { LIVE } from '../lib/content'
 import { useTheme } from '../lib/theme'
 import { cn } from '../lib/cn'
 import { useYear } from '../lib/years'
+import { useVisits } from '../lib/visits'
 import { Logo, WhatsAppIcon } from './ui'
 import { MobileMenu, type NavItem } from './MobileMenu'
 import BatchPopup from './BatchPopup'
@@ -181,6 +182,17 @@ function WhatsAppFab() {
   )
 }
 
+function VisitCount() {
+  const n = useVisits()
+  return (
+    <p className={cn('flex min-h-7 items-center gap-2 pt-1 transition-opacity duration-500', n === null ? 'opacity-0' : 'opacity-100')} aria-live="polite">
+      <Eye className="size-4 shrink-0 text-white/70" aria-hidden />
+      <span>Website visitors:</span>
+      <span className="rounded-full bg-white/10 px-2.5 py-0.5 font-display font-bold tabular-nums tracking-wide text-white">{n === null ? '' : n.toLocaleString('en-IN')}</span>
+    </p>
+  )
+}
+
 function Footer() {
   const year = useYear()
   return (
@@ -222,6 +234,7 @@ function Footer() {
           <div className="space-y-1">
             <p>© {year} REAL POINT Computer Education, Adoni.</p>
             <p>ISO 9001:2015 certified · <span className="whitespace-nowrap">Your Career…</span> <span className="whitespace-nowrap">Our Commitment…</span></p>
+            <VisitCount />
           </div>
           <p className="mt-2 lg:mt-0">
             Designed and developed by{' '}

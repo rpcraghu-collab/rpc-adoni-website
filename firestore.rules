@@ -49,6 +49,17 @@ service cloud.firestore {
         && request.resource.data.updatedBy == request.auth.token.email;
     }
 
+    // Website visitor counter (footer). Anyone may read it and add exactly 1; nothing else.
+    match /stats/{doc} {
+      allow get: if doc == 'visits';
+      allow create: if doc == 'visits'
+        && request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == 1;
+      allow update: if doc == 'visits'
+        && request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == resource.data.count + 1;
+    }
+
     // Extra admins (doc id = lower-case Gmail). Only the owner adds or removes them.
     match /admins/{adminEmail} {
       allow read: if isAdmin();
