@@ -4,7 +4,7 @@ Client: Real Point Computer Education (RPC), Adoni. Owner Mr. A.G. Raghavendra, 
 Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): `docs/archive/HANDOFF-2026-11-08-to-09.md`.
 
 ## State (10 Nov 2026)
-- **20 Nov: support@rpcadoni.com removed from the site (not bought yet; add back as `email2` in `site/src/content/site.ts` once bought). Committed c45c244, NOT pushed (push + rules publish need the founder's OK; rules are pasted in the Firebase console, unpublished).**
+- **20 Nov: support@rpcadoni.com removed from the site (not bought yet; add back as `email2` in `site/src/content/site.ts` once bought). LIVE 20 Nov (pushed, Vercel Ready, Firestore stats rule published; checked on rpcadoni.com: no support@, footer "Website visitors: 5,003", reload does not add).**
 - **20 Nov: rpcadoni.com outage FIXED.** Cause: nameservers were Hostinger's ns1/ns2.dns-parking.com, whose zone for the domain was gone (NXDOMAIN). Fix (GoDaddy, RPC Chrome): nameservers → GoDaddy default ns31/ns32.domaincontrol.com; A @ 76.76.21.21 + CNAME www cname.vercel-dns.com (site now served straight from Vercel team `rpc16`, project rpc-adoni; www 308 → apex); Hostinger mail kept (MX, SPF, 3 DKIM, autodiscover/autoconfig), full list in `docs/DNS-RECORDS.md`. The WordPress + 'RPC Vercel Proxy' setup is no longer in the path (WP hosting at Hostinger is now unused). Old caches (Google DNS) may show the old Hostinger IP for a few hours.
 - `site/` = Vite 6 + React 19 + TS + Tailwind v4 + motion, prerendered (23 pages). `npm run build` passes.
 - **LIVE: https://rpc-adoni.vercel.app** = the 10 Nov build (d6efc8f + web commit 3274bea, version 20261110074319). Live-checked: new timing, OAM Pro, 26 years, pgdca-advanced 308 → pgdca. Live `content/site`: coursesRev 2 with the 16-course PDF list, test photo "hiii" removed (gallery empty, no folders yet).
@@ -25,7 +25,7 @@ Facts: `CLIENT.md`. Decisions and pages: `docs/PLAN.md`. Old history (8-9 Nov): 
   - AP Govt DET + MSME removed everywhere (credentials, hero, fact band, proof strip, timeline, footer, contact, SEO, llms.txt).
   - Durations: Adv Excel 25d, Tally 50d, Power BI 30d, C 35d, C++ 30d, Java 45d, Oracle 45d, Python 45d.
   - About: Deputy Director Smt. S. Nagaveni (appointed 2 Nov 2025) in Founder block + Timeline + Home story; names one line; "two sessions every day"; tagline "Your Career… Our Commitment…".
-  - Emails support@rpcadoni.com + rpcraghu@rpcadoni.com (`lib/content.ts` ignores the old saved Gmail). `COURSES_REV` 2 → 3 (live has no fees/hidden courses to lose).
+  - Email rpcraghu@rpcadoni.com (support@ removed 20 Nov) (`lib/content.ts` ignores the old saved Gmail). `COURSES_REV` 2 → 3 (live has no fees/hidden courses to lose).
 
 - **13 Nov client round 4: LIVE** (e182e63 + web commit 6dfff46), update sent to the client's WhatsApp ~6 pm. Playwright 390/1440 light+dark, 0 console errors, no overflow.
   - Batch poster popup: admin `/admin/batches` → "Batch poster popup" box (upload / change / hide / remove, each saves at once) → `popup {id,url,on}` in content json → `LIVE.popup` → `components/BatchPopup.tsx` (opens ~1.9 s after load once the picture loads, once per visit per poster via sessionStorage, Esc/X/outside click/Continue close, WhatsApp "Join this batch").
