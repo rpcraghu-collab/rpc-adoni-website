@@ -1,13 +1,15 @@
 // Website visitor counter (client request, 16 Nov 2026: "visit numbers start with 5001").
 // Firestore doc stats/visits { count }. Each browser session adds 1 (atomic increment via the
-// REST commit API, no SDK in the public bundle); later pages in the same session only read it.
+// REST commit API, no SDK in the public bundle).
+// UNIQUE visitors (client, 20 Nov 2026): each browser adds 1 only on its first ever visit (flag kept in
+// localStorage); returning visits and later pages only read the number.
 // Shown number = START + count, so the very first visit reads 5001.
 // Rules (firestore.rules) allow only +1 steps and reading this one doc.
 import { useEffect, useState } from 'react'
 import { firebaseConfig } from './firebase-config'
 
 export const VISITS_START = 5000
-const SESSION_KEY = 'rpc-visit-counted'
+const VISITOR_KEY = 'rpc-unique-visitor'
 
 const host = import.meta.env.DEV && import.meta.env.VITE_EMULATOR === '1' ? 'http://127.0.0.1:8085' : 'https://firestore.googleapis.com'
 const base = `${host}/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents`
@@ -16,14 +18,14 @@ const docName = `projects/${firebaseConfig.projectId}/databases/(default)/docume
 let pending: Promise<number | null> | null = null
 
 function counted(): boolean {
-  try { return sessionStorage.getItem(SESSION_KEY) === '1' } catch { return false }
+  try { return localStorage.getItem(VISITOR_KEY) === '1' } catch { return false }
 }
 function markCounted() {
-  try { sessionStorage.setItem(SESSION_KEY, '1') } catch { /* storage blocked: may count again next page */ }
+  try { localStorage.setItem(VISITOR_KEY, '1') } catch { /* storage blocked: may count again next visit */ }
 }
 
 async function increment(): Promise<number | null> {
-  markCounted() // before the request: a quick reload must not count the same visit twice
+  markCounted() // before the request: a quick reload must not count the same visitor twice
   const r = await fetch(`${base}:commit?key=${firebaseConfig.apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -50,7 +52,7 @@ function load(): Promise<number | null> {
   return pending
 }
 
-/** Total visits to show (START + count), or null until known / when offline. */
+/** Unique visitors to show (START + count), or null until known / when offline. */
 export function useVisits(): number | null {
   const [n, setN] = useState<number | null>(null)
   useEffect(() => {

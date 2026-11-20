@@ -11,9 +11,9 @@ export const SITE = {
   /** Second number (RPC 13 Nov 2026): footer + contact. */
   phone2: '+91 99632 71883',
   phone2Raw: '919963271883',
-  email: 'support@rpcadoni.com',
-  /** Second domain email (RPC, 13 Nov 2026). */
-  email2: 'rpcraghu@rpcadoni.com',
+  // support@rpcadoni.com removed until RPC buys that mailbox (20 Nov 2026); add it back as email2 then.
+  email: 'rpcraghu@rpcadoni.com',
+  email2: '',
   /** Google Maps listing, opened on its reviews tab (the menu's Reviews link). */
   // Google reviews panel opens directly (RPC 13 Nov 2026).
   reviews: 'https://www.google.com/search?q=REAL+POINT+COMPUTER+EDUCATION+reviews#lrd=0x3bb64dc3855eaae3:0xf36a161e79d29ec1,3,,,,',
