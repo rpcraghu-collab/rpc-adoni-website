@@ -30,3 +30,5 @@ Deploy log: 8 Nov 2026 contrast fixes + llms.txt. 8 Nov 12:45 light default + me
  
 
 13 Nov client round 4: batch poster popup, REAL POINT caps, Tally Prime, durations, second phone, reviews link.
+
+ 20 Nov support@ email removed + unique visitor counter.
